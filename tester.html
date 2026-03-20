@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HazielKopany — Roblox QA Tester</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f3ef;
+      --bg-card: #ffffff;
+      --bg-muted: #edebe6;
+      --text: #111010;
+      --text-mid: #555450;
+      --text-muted: #999793;
+      --accent: #c8f04d;
+      --accent-dark: #9bbf2a;
+      --border: rgba(0,0,0,0.08);
+      --border-strong: rgba(0,0,0,0.14);
+      --radius: 18px;
+      --radius-sm: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Instrument Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(245,243,239,0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--text) !important;
+      color: var(--bg) !important;
+      padding: 8px 20px;
+      border-radius: 99px;
+      font-weight: 500 !important;
+      font-size: 13px !important;
+      transition: opacity 0.2s !important;
+    }
+
+    .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 160px 48px 100px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: 99px;
+      padding: 6px 16px 6px 8px;
+      font-size: 12px;
+      color: var(--text-mid);
+      margin-bottom: 36px;
+      font-weight: 400;
+    }
+
+    .badge-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(52px, 7.5vw, 96px);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+
+    .hero h1 span {
+      color: var(--text-muted);
+      font-weight: 400;
+      font-style: italic;
+      font-family: 'Instrument Sans', sans-serif;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-mid);
+      line-height: 1.65;
+      max-width: 520px;
+      font-weight: 300;
+      margin-bottom: 48px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      overflow: hidden;
+      width: fit-content;
+    }
+
+    .hero-stat {
+      padding: 24px 40px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .hero-stat:last-child { border-right: none; }
+
+    .hero-stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .hero-stat-num em {
+      color: var(--accent-dark);
+      font-style: normal;
+    }
+
+    .hero-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+    }
+
+    /* ---- SECTIONS ---- */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .section-num {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 400;
+      padding: 4px 10px;
+      border: 1px solid var(--border-strong);
+      border-radius: 99px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    /* ---- STATS BIG ---- */
+    .stats-big-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 700px) {
+      .stats-big-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .stat-big-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-big-card.accent {
+      background: var(--text);
+      border-color: var(--text);
+    }
+
+    .stat-big-num {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-big-card.accent .stat-big-num {
+      color: var(--accent);
+    }
+
+    .stat-big-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 300;
+      max-width: 200px;
+    }
+
+    .stat-big-card.accent .stat-big-label {
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ---- STATS BIG ---- */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .games-grid { grid-template-columns: 1fr; }
+      nav { padding: 16px 20px; }
+      .hero, section { padding-left: 20px; padding-right: 20px; }
+      .hero { padding-top: 120px; }
+      .hero-stats { flex-direction: column; width: 100%; }
+      .hero-stat { border-right: none; border-bottom: 1px solid var(--border); }
+      .hero-stat:last-child { border-bottom: none; }
+    }
+
+    .game-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.08);
+    }
+
+    .game-card.big {
+      grid-column: span 2;
+      flex-direction: row;
+    }
+
+    @media (max-width: 700px) {
+      .game-card.big { grid-column: span 1; flex-direction: column; }
+    }
+
+    .game-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--bg-muted);
+      display: block;
+      position: relative;
+    }
+
+    .game-card.big .game-thumb {
+      width: 52%;
+      aspect-ratio: auto;
+      min-height: 260px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 700px) {
+      .game-card.big .game-thumb { width: 100%; min-height: 200px; aspect-ratio: 16/9; }
+    }
+
+    /* Placeholder thumb with gradient when no image */
+    .thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      background: var(--bg-muted);
+      flex-shrink: 0;
+    }
+
+    .game-card.big .thumb-placeholder {
+      width: 52%;
+      aspect-ratio: auto;
+      min-height: 260px;
+    }
+
+    @media (max-width: 700px) {
+      .game-card.big .thumb-placeholder { width: 100%; min-height: 180px; aspect-ratio: 16/9; }
+    }
+
+    .game-body {
+      padding: 24px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .game-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .game-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .game-card.big .game-name { font-size: 26px; }
+
+    .game-ccu-badge {
+      background: var(--accent);
+      color: #2a3800;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 99px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .game-desc {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .game-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .game-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      border: 1px solid var(--border-strong);
+      border-radius: 99px;
+      padding: 3px 12px;
+      background: var(--bg);
+    }
+
+    .game-link {
+      margin-top: auto;
+      padding-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .game-link svg {
+      transition: transform 0.2s;
+    }
+
+    .game-card:hover .game-link svg {
+      transform: translate(2px, -2px);
+    }
+
+    /* ---- SKILLS ---- */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .skill-icon {
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .skill-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .skill-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      font-weight: 300;
+    }
+
+    /* ---- CONTACT ---- */
+    .contact-box {
+      background: var(--text);
+      border-radius: var(--radius);
+      padding: 56px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .contact-left h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .contact-left p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .contact-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+      font-family: 'Instrument Sans', sans-serif;
+    }
+
+    .btn:hover { opacity: 0.82; transform: scale(0.98); }
+
+    .btn-light {
+      background: var(--accent);
+      color: #2a3800;
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 700px) {
+      footer { padding: 24px 20px; }
+    }
+
+    .footer-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ---- FADE IN ---- */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">HazielKopany</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero fade-in">
+    <div class="hero-badge">
+      <span class="badge-dot">🎮</span>
+      Roblox QA Tester · Available for projects
+    </div>
+    <h1>
+      Quality<br>
+      <span>Assurance</span><br>
+      Tester.
+    </h1>
+    <p class="hero-sub">
+      Hi, I'm HazielKopany — a dedicated Roblox QA tester with hands-on experience on high-traffic titles. I find bugs before players do.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num"><em>150k</em></div>
+        <div class="hero-stat-label">Peak CCU</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Games tested</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">170k+</div>
+        <div class="hero-stat-label">Total CCU across titles</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><em>100+</em></div>
+        <div class="hero-stat-label">Bugs reported</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">2+</div>
+        <div class="hero-stat-label">Years experience</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- STATS SECTION -->
+  <section id="stats" style="padding-top: 64px; padding-bottom: 64px;">
+    <div class="section-header fade-in">
+      <span class="section-num">00</span>
+      <h2 class="section-title">By the numbers</h2>
+    </div>
+    <div class="stats-big-grid fade-in">
+      <div class="stat-big-card accent">
+        <div class="stat-big-num">150,000</div>
+        <div class="stat-big-label">Peak concurrent players on a single title</div>
+      </div>
+      <div class="stat-big-card">
+        <div class="stat-big-num">170k+</div>
+        <div class="stat-big-label">Total CCU across all tested games</div>
+      </div>
+      <div class="stat-big-card">
+        <div class="stat-big-num">4</div>
+        <div class="stat-big-label">Roblox games shipped with my QA</div>
+      </div>
+      <div class="stat-big-card">
+        <div class="stat-big-num">100+</div>
+        <div class="stat-big-label">Bugs reported with full reproduction steps</div>
+      </div>
+      <div class="stat-big-card">
+        <div class="stat-big-num">2+</div>
+        <div class="stat-big-label">Years of active Roblox QA experience</div>
+      </div>
+      <div class="stat-big-card">
+        <div class="stat-big-num">0</div>
+        <div class="stat-big-label">Critical bugs that slipped past me to launch</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+  <section id="work">
+    <div class="section-header fade-in">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Games I've tested</h2>
+    </div>
+
+    <div class="games-grid">
+
+      <!-- FEATURED -->
+      <div class="game-card big fade-in">
+        <!-- Replace the src below with your screenshot: src="images/steal-from-brainrots.jpg" -->
+        <div class="thumb-placeholder" style="background: linear-gradient(135deg,#e8f5d0,#c8f04d);">🧠</div>
+        <div class="game-body">
+          <div class="game-top">
+            <div class="game-name">Steal from Brainrots</div>
+            <span class="game-ccu-badge">150k CCU</span>
+          </div>
+          <p class="game-desc">
+            One of the biggest Roblox titles I've worked on. Tested game mechanics, progression systems, and helped ensure stability during the massive player surge.
+          </p>
+          <div class="game-tags">
+            <span class="game-tag">Functional testing</span>
+            <span class="game-tag">Progression</span>
+            <span class="game-tag">Bug reporting</span>
+            <span class="game-tag">Live game</span>
+          </div>
+          <a class="game-link" href="https://www.roblox.com/games/134763881293027/Steal-From-Brainrots" target="_blank" rel="noopener">
+            View on Roblox
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- PEW PEW BLOCKS -->
+      <div class="game-card fade-in">
+        <div class="thumb-placeholder" style="background: linear-gradient(135deg,#fce4ec,#f48fb1);">🔫</div>
+        <div class="game-body">
+          <div class="game-top">
+            <div class="game-name">Pew Pew Blocks</div>
+            <span class="game-ccu-badge">20k CCU</span>
+          </div>
+          <p class="game-desc">Fast-paced shooter with high player concurrency. Focused on gameplay fairness, weapon balancing, and edge case bugs.</p>
+          <div class="game-tags">
+            <span class="game-tag">Combat QA</span>
+            <span class="game-tag">Balance testing</span>
+            <span class="game-tag">Edge cases</span>
+          </div>
+          <a class="game-link" href="https://www.roblox.com/games/78471443847948/Pew-Pew-Blocks" target="_blank" rel="noopener">
+            View on Roblox
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- STAIRS TO BRAINROTS -->
+      <div class="game-card fade-in">
+        <div class="thumb-placeholder" style="background: linear-gradient(135deg,#e3f2fd,#90caf9);">🪜</div>
+        <div class="game-body">
+          <div class="game-top">
+            <div class="game-name">Stairs to Steal Brainrots</div>
+          </div>
+          <p class="game-desc">Progression-focused experience. Verified level transitions, collectible systems, and overall game flow for a smooth player journey.</p>
+          <div class="game-tags">
+            <span class="game-tag">Functional testing</span>
+            <span class="game-tag">Progression</span>
+            <span class="game-tag">Level design QA</span>
+          </div>
+          <a class="game-link" href="https://www.roblox.com/games/129942240545174/Stairs-to-Steal-Brainrots" target="_blank" rel="noopener">
+            View on Roblox
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- BLOCK OBSESSION -->
+      <div class="game-card fade-in">
+        <div class="thumb-placeholder" style="background: linear-gradient(135deg,#f3e5f5,#ce93d8);">🟥</div>
+        <div class="game-body">
+          <div class="game-top">
+            <div class="game-name">Block Obsession</div>
+          </div>
+          <p class="game-desc">Tested core gameplay loops, UI/UX consistency, and reported reproducible bugs with detailed documentation for the dev team.</p>
+          <div class="game-tags">
+            <span class="game-tag">Gameplay testing</span>
+            <span class="game-tag">UI/UX QA</span>
+            <span class="game-tag">Bug reporting</span>
+          </div>
+          <a class="game-link" href="https://www.roblox.com/games/117774123543449/Block-Obsession" target="_blank" rel="noopener">
+            View on Roblox
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header fade-in">
+      <span class="section-num">02</span>
+      <h2 class="section-title">What I bring</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🐛</div>
+        <div class="skill-name">Bug reporting</div>
+        <div class="skill-desc">Clear reproduction steps, severity levels, and screenshots. Devs know exactly what to fix.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🎯</div>
+        <div class="skill-name">Functional testing</div>
+        <div class="skill-desc">Verifying every feature works as intended — from core loops to edge cases.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🔁</div>
+        <div class="skill-name">Regression testing</div>
+        <div class="skill-desc">Making sure new updates don't break what was already working.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">⚖️</div>
+        <div class="skill-name">Balance & exploits</div>
+        <div class="skill-desc">Finding unfair advantages, broken mechanics, and unintended exploits before players do.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🗂️</div>
+        <div class="skill-name">Documentation</div>
+        <div class="skill-desc">Well-structured bug reports and test logs that teams can act on immediately.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">💬</div>
+        <div class="skill-name">Team communication</div>
+        <div class="skill-desc">Fast feedback loop with devs via Discord. Available and responsive.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-box fade-in">
+      <div class="contact-left">
+        <h2>Let's work<br>together.</h2>
+        <p>Looking to ship a polished Roblox experience?<br>Hit me up — I'll make sure it's bug-free before launch.</p>
+      </div>
+      <div class="contact-btns">
+        <a class="btn btn-light" href="https://discord.com/users/0aza" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Discord: 0aza
+        </a>
+        <a class="btn btn-ghost" href="https://www.roblox.com/users/search?keyword=HazielKopany" target="_blank" rel="noopener">
+          Roblox Profile
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-note">Roblox QA Tester · 2025</span>
+    <span class="footer-note">Discord: 0aza</span>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
