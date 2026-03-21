@@ -794,30 +794,32 @@
       return n.toLocaleString();
     }
 
+    async function getUniverseId(placeId) {
+      const res = await fetch(
+        `https://apis.roproxy.com/universes/v1/places/${placeId}/universe`
+      );
+      if (!res.ok) throw new Error('universe lookup failed for ' + placeId);
+      const data = await res.json();
+      return String(data.universeId);
+    }
+
     async function fetchPlayerCounts() {
       try {
-        const placeRes = await fetch(
-          `https://apis.roproxy.com/universes/v1/places?placeIds=${placeIds.join(',')}`
-        );
-        if (!placeRes.ok) throw new Error('place lookup failed: ' + placeRes.status);
-        const placeData = await placeRes.json();
+        const universeMap = {};
+        await Promise.all(placeIds.map(async placeId => {
+          const universeId = await getUniverseId(placeId);
+          universeMap[universeId] = placeId;
+        }));
 
-        const universeToPlace = {};
-        placeData.forEach(entry => {
-          universeToPlace[String(entry.universeId)] = String(entry.placeId);
-        });
-
-        const universeIds = Object.keys(universeToPlace).join(',');
-        if (!universeIds) throw new Error('no universeIds');
-
+        const universeIds = Object.keys(universeMap).join(',');
         const gameRes = await fetch(
           `https://games.roproxy.com/v1/games?universeIds=${universeIds}`
         );
-        if (!gameRes.ok) throw new Error('game lookup failed: ' + gameRes.status);
+        if (!gameRes.ok) throw new Error('game lookup failed');
         const gameData = await gameRes.json();
 
         gameData.data.forEach(game => {
-          const placeId = universeToPlace[String(game.id)];
+          const placeId = universeMap[String(game.id)];
           const el = document.getElementById('live-' + placeId);
           if (el) el.textContent = formatNum(game.playing);
         });
