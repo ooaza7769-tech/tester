@@ -35,7 +35,6 @@
       overflow-x: hidden;
     }
 
-    /* ---- NAV ---- */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -59,11 +58,7 @@
       text-decoration: none;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
 
     .nav-links a {
       font-size: 13px;
@@ -87,7 +82,6 @@
 
     .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
 
-    /* ---- HERO ---- */
     .hero {
       padding: 160px 48px 100px;
       max-width: 1100px;
@@ -109,13 +103,10 @@
     }
 
     .badge-dot {
-      width: 24px;
-      height: 24px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 12px;
     }
 
@@ -172,10 +163,7 @@
       line-height: 1;
     }
 
-    .hero-stat-num em {
-      color: var(--accent-dark);
-      font-style: normal;
-    }
+    .hero-stat-num em { color: var(--accent-dark); font-style: normal; }
 
     .hero-stat-label {
       font-size: 11px;
@@ -185,7 +173,6 @@
       margin-top: 4px;
     }
 
-    /* ---- SECTIONS ---- */
     section {
       max-width: 1100px;
       margin: 0 auto;
@@ -216,15 +203,10 @@
       color: var(--text);
     }
 
-    /* ---- STATS BIG ---- */
     .stats-big-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-    }
-
-    @media (max-width: 700px) {
-      .stats-big-grid { grid-template-columns: 1fr 1fr; }
     }
 
     .stat-big-card {
@@ -237,10 +219,7 @@
       gap: 8px;
     }
 
-    .stat-big-card.accent {
-      background: var(--text);
-      border-color: var(--text);
-    }
+    .stat-big-card.accent { background: var(--text); border-color: var(--text); }
 
     .stat-big-num {
       font-family: 'Syne', sans-serif;
@@ -251,9 +230,7 @@
       line-height: 1;
     }
 
-    .stat-big-card.accent .stat-big-num {
-      color: var(--accent);
-    }
+    .stat-big-card.accent .stat-big-num { color: var(--accent); }
 
     .stat-big-label {
       font-size: 13px;
@@ -263,25 +240,12 @@
       max-width: 200px;
     }
 
-    .stat-big-card.accent .stat-big-label {
-      color: rgba(255,255,255,0.45);
-    }
+    .stat-big-card.accent .stat-big-label { color: rgba(255,255,255,0.45); }
 
-    /* ---- STATS BIG ---- */
     .games-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
-    }
-
-    @media (max-width: 700px) {
-      .games-grid { grid-template-columns: 1fr; }
-      nav { padding: 16px 20px; }
-      .hero, section { padding-left: 20px; padding-right: 20px; }
-      .hero { padding-top: 120px; }
-      .hero-stats { flex-direction: column; width: 100%; }
-      .hero-stat { border-right: none; border-bottom: 1px solid var(--border); }
-      .hero-stat:last-child { border-bottom: none; }
     }
 
     .game-card {
@@ -292,7 +256,6 @@
       display: flex;
       flex-direction: column;
       transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s;
-      text-decoration: none;
       color: inherit;
     }
 
@@ -306,17 +269,12 @@
       flex-direction: row;
     }
 
-    @media (max-width: 700px) {
-      .game-card.big { grid-column: span 1; flex-direction: column; }
-    }
-
     .game-thumb {
       width: 100%;
       aspect-ratio: 16/9;
       object-fit: cover;
       background: var(--bg-muted);
       display: block;
-      position: relative;
     }
 
     .game-card.big .game-thumb {
@@ -324,32 +282,6 @@
       aspect-ratio: auto;
       min-height: 260px;
       flex-shrink: 0;
-    }
-
-    @media (max-width: 700px) {
-      .game-card.big .game-thumb { width: 100%; min-height: 200px; aspect-ratio: 16/9; }
-    }
-
-    /* Placeholder thumb with gradient when no image */
-    .thumb-placeholder {
-      width: 100%;
-      aspect-ratio: 16/9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      background: var(--bg-muted);
-      flex-shrink: 0;
-    }
-
-    .game-card.big .thumb-placeholder {
-      width: 52%;
-      aspect-ratio: auto;
-      min-height: 260px;
-    }
-
-    @media (max-width: 700px) {
-      .game-card.big .thumb-placeholder { width: 100%; min-height: 180px; aspect-ratio: 16/9; }
     }
 
     .game-body {
@@ -389,6 +321,30 @@
       flex-shrink: 0;
     }
 
+    .live-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--text-mid);
+      margin: 2px 0 4px;
+    }
+
+    .live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      animation: livepulse 2s ease-in-out infinite;
+    }
+
+    @keyframes livepulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .live-label strong { color: var(--text); font-weight: 600; }
+
     .game-desc {
       font-size: 14px;
       color: var(--text-mid);
@@ -396,12 +352,7 @@
       font-weight: 300;
     }
 
-    .game-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
-    }
+    .game-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
 
     .game-tag {
       font-size: 11px;
@@ -425,23 +376,13 @@
       border-top: 1px solid var(--border);
     }
 
-    .game-link svg {
-      transition: transform 0.2s;
-    }
+    .game-link svg { transition: transform 0.2s; }
+    .game-card:hover .game-link svg { transform: translate(2px, -2px); }
 
-    .game-card:hover .game-link svg {
-      transform: translate(2px, -2px);
-    }
-
-    /* ---- SKILLS ---- */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 14px;
-    }
-
-    @media (max-width: 700px) {
-      .skills-grid { grid-template-columns: 1fr 1fr; }
     }
 
     .skill-card {
@@ -454,11 +395,7 @@
       gap: 8px;
     }
 
-    .skill-icon {
-      font-size: 22px;
-      line-height: 1;
-      margin-bottom: 2px;
-    }
+    .skill-icon { font-size: 22px; line-height: 1; margin-bottom: 2px; }
 
     .skill-name {
       font-family: 'Syne', sans-serif;
@@ -467,18 +404,12 @@
       color: var(--text);
     }
 
-    .skill-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.55;
-      font-weight: 300;
-    }
+    .skill-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; font-weight: 300; }
 
-    /* ---- CONTACT ---- */
     .contact-box {
       background: var(--text);
       border-radius: var(--radius);
-      padding: 56px 56px;
+      padding: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -496,18 +427,9 @@
       margin-bottom: 10px;
     }
 
-    .contact-left p {
-      font-size: 15px;
-      color: rgba(255,255,255,0.5);
-      font-weight: 300;
-      line-height: 1.6;
-    }
+    .contact-left p { font-size: 15px; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.6; }
 
-    .contact-btns {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .contact-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
     .btn {
       display: inline-flex;
@@ -524,19 +446,9 @@
     }
 
     .btn:hover { opacity: 0.82; transform: scale(0.98); }
+    .btn-light { background: var(--accent); color: #2a3800; }
+    .btn-ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.15); }
 
-    .btn-light {
-      background: var(--accent);
-      color: #2a3800;
-    }
-
-    .btn-ghost {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-
-    /* ---- FOOTER ---- */
     footer {
       max-width: 1100px;
       margin: 0 auto;
@@ -549,45 +461,36 @@
       border-top: 1px solid var(--border);
     }
 
-    @media (max-width: 700px) {
-      footer { padding: 24px 20px; }
-    }
+    .footer-note { font-size: 12px; color: var(--text-muted); }
 
-    .footer-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--text);
-    }
-
-    .footer-note {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* ---- FADE IN ---- */
     .fade-in {
       opacity: 0;
       transform: translateY(22px);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    .fade-in.visible {
-      opacity: 1;
-      transform: none;
-    }
+    .fade-in.visible { opacity: 1; transform: none; }
 
-    /* divider */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 0;
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    @media (max-width: 700px) {
+      nav { padding: 16px 20px; }
+      .hero, section { padding-left: 20px; padding-right: 20px; }
+      .hero { padding-top: 120px; }
+      .hero-stats { flex-direction: column; width: 100%; }
+      .hero-stat { border-right: none; border-bottom: 1px solid var(--border); }
+      .hero-stat:last-child { border-bottom: none; }
+      .games-grid { grid-template-columns: 1fr; }
+      .game-card.big { grid-column: span 1; flex-direction: column; }
+      .game-card.big .game-thumb { width: 100%; min-height: 200px; aspect-ratio: 16/9; }
+      .stats-big-grid { grid-template-columns: 1fr 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 24px 20px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav>
     <a href="#" class="nav-logo">Portfolio</a>
     <ul class="nav-links">
@@ -597,7 +500,6 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
   <div class="hero fade-in">
     <div class="hero-badge">
       <span class="badge-dot">🎮</span>
@@ -617,7 +519,7 @@
         <div class="hero-stat-label">Peak CCU</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-num">5</div>
         <div class="hero-stat-label">Games tested</div>
       </div>
       <div class="hero-stat">
@@ -637,7 +539,6 @@
 
   <hr class="divider" />
 
-  <!-- STATS SECTION -->
   <section id="stats" style="padding-top: 64px; padding-bottom: 64px;">
     <div class="section-header fade-in">
       <span class="section-num">00</span>
@@ -653,7 +554,7 @@
         <div class="stat-big-label">Total CCU across all tested games</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">4</div>
+        <div class="stat-big-num">5</div>
         <div class="stat-big-label">Roblox games shipped with my QA</div>
       </div>
       <div class="stat-big-card">
@@ -672,6 +573,7 @@
   </section>
 
   <hr class="divider" />
+
   <section id="work">
     <div class="section-header fade-in">
       <span class="section-num">01</span>
@@ -680,18 +582,18 @@
 
     <div class="games-grid">
 
-      <!-- FEATURED -->
       <div class="game-card big fade-in">
-        <!-- Replace the src below with your screenshot: src="images/steal-from-brainrots.jpg" -->
         <img class="game-thumb" src="steal.png" alt="Steal from Brainrots" />
         <div class="game-body">
           <div class="game-top">
             <div class="game-name">Steal from Brainrots</div>
-            <span class="game-ccu-badge">150k CCU</span>
+            <span class="game-ccu-badge">150k peak CCU</span>
           </div>
-          <p class="game-desc">
-            One of the biggest Roblox titles I've worked on. Tested game mechanics, progression systems, and helped ensure stability during the massive player surge.
-          </p>
+          <div class="live-bar">
+            <span class="live-dot"></span>
+            <span class="live-label">Playing now: <strong id="live-134763881293027">—</strong></span>
+          </div>
+          <p class="game-desc">One of the biggest Roblox titles I've worked on. Tested game mechanics, progression systems, and helped ensure stability during the massive player surge.</p>
           <div class="game-tags">
             <span class="game-tag">Functional testing</span>
             <span class="game-tag">Progression</span>
@@ -700,20 +602,21 @@
           </div>
           <a class="game-link" href="https://www.roblox.com/games/134763881293027/Steal-From-Brainrots" target="_blank" rel="noopener">
             View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
       </div>
 
-      <!-- PEW PEW BLOCKS -->
       <div class="game-card fade-in">
         <img class="game-thumb" src="pewpew.png" alt="Pew Pew Blocks" />
         <div class="game-body">
           <div class="game-top">
             <div class="game-name">Pew Pew Blocks</div>
-            <span class="game-ccu-badge">20k CCU</span>
+            <span class="game-ccu-badge">20k peak CCU</span>
+          </div>
+          <div class="live-bar">
+            <span class="live-dot"></span>
+            <span class="live-label">Playing now: <strong id="live-78471443847948">—</strong></span>
           </div>
           <p class="game-desc">Fast-paced shooter with high player concurrency. Focused on gameplay fairness, weapon balancing, and edge case bugs.</p>
           <div class="game-tags">
@@ -723,19 +626,20 @@
           </div>
           <a class="game-link" href="https://www.roblox.com/games/78471443847948/Pew-Pew-Blocks" target="_blank" rel="noopener">
             View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
       </div>
 
-      <!-- STAIRS TO BRAINROTS -->
       <div class="game-card fade-in">
         <img class="game-thumb" src="stairs.png" alt="Stairs to Steal Brainrots" />
         <div class="game-body">
           <div class="game-top">
             <div class="game-name">Stairs to Steal Brainrots</div>
+          </div>
+          <div class="live-bar">
+            <span class="live-dot"></span>
+            <span class="live-label">Playing now: <strong id="live-129942240545174">—</strong></span>
           </div>
           <p class="game-desc">Progression-focused experience. Verified level transitions, collectible systems, and overall game flow for a smooth player journey.</p>
           <div class="game-tags">
@@ -745,19 +649,20 @@
           </div>
           <a class="game-link" href="https://www.roblox.com/games/129942240545174/Stairs-to-Steal-Brainrots" target="_blank" rel="noopener">
             View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
       </div>
 
-      <!-- BLOCK OBSESSION -->
       <div class="game-card fade-in">
         <img class="game-thumb" src="block.png" alt="Block Obsession" />
         <div class="game-body">
           <div class="game-top">
             <div class="game-name">Block Obsession</div>
+          </div>
+          <div class="live-bar">
+            <span class="live-dot"></span>
+            <span class="live-label">Playing now: <strong id="live-117774123543449">—</strong></span>
           </div>
           <p class="game-desc">Tested core gameplay loops, UI/UX consistency, and reported reproducible bugs with detailed documentation for the dev team.</p>
           <div class="game-tags">
@@ -767,9 +672,30 @@
           </div>
           <a class="game-link" href="https://www.roblox.com/games/117774123543449/Block-Obsession" target="_blank" rel="noopener">
             View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="game-card fade-in">
+        <img class="game-thumb" src="rampage.png" alt="Rampage" />
+        <div class="game-body">
+          <div class="game-top">
+            <div class="game-name">Rampage</div>
+          </div>
+          <div class="live-bar">
+            <span class="live-dot"></span>
+            <span class="live-label">Playing now: <strong id="live-130788295134181">—</strong></span>
+          </div>
+          <p class="game-desc">Tested core mechanics, combat flow, and overall stability to ensure a smooth and enjoyable experience for players.</p>
+          <div class="game-tags">
+            <span class="game-tag">Gameplay testing</span>
+            <span class="game-tag">Combat QA</span>
+            <span class="game-tag">Bug reporting</span>
+          </div>
+          <a class="game-link" href="https://www.roblox.com/games/130788295134181/Rampage" target="_blank" rel="noopener">
+            View on Roblox
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
       </div>
@@ -779,7 +705,6 @@
 
   <hr class="divider" />
 
-  <!-- SKILLS -->
   <section id="skills">
     <div class="section-header fade-in">
       <span class="section-num">02</span>
@@ -821,7 +746,6 @@
 
   <hr class="divider" />
 
-  <!-- CONTACT -->
   <section id="contact">
     <div class="contact-box fade-in">
       <div class="contact-left">
@@ -833,14 +757,13 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
           Discord: 0aza
         </a>
-        <a class="btn btn-ghost" href="https://www.roblox.com/users/741743931/profile?friendshipSourceType=PlayerSearch" target="_blank" rel="noopener">
+        <a class="btn btn-ghost" href="https://www.roblox.com/users/741743931/profile" target="_blank" rel="noopener">
           Roblox Profile
         </a>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <span class="footer-note">Roblox QA Tester · 2025</span>
     <span class="footer-note">Discord: 0aza</span>
@@ -857,6 +780,58 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    const placeIds = [
+      '134763881293027',
+      '78471443847948',
+      '129942240545174',
+      '117774123543449',
+      '130788295134181'
+    ];
+
+    function formatNum(n) {
+      if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+      return n.toLocaleString();
+    }
+
+    async function fetchPlayerCounts() {
+      try {
+        const placeRes = await fetch(
+          `https://apis.roproxy.com/universes/v1/places?placeIds=${placeIds.join(',')}`
+        );
+        if (!placeRes.ok) throw new Error('place lookup failed: ' + placeRes.status);
+        const placeData = await placeRes.json();
+
+        const universeToPlace = {};
+        placeData.forEach(entry => {
+          universeToPlace[String(entry.universeId)] = String(entry.placeId);
+        });
+
+        const universeIds = Object.keys(universeToPlace).join(',');
+        if (!universeIds) throw new Error('no universeIds');
+
+        const gameRes = await fetch(
+          `https://games.roproxy.com/v1/games?universeIds=${universeIds}`
+        );
+        if (!gameRes.ok) throw new Error('game lookup failed: ' + gameRes.status);
+        const gameData = await gameRes.json();
+
+        gameData.data.forEach(game => {
+          const placeId = universeToPlace[String(game.id)];
+          const el = document.getElementById('live-' + placeId);
+          if (el) el.textContent = formatNum(game.playing);
+        });
+      } catch (e) {
+        console.warn('RoProxy error:', e.message);
+        placeIds.forEach(id => {
+          const el = document.getElementById('live-' + id);
+          if (el) el.textContent = '—';
+        });
+      }
+    }
+
+    fetchPlayerCounts();
+    setInterval(fetchPlayerCounts, 60000);
   </script>
 
 </body>
