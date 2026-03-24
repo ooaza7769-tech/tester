@@ -376,6 +376,15 @@
       border-top: 1px solid var(--border);
     }
 
+    .game-rank {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-right: 6px;
+      letter-spacing: -0.01em;
+    }
+
     .game-link svg { transition: transform 0.2s; }
     .game-card:hover .game-link svg { transform: translate(2px, -2px); }
 
@@ -511,19 +520,19 @@
       Tester.
     </h1>
     <p class="hero-sub">
-      Hi, I'm 0aza, a dedicated Roblox QA tester with hands-on experience on high-traffic titles. I find bugs before players do.
+      Hi, I'm 0aza — a dedicated Roblox QA tester with hands-on experience on high-traffic titles. I find bugs before players do.
     </p>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-num"><em>150k</em></div>
+        <div class="hero-stat-num"><em>170k</em></div>
         <div class="hero-stat-label">Peak CCU</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">5</div>
+        <div class="hero-stat-num">6</div>
         <div class="hero-stat-label">Games tested</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">170k+</div>
+        <div class="hero-stat-num">306k+</div>
         <div class="hero-stat-label">Total CCU across titles</div>
       </div>
       <div class="hero-stat">
@@ -546,15 +555,15 @@
     </div>
     <div class="stats-big-grid fade-in">
       <div class="stat-big-card accent">
-        <div class="stat-big-num">150,000</div>
+        <div class="stat-big-num">170,000</div>
         <div class="stat-big-label">Peak concurrent players on a single title</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">170k+</div>
+        <div class="stat-big-num">306k+</div>
         <div class="stat-big-label">Total CCU across all tested games</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">5</div>
+        <div class="stat-big-num">6</div>
         <div class="stat-big-label">Roblox games shipped with my QA</div>
       </div>
       <div class="stat-big-card">
@@ -582,12 +591,12 @@
 
     <div class="games-grid">
 
-      <div class="game-card big fade-in">
+      <div class="game-card big fade-in" data-placeid="134763881293027">
         <img class="game-thumb" src="steal.png" alt="Steal from Brainrots" />
         <div class="game-body">
           <div class="game-top">
-            <div class="game-name">Steal from Brainrots</div>
-            <span class="game-ccu-badge">150k peak CCU</span>
+            <div class="game-name"><span class="game-rank">#1</span> Steal from Brainrots</div>
+            <span class="game-ccu-badge">170k peak CCU</span>
           </div>
           <div class="live-bar">
             <span class="live-dot"></span>
@@ -607,12 +616,12 @@
         </div>
       </div>
 
-      <div class="game-card fade-in">
+      <div class="game-card fade-in" data-placeid="78471443847948">
         <img class="game-thumb" src="pewpew.png" alt="Pew Pew Blocks" />
         <div class="game-body">
           <div class="game-top">
-            <div class="game-name">Pew Pew Blocks</div>
-            <span class="game-ccu-badge">20k peak CCU</span>
+            <div class="game-name"><span class="game-rank">#2</span> Pew Pew Blocks</div>
+            <span class="game-ccu-badge">8,600 peak CCU</span>
           </div>
           <div class="live-bar">
             <span class="live-dot"></span>
@@ -631,11 +640,11 @@
         </div>
       </div>
 
-      <div class="game-card fade-in">
+      <div class="game-card fade-in" data-placeid="129942240545174">
         <img class="game-thumb" src="stairs.png" alt="Stairs to Steal Brainrots" />
         <div class="game-body">
           <div class="game-top">
-            <div class="game-name">Stairs to Steal Brainrots</div>
+            <div class="game-name"><span class="game-rank">#3</span> Stairs to Steal Brainrots</div>
           </div>
           <div class="live-bar">
             <span class="live-dot"></span>
@@ -654,11 +663,11 @@
         </div>
       </div>
 
-      <div class="game-card fade-in">
+      <div class="game-card fade-in" data-placeid="117774123543449">
         <img class="game-thumb" src="block.png" alt="Block Obsession" />
         <div class="game-body">
           <div class="game-top">
-            <div class="game-name">Block Obsession</div>
+            <div class="game-name"><span class="game-rank">#4</span> Block Obsession</div>
           </div>
           <div class="live-bar">
             <span class="live-dot"></span>
@@ -677,11 +686,11 @@
         </div>
       </div>
 
-      <div class="game-card fade-in">
+      <div class="game-card fade-in" data-placeid="130788295134181">
         <img class="game-thumb" src="rampage.png" alt="Rampage" />
         <div class="game-body">
           <div class="game-top">
-            <div class="game-name">Rampage</div>
+            <div class="game-name"><span class="game-rank">#5</span> Rampage</div>
           </div>
           <div class="live-bar">
             <span class="live-dot"></span>
@@ -694,6 +703,30 @@
             <span class="game-tag">Bug reporting</span>
           </div>
           <a class="game-link" href="https://www.roblox.com/games/130788295134181/Rampage" target="_blank" rel="noopener">
+            View on Roblox
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="game-card fade-in" data-placeid="97365843755210">
+        <img class="game-thumb" src="grass.png" alt="Cut Grass for Brainrots" />
+        <div class="game-body">
+          <div class="game-top">
+            <div class="game-name"><span class="game-rank">#6</span> Cut Grass for Brainrots</div>
+            <span class="game-ccu-badge">128k peak CCU</span>
+          </div>
+          <div class="live-bar">
+            <span class="live-dot"></span>
+            <span class="live-label">Playing now: <strong id="live-97365843755210">—</strong></span>
+          </div>
+          <p class="game-desc">Tested gameplay mechanics, progression systems, and overall stability to deliver a polished experience for players.</p>
+          <div class="game-tags">
+            <span class="game-tag">Gameplay testing</span>
+            <span class="game-tag">Progression</span>
+            <span class="game-tag">Bug reporting</span>
+          </div>
+          <a class="game-link" href="https://www.roblox.com/share?code=9917a9c548ddd846815e0facc10d073e&type=ExperienceDetails&stamp=1774338615813" target="_blank" rel="noopener">
             View on Roblox
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -786,7 +819,8 @@
       '78471443847948',
       '129942240545174',
       '117774123543449',
-      '130788295134181'
+      '130788295134181',
+      '97365843755210'
     ];
 
     function formatNum(n) {
@@ -822,6 +856,22 @@
           const placeId = universeMap[String(game.id)];
           const el = document.getElementById('live-' + placeId);
           if (el) el.textContent = formatNum(game.playing);
+          const card = document.querySelector(`[data-placeid="${placeId}"]`);
+          if (card) card.dataset.playing = game.playing;
+        });
+
+        // Sort cards by playing count descending
+        const grid = document.querySelector('.games-grid');
+        const cards = Array.from(grid.querySelectorAll('.game-card'));
+        cards.sort((a, b) => (parseInt(b.dataset.playing) || 0) - (parseInt(a.dataset.playing) || 0));
+
+        // Re-append in sorted order, keep "big" class only on #1
+        cards.forEach((card, i) => {
+          card.classList.remove('big');
+          if (i === 0) card.classList.add('big');
+          const rankEl = card.querySelector('.game-rank');
+          if (rankEl) rankEl.textContent = `#${i + 1}`;
+          grid.appendChild(card);
         });
       } catch (e) {
         console.warn('RoProxy error:', e.message);
