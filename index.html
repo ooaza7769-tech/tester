@@ -757,7 +757,8 @@
         </div>
       </div>
 
-      <div class="game-card fade-in" data-playing="0">
+      <!-- FIXED: Added data-placeid instead of data-playing="0" -->
+      <div class="game-card fade-in" data-placeid="114640202062357">
         <img class="game-thumb" src="swing.png" alt="Swing Obby for Brainrots" />
         <div class="game-body">
           <div class="game-top">
@@ -783,6 +784,8 @@
 
     </div>
   </section>
+
+  <section id="skills" style="padding-top: 0;">
     <div class="section-header fade-in">
       <span class="section-num">02</span>
       <h2 class="section-title">What I bring</h2>
@@ -858,6 +861,7 @@
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+    // FIXED: Added 114640202062357 (Swing Obby for Brainrots)
     const placeIds = [
       '134763881293027',
       '78471443847948',
@@ -865,7 +869,8 @@
       '117774123543449',
       '130788295134181',
       '97365843755210',
-      '135000370479961'
+      '135000370479961',
+      '114640202062357'
     ];
 
     function formatNum(n) {
