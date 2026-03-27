@@ -520,7 +520,7 @@
       Tester.
     </h1>
     <p class="hero-sub">
-      Hi, I'm 0aza — a dedicated Roblox QA tester with hands-on experience on high-traffic titles. I find bugs before players do.
+      Hi, I'm 0aza, a dedicated Roblox QA tester with hands-on experience on high-traffic titles. I find bugs before players do.
     </p>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -575,8 +575,8 @@
         <div class="stat-big-label">Years of active Roblox QA experience</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">0</div>
-        <div class="stat-big-label">Critical bugs that slipped past me to launch</div>
+        <div class="stat-big-num" id="total-playing">—</div>
+        <div class="stat-big-label">Players currently across all games tested by me</div>
       </div>
     </div>
   </section>
@@ -621,7 +621,7 @@
         <div class="game-body">
           <div class="game-top">
             <div class="game-name"><span class="game-rank">#2</span> Pew Pew Blocks</div>
-            <span class="game-ccu-badge">8,600 peak CCU</span>
+            <span class="game-ccu-badge">8k peak CCU</span>
           </div>
           <div class="live-bar">
             <span class="live-dot"></span>
@@ -696,7 +696,7 @@
         <div class="game-body">
           <div class="game-top">
             <div class="game-name"><span class="game-rank">#7</span> Draw &amp; Slide</div>
-            <span class="game-ccu-badge">7,351 peak CCU</span>
+            <span class="game-ccu-badge">7k peak CCU</span>
           </div>
           <div class="live-bar">
             <span class="live-dot"></span>
@@ -914,6 +914,11 @@
           const card = document.querySelector(`[data-placeid="${placeId}"]`);
           if (card) card.dataset.playing = game.playing;
         });
+
+        // Update total players across all games
+        const total = gameData.data.reduce((sum, game) => sum + (game.playing || 0), 0);
+        const totalEl = document.getElementById('total-playing');
+        if (totalEl) totalEl.textContent = formatNum(total);
 
         // Sort cards by playing count descending
         const grid = document.querySelector('.games-grid');
