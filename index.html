@@ -35,6 +35,7 @@
       overflow-x: hidden;
     }
 
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -82,75 +83,109 @@
 
     .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
 
+    /* HERO */
     .hero {
-      padding: 160px 48px 100px;
-      max-width: 1100px;
-      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 48px 120px;
+      position: relative;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      border: 1px solid var(--border-strong);
+      border-radius: 99px;
+      padding: 6px 18px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeup 0.7s 0.1s cubic-bezier(.22,1,.36,1) forwards;
+    }
+
+    .hero-tag-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent-dark);
+      flex-shrink: 0;
     }
 
     .hero h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(52px, 7.5vw, 96px);
+      font-size: clamp(56px, 9vw, 112px);
       font-weight: 800;
-      line-height: 0.95;
+      line-height: 0.9;
       letter-spacing: -0.04em;
       color: var(--text);
       margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeup 0.7s 0.25s cubic-bezier(.22,1,.36,1) forwards;
     }
 
-    .hero h1 span {
+    .hero h1 em {
       color: var(--text-muted);
-      font-weight: 400;
       font-style: italic;
+      font-weight: 400;
       font-family: 'Instrument Sans', sans-serif;
     }
 
     .hero-sub {
-      font-size: 17px;
+      font-size: 16px;
       color: var(--text-mid);
-      line-height: 1.65;
-      max-width: 520px;
+      line-height: 1.7;
+      max-width: 400px;
       font-weight: 300;
-      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeup 0.7s 0.4s cubic-bezier(.22,1,.36,1) forwards;
     }
 
-    .hero-stats {
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
-      gap: 0;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius);
-      background: var(--bg-card);
-      overflow: hidden;
-      width: fit-content;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeup 0.7s 0.7s cubic-bezier(.22,1,.36,1) forwards;
     }
 
-    .hero-stat {
-      padding: 24px 40px;
-      border-right: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .hero-stat:last-child { border-right: none; }
-
-    .hero-stat-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.03em;
-      line-height: 1;
-    }
-
-    .hero-stat-num em { color: var(--accent-dark); font-style: normal; }
-
-    .hero-stat-label {
-      font-size: 11px;
+    .hero-scroll span {
+      font-size: 10px;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-top: 4px;
+      letter-spacing: 0.14em;
     }
 
+    .hero-scroll-line {
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, var(--border-strong), transparent);
+      animation: scrollpulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollpulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes fadeup {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SECTIONS */
     section {
       max-width: 1100px;
       margin: 0 auto;
@@ -181,6 +216,7 @@
       color: var(--text);
     }
 
+    /* STATS */
     .stats-big-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -220,13 +256,43 @@
 
     .stat-big-card.accent .stat-big-label { color: rgba(255,255,255,0.45); }
 
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+    /* MARQUEE */
+    .marquee-section {
+      padding: 80px 0;
+      overflow: hidden;
+      max-width: none !important;
     }
 
-    .game-card {
+    .marquee-section .section-header {
+      max-width: 1100px;
+      margin: 0 auto 40px;
+      padding: 0 48px;
+    }
+
+    .marquee-track {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+
+    .marquee-row {
+      display: flex;
+      gap: 16px;
+      width: max-content;
+    }
+
+    .marquee-row.left  { animation: marquee-left  45s linear infinite; }
+    .marquee-row.right { animation: marquee-right 45s linear infinite; }
+
+    @keyframes marquee-left  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+    .mq-card {
+      flex-shrink: 0;
+      width: 300px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -234,20 +300,16 @@
       display: flex;
       flex-direction: column;
       transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s;
+      text-decoration: none;
       color: inherit;
     }
 
-    .game-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 48px rgba(0,0,0,0.08);
+    .mq-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
     }
 
-    .game-card.big {
-      grid-column: span 2;
-      flex-direction: row;
-    }
-
-    .game-thumb {
+    .mq-card img {
       width: 100%;
       aspect-ratio: 16/9;
       object-fit: cover;
@@ -255,65 +317,38 @@
       display: block;
     }
 
-    .game-card.big .game-thumb {
-      width: 52%;
-      aspect-ratio: auto;
-      min-height: 260px;
-      flex-shrink: 0;
-    }
-
-    .game-body {
-      padding: 24px 28px 28px;
+    .mq-card-body {
+      padding: 12px 14px 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      flex: 1;
+      gap: 6px;
     }
 
-    .game-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .game-name {
+    .mq-card-name {
       font-family: 'Syne', sans-serif;
-      font-size: 20px;
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: -0.02em;
       color: var(--text);
-      line-height: 1.2;
-    }
-
-    .game-card.big .game-name { font-size: 26px; }
-
-    .game-ccu-badge {
-      background: var(--accent);
-      color: #2a3800;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 99px;
       white-space: nowrap;
-      flex-shrink: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .live-bar {
+    .mq-card-ccu {
       display: flex;
       align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      color: var(--text-mid);
-      margin: 2px 0 4px;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
     }
 
-    .live-dot {
-      width: 7px; height: 7px;
+    .mq-card-dot {
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: #4ade80;
-      flex-shrink: 0;
       animation: livepulse 2s ease-in-out infinite;
+      flex-shrink: 0;
     }
 
     @keyframes livepulse {
@@ -321,51 +356,17 @@
       50% { opacity: 0.35; }
     }
 
-    .live-label strong { color: var(--text); font-weight: 600; }
-
-    .game-desc {
-      font-size: 14px;
-      color: var(--text-mid);
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    .game-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-
-    .game-tag {
-      font-size: 11px;
-      color: var(--text-muted);
-      border: 1px solid var(--border-strong);
+    .mq-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #2a3800;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
       border-radius: 99px;
-      padding: 3px 12px;
-      background: var(--bg);
     }
 
-    .game-link {
-      margin-top: auto;
-      padding-top: 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      text-decoration: none;
-      border-top: 1px solid var(--border);
-    }
-
-    .game-rank {
-      font-family: 'Syne', sans-serif;
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-muted);
-      margin-right: 6px;
-      letter-spacing: -0.01em;
-    }
-
-    .game-link svg { transition: transform 0.2s; }
-    .game-card:hover .game-link svg { transform: translate(2px, -2px); }
-
+    /* SKILLS */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -393,6 +394,7 @@
 
     .skill-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; font-weight: 300; }
 
+    /* CONTACT */
     .contact-box {
       background: var(--text);
       border-radius: var(--radius);
@@ -436,6 +438,7 @@
     .btn-light { background: var(--accent); color: #2a3800; }
     .btn-ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.15); }
 
+    /* FOOTER */
     footer {
       max-width: 1100px;
       margin: 0 auto;
@@ -450,6 +453,7 @@
 
     .footer-note { font-size: 12px; color: var(--text-muted); }
 
+    /* FADE IN ON SCROLL */
     .fade-in {
       opacity: 0;
       transform: translateY(22px);
@@ -458,21 +462,17 @@
 
     .fade-in.visible { opacity: 1; transform: none; }
 
-    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
-
+    /* MOBILE */
     @media (max-width: 700px) {
       nav { padding: 16px 20px; }
-      .hero, section { padding-left: 20px; padding-right: 20px; }
-      .hero { padding-top: 120px; }
-      .hero-stats { flex-direction: column; width: 100%; }
-      .hero-stat { border-right: none; border-bottom: 1px solid var(--border); }
-      .hero-stat:last-child { border-bottom: none; }
-      .games-grid { grid-template-columns: 1fr; }
-      .game-card.big { grid-column: span 1; flex-direction: column; }
-      .game-card.big .game-thumb { width: 100%; min-height: 200px; aspect-ratio: 16/9; }
+      section { padding-left: 20px; padding-right: 20px; }
+      .hero { padding: 100px 24px 100px; }
       .stats-big-grid { grid-template-columns: 1fr 1fr; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
       footer { padding: 24px 20px; }
+      .marquee-section .section-header { padding: 0 20px; }
+      .mq-card { width: 230px; }
+      .contact-box { padding: 36px 28px; }
     }
   </style>
 </head>
@@ -487,41 +487,19 @@
     </ul>
   </nav>
 
-  <div class="hero fade-in">
+  <!-- HERO -->
+  <div class="hero">
     <h1>
       Quality<br>
-      <span>Assurance</span><br>
+      <em>Assurance</em><br>
       Tester.
     </h1>
     <p class="hero-sub">
-      Hi, I'm 0aza, a dedicated Roblox QA tester with hands-on experience on high-traffic titles. I find bugs before players do.
+      Hi, I'm 0aza. I test high-traffic Roblox titles and find bugs before players do.
     </p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-num"><em>252k</em></div>
-        <div class="hero-stat-label">Peak CCU</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">16</div>
-        <div class="hero-stat-label">Games tested</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">777k+</div>
-        <div class="hero-stat-label">Total CCU across titles</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num"><em>100+</em></div>
-        <div class="hero-stat-label">Bugs reported</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">2+</div>
-        <div class="hero-stat-label">Years experience</div>
-      </div>
-    </div>
   </div>
 
-  <hr class="divider" />
-
+  <!-- BY THE NUMBERS -->
   <section id="stats" style="padding-top: 64px; padding-bottom: 64px;">
     <div class="section-header fade-in">
       <span class="section-num">00</span>
@@ -541,8 +519,8 @@
         <div class="stat-big-label">Roblox games shipped with my QA</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">100+</div>
-        <div class="stat-big-label">Bugs reported with full reproduction steps</div>
+        <div class="stat-big-num" id="total-visits">—</div>
+        <div class="stat-big-label">Total visits across all tested games</div>
       </div>
       <div class="stat-big-card">
         <div class="stat-big-num">2+</div>
@@ -550,411 +528,25 @@
       </div>
       <div class="stat-big-card">
         <div class="stat-big-num" id="total-playing">—</div>
-        <div class="stat-big-label">Players currently playing across all games tested by me</div>
+        <div class="stat-big-label">Players currently playing across all tested games</div>
       </div>
     </div>
   </section>
 
-  <hr class="divider" />
-
-  <section id="work">
+  <!-- MARQUEE GAMES -->
+  <section id="work" class="marquee-section">
     <div class="section-header fade-in">
       <span class="section-num">01</span>
       <h2 class="section-title">Games I've tested</h2>
     </div>
-
-    <div class="games-grid">
-
-      <div class="game-card big fade-in" data-placeid="134763881293027">
-        <img class="game-thumb" src="steal.png" alt="Steal from Brainrots" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#1</span> Steal from Brainrots</div>
-            <span class="game-ccu-badge">170k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-134763881293027">—</strong></span>
-          </div>
-          <p class="game-desc">One of the biggest Roblox titles I've worked on. Tested game mechanics, progression systems, and helped ensure stability during the massive player surge.</p>
-          <div class="game-tags">
-            <span class="game-tag">Functional testing</span>
-            <span class="game-tag">Progression</span>
-            <span class="game-tag">Bug reporting</span>
-            <span class="game-tag">Live game</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/134763881293027/Steal-From-Brainrots" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="78471443847948">
-        <img class="game-thumb" src="pewpew.png" alt="Pew Pew Blocks" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#2</span> Pew Pew Blocks</div>
-            <span class="game-ccu-badge">8k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-78471443847948">—</strong></span>
-          </div>
-          <p class="game-desc">Fast-paced shooter with high player concurrency. Focused on gameplay fairness, weapon balancing, and edge case bugs.</p>
-          <div class="game-tags">
-            <span class="game-tag">Combat QA</span>
-            <span class="game-tag">Balance testing</span>
-            <span class="game-tag">Edge cases</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/78471443847948/Pew-Pew-Blocks" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="129942240545174">
-        <img class="game-thumb" src="stairs.png" alt="Stairs to Steal Brainrots" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#3</span> Stairs to Steal Brainrots</div>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-129942240545174">—</strong></span>
-          </div>
-          <p class="game-desc">Progression-focused experience. Verified level transitions, collectible systems, and overall game flow for a smooth player journey.</p>
-          <div class="game-tags">
-            <span class="game-tag">Functional testing</span>
-            <span class="game-tag">Progression</span>
-            <span class="game-tag">Level design QA</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/129942240545174/Stairs-to-Steal-Brainrots" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="71919479906458">
-        <img class="game-thumb" src="drop.png" alt="Drop For Brainrots" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#4</span> Drop For Brainrots</div>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-71919479906458">—</strong></span>
-          </div>
-          <p class="game-desc">Tested drop mechanics, physics interactions, and overall game flow to ensure a smooth and polished experience for players.</p>
-          <div class="game-tags">
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Physics testing</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/71919479906458/Drop-For-Brainrots" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="97365843755210">
-        <img class="game-thumb" src="grass.png" alt="Cut Grass for Brainrots" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#5</span> Cut Grass for Brainrots</div>
-            <span class="game-ccu-badge">128k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-97365843755210">—</strong></span>
-          </div>
-          <p class="game-desc">Tested gameplay mechanics, progression systems, and overall stability to deliver a polished experience for players.</p>
-          <div class="game-tags">
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Progression</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/share?code=9917a9c548ddd846815e0facc10d073e&type=ExperienceDetails&stamp=1774338615813" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="135000370479961">
-        <img class="game-thumb" src="draw.png" alt="Draw & Slide" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#6</span> Draw &amp; Slide</div>
-            <span class="game-ccu-badge">11k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-135000370479961">—</strong></span>
-          </div>
-          <p class="game-desc">Tested creative gameplay mechanics, input handling, and level progression to ensure a smooth and bug-free experience.</p>
-          <div class="game-tags">
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Functional testing</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/135000370479961/Draw-Slide" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="114640202062357">
-        <img class="game-thumb" src="swing.png" alt="Swing Obby for Brainrots" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#7</span> Swing Obby for Brainrots</div>
-            <span class="game-ccu-badge">252k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-114640202062357">—</strong></span>
-          </div>
-          <p class="game-desc">Tested obstacle course mechanics, physics interactions, and progression flow to ensure a polished experience at massive scale.</p>
-          <div class="game-tags">
-            <span class="game-tag">Obby QA</span>
-            <span class="game-tag">Physics testing</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/114640202062357/Swing-Obby-for-Brainrots" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="84968446824850">
-        <img class="game-thumb" src="rope.png" alt="Rope Bridge for Brainrots" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#8</span> Rope Bridge for Brainrots</div>
-            <span class="game-ccu-badge">12k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-84968446824850">—</strong></span>
-          </div>
-          <p class="game-desc">Tested platforming mechanics, physics-based bridge interactions, and progression flow to ensure a stable and fun experience.</p>
-          <div class="game-tags">
-            <span class="game-tag">Physics testing</span>
-            <span class="game-tag">Platforming QA</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/84968446824850/Rope-Bridge-for-Brainrots" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="96168869671905">
-        <img class="game-thumb" src="rob.png" alt="ROB IT" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#9</span> ROB IT</div>
-            <span class="game-ccu-badge">34k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-96168869671905">—</strong></span>
-          </div>
-          <p class="game-desc">Tested core heist mechanics, game loop integrity, and edge case exploits to keep gameplay balanced and bug-free.</p>
-          <div class="game-tags">
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Balance & exploits</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/96168869671905/ROB-IT" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="105626692504093">
-        <img class="game-thumb" src="be.png" alt="Be a Brainrot" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#10</span> Be a Brainrot</div>
-            <span class="game-ccu-badge">95k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-105626692504093">—</strong></span>
-          </div>
-          <p class="game-desc">Tested character mechanics, role-based gameplay systems, and overall game flow to ensure a smooth and polished experience for players.</p>
-          <div class="game-tags">
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Functional testing</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/105626692504093/Be-a-Brainrot" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="77393318863643">
-        <img class="game-thumb" src="aura.png" alt="Aura Ascension" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#11</span> Aura Ascension</div>
-            <span class="game-ccu-badge">82k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-77393318863643">—</strong></span>
-          </div>
-          <p class="game-desc">Tested aura progression systems, ranking mechanics, and overall game loop to ensure a smooth and competitive experience for players.</p>
-          <div class="game-tags">
-            <span class="game-tag">Progression testing</span>
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/77393318863643/Aura-Ascension" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="game-card fade-in" data-placeid="113918641206373">
-        <img class="game-thumb" src="nuke.png" alt="Nuke Your City" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#12</span> Nuke Your City</div>
-            <span class="game-ccu-badge">10k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-113918641206373">—</strong></span>
-          </div>
-          <p class="game-desc">Tested destruction mechanics, physics systems, and gameplay balance to ensure an explosive and stable experience for players.</p>
-          <div class="game-tags">
-            <span class="game-tag">Physics testing</span>
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/113918641206373/Nuke-Your-City" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- NEW GAME #13: Catch and Cook -->
-      <div class="game-card fade-in" data-placeid="90316083466771">
-        <img class="game-thumb" src="cook.png" alt="Catch and Cook" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#13</span> Catch and Cook</div>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-90316083466771">—</strong></span>
-          </div>
-          <p class="game-desc">Tested catching and cooking mechanics, item interactions, and progression flow to ensure a smooth and enjoyable experience for players.</p>
-          <div class="game-tags">
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Functional testing</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/90316083466771/Catch-and-Cook" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- NEW GAME #15: 1 Jump Pogo Climb -->
-      <div class="game-card fade-in" data-placeid="94273830020274">
-        <img class="game-thumb" src="jump.png" alt="1 Jump Pogo Climb" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#15</span> 1 Jump Pogo Climb</div>
-            <span class="game-ccu-badge">2k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-94273830020274">—</strong></span>
-          </div>
-          <p class="game-desc">Tested pogo climbing mechanics, physics interactions, and level progression to ensure a smooth and bug-free experience for players.</p>
-          <div class="game-tags">
-            <span class="game-tag">Physics testing</span>
-            <span class="game-tag">Platforming QA</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/94273830020274/1-Jump-Pogo-Climb" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- NEW GAME #16: Don't Get Caught For Hackers -->
-      <div class="game-card fade-in" data-placeid="91350524990442">
-        <img class="game-thumb" src="hack.png" alt="Don't Get Caught For Hackers" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#16</span> Don't Get Caught For Hackers</div>
-            <span class="game-ccu-badge">10k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-91350524990442">—</strong></span>
-          </div>
-          <p class="game-desc">Tested stealth mechanics, hacker role interactions, and overall game loop to ensure a balanced and bug-free cat-and-mouse experience.</p>
-          <div class="game-tags">
-            <span class="game-tag">Gameplay testing</span>
-            <span class="game-tag">Balance & exploits</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/91350524990442/Dont-Get-Caught-For-Hackers" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- NEW GAME #14: Monkey Bomb Tag -->
-      <div class="game-card fade-in" data-placeid="108843562394237">
-        <img class="game-thumb" src="monkey.png" alt="Monkey Bomb Tag" />
-        <div class="game-body">
-          <div class="game-top">
-            <div class="game-name"><span class="game-rank">#14</span> Monkey Bomb Tag</div>
-            <span class="game-ccu-badge">29k peak CCU</span>
-          </div>
-          <div class="live-bar">
-            <span class="live-dot"></span>
-            <span class="live-label">Playing now: <strong id="live-108843562394237">—</strong></span>
-          </div>
-          <p class="game-desc">Tested tag mechanics, bomb interactions, and multiplayer balance to ensure fast-paced and bug-free gameplay at scale.</p>
-          <div class="game-tags">
-            <span class="game-tag">Multiplayer QA</span>
-            <span class="game-tag">Balance testing</span>
-            <span class="game-tag">Bug reporting</span>
-          </div>
-          <a class="game-link" href="https://www.roblox.com/games/108843562394237/Monkey-Bomb-Tag" target="_blank" rel="noopener">
-            View on Roblox
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-
+    <div class="marquee-track">
+      <div class="marquee-row left"  id="mq-row-1"></div>
+      <div class="marquee-row right" id="mq-row-2"></div>
     </div>
   </section>
 
-  <section id="skills" style="padding-top: 0;">
+  <!-- SKILLS -->
+  <section id="skills" style="padding-top: 64px;">
     <div class="section-header fade-in">
       <span class="section-num">02</span>
       <h2 class="section-title">What I bring</h2>
@@ -977,7 +569,7 @@
       </div>
       <div class="skill-card fade-in">
         <div class="skill-icon">⚖️</div>
-        <div class="skill-name">Balance & exploits</div>
+        <div class="skill-name">Balance &amp; exploits</div>
         <div class="skill-desc">Finding unfair advantages, broken mechanics, and unintended exploits before players do.</div>
       </div>
       <div class="skill-card fade-in">
@@ -993,8 +585,7 @@
     </div>
   </section>
 
-  <hr class="divider" />
-
+  <!-- CONTACT -->
   <section id="contact">
     <div class="contact-box fade-in">
       <div class="contact-left">
@@ -1014,11 +605,12 @@
   </section>
 
   <footer>
-    <span class="footer-note">Roblox QA Tester · 2025</span>
+    <span class="footer-note">© 2026 Oasis Testing. All rights not reserved.</span>
     <span class="footer-note">Discord: 0aza</span>
   </footer>
 
   <script>
+    /* scroll fade-in */
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
@@ -1027,94 +619,108 @@
         }
       });
     }, { threshold: 0.1 });
-
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    const placeIds = [
-      '134763881293027',
-      '78471443847948',
-      '129942240545174',
-      '71919479906458',
-      '97365843755210',
-      '135000370479961',
-      '114640202062357',
-      '84968446824850',
-      '96168869671905',
-      '105626692504093',
-      '77393318863643',
-      '113918641206373',
-      '90316083466771',
-      '108843562394237',
-      '94273830020274',
-      '91350524990442'
+    /* games */
+    const games = [
+      { id: '134763881293027', name: 'Steal from Brainrots',         img: 'steal.png',  peak: '170k' },
+      { id: '78471443847948',  name: 'Pew Pew Blocks',               img: 'pewpew.png', peak: '8k'   },
+      { id: '129942240545174', name: 'Stairs to Steal Brainrots',    img: 'stairs.png', peak: null   },
+      { id: '71919479906458',  name: 'Drop For Brainrots',           img: 'drop.png',   peak: null   },
+      { id: '97365843755210',  name: 'Cut Grass for Brainrots',      img: 'grass.png',  peak: '128k' },
+      { id: '135000370479961', name: 'Draw & Slide',                 img: 'draw.png',   peak: '11k'  },
+      { id: '114640202062357', name: 'Swing Obby for Brainrots',     img: 'swing.png',  peak: '252k' },
+      { id: '84968446824850',  name: 'Rope Bridge for Brainrots',    img: 'rope.png',   peak: '12k'  },
+      { id: '96168869671905',  name: 'ROB IT',                       img: 'rob.png',    peak: '34k'  },
+      { id: '105626692504093', name: 'Be a Brainrot',                img: 'be.png',     peak: '95k'  },
+      { id: '77393318863643',  name: 'Aura Ascension',               img: 'aura.png',   peak: '82k'  },
+      { id: '113918641206373', name: 'Nuke Your City',               img: 'nuke.png',   peak: '10k'  },
+      { id: '90316083466771',  name: 'Catch and Cook',               img: 'cook.png',   peak: null   },
+      { id: '108843562394237', name: 'Monkey Bomb Tag',              img: 'monkey.png', peak: '29k'  },
+      { id: '94273830020274',  name: '1 Jump Pogo Climb',            img: 'jump.png',   peak: '2k'   },
+      { id: '91350524990442',  name: "Don't Get Caught For Hackers", img: 'hack.png',   peak: '10k'  },
     ];
 
     function formatNum(n) {
+      if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
       if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
       return n.toLocaleString();
     }
 
-    async function getUniverseId(placeId) {
-      const res = await fetch(
-        `https://apis.roproxy.com/universes/v1/places/${placeId}/universe`
-      );
-      if (!res.ok) throw new Error('universe lookup failed for ' + placeId);
-      const data = await res.json();
-      return String(data.universeId);
+    function makeCard(game) {
+      const a = document.createElement('a');
+      a.className = 'mq-card';
+      a.href = `https://www.roblox.com/games/${game.id}`;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.innerHTML = `
+        <img src="${game.img}" alt="${game.name}" loading="lazy" />
+        <div class="mq-card-body">
+          <div class="mq-card-name">${game.name}</div>
+          <div class="mq-card-ccu">
+            <span class="mq-card-dot"></span>
+            <span class="mq-live-${game.id}">—</span> playing
+            ${game.peak ? `<span class="mq-badge">${game.peak} peak</span>` : ''}
+          </div>
+        </div>`;
+      return a;
     }
 
-    async function fetchPlayerCounts() {
+    function buildRows() {
+      const row1 = document.getElementById('mq-row-1');
+      const row2 = document.getElementById('mq-row-2');
+      const half = Math.ceil(games.length / 2);
+      const top = games.slice(0, half);
+      const bot = games.slice(half);
+      [...top, ...top].forEach(g => row1.appendChild(makeCard(g)));
+      [...bot, ...bot].forEach(g => row2.appendChild(makeCard(g)));
+    }
+
+    buildRows();
+
+    async function getUniverseId(placeId) {
+      const res = await fetch(`https://apis.roproxy.com/universes/v1/places/${placeId}/universe`);
+      if (!res.ok) throw new Error('failed ' + placeId);
+      return String((await res.json()).universeId);
+    }
+
+    async function fetchData() {
       try {
         const universeMap = {};
-        await Promise.all(placeIds.map(async placeId => {
-          const universeId = await getUniverseId(placeId);
-          universeMap[universeId] = placeId;
+        await Promise.all(games.map(async g => {
+          const uid = await getUniverseId(g.id);
+          universeMap[uid] = g.id;
         }));
 
-        const universeIds = Object.keys(universeMap).join(',');
-        const gameRes = await fetch(
-          `https://games.roproxy.com/v1/games?universeIds=${universeIds}`
-        );
-        if (!gameRes.ok) throw new Error('game lookup failed');
-        const gameData = await gameRes.json();
+        const res = await fetch(`https://games.roproxy.com/v1/games?universeIds=${Object.keys(universeMap).join(',')}`);
+        if (!res.ok) throw new Error('games fetch failed');
+        const { data } = await res.json();
 
-        gameData.data.forEach(game => {
-          const placeId = universeMap[String(game.id)];
-          const el = document.getElementById('live-' + placeId);
-          if (el) el.textContent = formatNum(game.playing);
-          const card = document.querySelector(`[data-placeid="${placeId}"]`);
-          if (card) card.dataset.playing = game.playing;
+        let totalPlaying = 0;
+        let totalVisits  = 0;
+
+        data.forEach(game => {
+          const pid = universeMap[String(game.id)];
+          totalPlaying += game.playing || 0;
+          totalVisits  += game.visits  || 0;
+          document.querySelectorAll(`.mq-live-${pid}`).forEach(el => {
+            el.textContent = formatNum(game.playing);
+          });
         });
 
-        // Update total players across all games
-        const total = gameData.data.reduce((sum, game) => sum + (game.playing || 0), 0);
-        const totalEl = document.getElementById('total-playing');
-        if (totalEl) totalEl.textContent = formatNum(total);
+        const elPlaying = document.getElementById('total-playing');
+        if (elPlaying) elPlaying.textContent = formatNum(totalPlaying);
 
-        // Sort cards by playing count descending
-        const grid = document.querySelector('.games-grid');
-        const cards = Array.from(grid.querySelectorAll('.game-card'));
-        cards.sort((a, b) => (parseInt(b.dataset.playing) || 0) - (parseInt(a.dataset.playing) || 0));
+        const elVisits = document.getElementById('total-visits');
+        if (elVisits) elVisits.textContent = formatNum(totalVisits);
 
-        // Re-append in sorted order, keep "big" class only on #1
-        cards.forEach((card, i) => {
-          card.classList.remove('big');
-          if (i === 0) card.classList.add('big');
-          const rankEl = card.querySelector('.game-rank');
-          if (rankEl) rankEl.textContent = `#${i + 1}`;
-          grid.appendChild(card);
-        });
       } catch (e) {
         console.warn('RoProxy error:', e.message);
-        placeIds.forEach(id => {
-          const el = document.getElementById('live-' + id);
-          if (el) el.textContent = '—';
-        });
       }
     }
 
-    fetchPlayerCounts();
-    setInterval(fetchPlayerCounts, 60000);
+    fetchData();
+    setInterval(fetchData, 60000);
   </script>
 
 </body>
