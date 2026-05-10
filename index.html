@@ -94,26 +94,25 @@
       padding: 100px 48px 120px;
       position: relative;
       overflow: hidden;
+      background: var(--bg);
     }
 
     /* VIDEO BACKGROUND */
     .hero-video {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      z-index: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      filter: blur(8px);
-      opacity: 0.3;
+      z-index: 1;
+      filter: blur(12px) brightness(0.95);
+      opacity: 0.4;
+      pointer-events: none;
     }
 
     /* OVERLAY - żeby tekst był czytelny */
-    .hero::before {
+    .hero::after {
       content: '';
       position: absolute;
       top: 0;
@@ -121,17 +120,18 @@
       right: 0;
       bottom: 0;
       background: linear-gradient(to bottom, 
-        rgba(245,243,239,0.7) 0%, 
-        rgba(245,243,239,0.85) 50%, 
-        rgba(245,243,239,0.95) 100%
+        rgba(245,243,239,0.5) 0%, 
+        rgba(245,243,239,0.75) 50%, 
+        var(--bg) 100%
       );
-      z-index: 1;
+      z-index: 2;
+      pointer-events: none;
     }
 
     /* Wszystko w hero musi być ponad video */
-    .hero > * {
+    .hero > *:not(.hero-video) {
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
 
     .hero-tag {
@@ -198,7 +198,6 @@
       gap: 10px;
       opacity: 0;
       animation: fadeup 0.7s 0.7s cubic-bezier(.22,1,.36,1) forwards;
-      z-index: 2;
     }
 
     .hero-scroll span {
