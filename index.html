@@ -83,7 +83,7 @@
 
     .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
 
-    /* HERO */
+    /* HERO Z VIDEO */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -93,6 +93,45 @@
       text-align: center;
       padding: 100px 48px 120px;
       position: relative;
+      overflow: hidden;
+    }
+
+    /* VIDEO BACKGROUND */
+    .hero-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: 0;
+      object-fit: cover;
+      filter: blur(8px);
+      opacity: 0.3;
+    }
+
+    /* OVERLAY - żeby tekst był czytelny */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, 
+        rgba(245,243,239,0.7) 0%, 
+        rgba(245,243,239,0.85) 50%, 
+        rgba(245,243,239,0.95) 100%
+      );
+      z-index: 1;
+    }
+
+    /* Wszystko w hero musi być ponad video */
+    .hero > * {
+      position: relative;
+      z-index: 2;
     }
 
     .hero-tag {
@@ -159,6 +198,7 @@
       gap: 10px;
       opacity: 0;
       animation: fadeup 0.7s 0.7s cubic-bezier(.22,1,.36,1) forwards;
+      z-index: 2;
     }
 
     .hero-scroll span {
@@ -487,8 +527,13 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
+  <!-- HERO Z VIDEO -->
   <div class="hero">
+    <!-- VIDEO W TLE -->
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="background.mp4" type="video/mp4">
+    </video>
+
     <h1>
       Quality<br>
       <em>Assurance</em><br>
@@ -497,6 +542,11 @@
     <p class="hero-sub">
       Hi, I'm 0aza. I test high-traffic Roblox titles and find bugs before players do.
     </p>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="hero-scroll-line"></div>
+    </div>
   </div>
 
   <!-- BY THE NUMBERS -->
