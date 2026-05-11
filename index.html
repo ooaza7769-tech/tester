@@ -34,7 +34,6 @@
       overflow-x: hidden;
     }
 
-    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -82,7 +81,6 @@
 
     .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
 
-    /* HERO */
     .hero {
       height: 100vh;
       display: flex;
@@ -127,7 +125,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* SECTIONS */
     section {
       max-width: 1100px;
       margin: 0 auto;
@@ -158,7 +155,6 @@
       color: var(--text);
     }
 
-    /* STATS */
     .stats-big-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -198,7 +194,6 @@
 
     .stat-big-card.accent .stat-big-label { color: rgba(255,255,255,0.45); }
 
-    /* MARQUEE */
     .marquee-section {
       padding: 72px 0;
       overflow: hidden;
@@ -305,7 +300,6 @@
       border-radius: 99px;
     }
 
-    /* SKILLS */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -333,7 +327,6 @@
 
     .skill-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; font-weight: 300; }
 
-    /* CONTACT */
     .contact-box {
       background: var(--text);
       border-radius: var(--radius);
@@ -377,7 +370,6 @@
     .btn-light { background: var(--accent); color: #2a3800; }
     .btn-ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.15); }
 
-    /* FOOTER */
     footer {
       max-width: 1100px;
       margin: 0 auto;
@@ -392,7 +384,6 @@
 
     .footer-note { font-size: 12px; color: var(--text-muted); }
 
-    /* FADE IN ON SCROLL */
     .fade-in {
       opacity: 0;
       transform: translateY(22px);
@@ -401,7 +392,6 @@
 
     .fade-in.visible { opacity: 1; transform: none; }
 
-    /* MOBILE */
     @media (max-width: 700px) {
       nav { padding: 16px 20px; }
       section { padding-left: 20px; padding-right: 20px; }
@@ -545,7 +535,6 @@
   </footer>
 
   <script>
-    /* scroll fade-in */
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
@@ -556,7 +545,6 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    /* games */
     const games = [
       { id: '134763881293027', name: 'Steal from Brainrots',         img: 'steal.png',  peak: '170k' },
       { id: '78471443847948',  name: 'Pew Pew Blocks',               img: 'pewpew.png', peak: '8k'   },
@@ -613,21 +601,41 @@
 
     buildRows();
 
+    /* universeMap jest pobierany raz i cachowany — przy co-minutowym odświeżaniu
+       nie robimy już 16 requestów, tylko od razu 1 do games API */
+    let universeMap = null;
+
+    async function getUniverseMap() {
+      if (universeMap) return universeMap;
+
+      /* Wszystkie 16 requestów równolegle — Promise.allSettled nie przerywa
+         nawet jeśli jeden request failuje */
+      const results = await Promise.allSettled(
+        games.map(async g => {
+          const res = await fetch(`https://apis.roproxy.com/universes/v1/places/${g.id}/universe`);
+          if (!res.ok) throw new Error('failed ' + g.id);
+          const { universeId } = await res.json();
+          return { universeId: String(universeId), placeId: g.id };
+        })
+      );
+
+      universeMap = {};
+      results.forEach(r => {
+        if (r.status === 'fulfilled') {
+          universeMap[r.value.universeId] = r.value.placeId;
+        }
+      });
+
+      return universeMap;
+    }
+
     async function fetchData() {
       try {
-        const placeIds = games.map(g => g.id).join(',');
+        const uMap = await getUniverseMap();
+        const universeIds = Object.keys(uMap);
+        if (!universeIds.length) return;
 
-        /* 1 batch request zamiast 16 osobnych */
-        const univRes = await fetch(`https://apis.roproxy.com/universes/v1/places?placeIds=${placeIds}`);
-        if (!univRes.ok) throw new Error('universe batch failed');
-        const univData = await univRes.json();
-
-        const universeMap = {};
-        univData.data.forEach(item => {
-          universeMap[String(item.universeId)] = String(item.placeId);
-        });
-
-        const res = await fetch(`https://games.roproxy.com/v1/games?universeIds=${Object.keys(universeMap).join(',')}`);
+        const res = await fetch(`https://games.roproxy.com/v1/games?universeIds=${universeIds.join(',')}`);
         if (!res.ok) throw new Error('games fetch failed');
         const { data } = await res.json();
 
@@ -635,7 +643,7 @@
         let totalVisits  = 0;
 
         data.forEach(game => {
-          const pid = universeMap[String(game.id)];
+          const pid = uMap[String(game.id)];
           totalPlaying += game.playing || 0;
           totalVisits  += game.visits  || 0;
           document.querySelectorAll(`.mq-live-${pid}`).forEach(el => {
