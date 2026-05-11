@@ -82,7 +82,7 @@
 
     .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
 
-    /* HERO — exactly 100vh, content centered */
+    /* HERO */
     .hero {
       height: 100vh;
       display: flex;
@@ -427,7 +427,6 @@
     </ul>
   </nav>
 
-  <!-- HERO: exactly 100vh -->
   <div class="hero">
     <h1>
       Quality<br>
@@ -439,7 +438,6 @@
     </p>
   </div>
 
-  <!-- BY THE NUMBERS — starts exactly where viewport ends -->
   <section id="stats">
     <div class="section-header fade-in">
       <span class="section-num">00</span>
@@ -473,7 +471,6 @@
     </div>
   </section>
 
-  <!-- MARQUEE GAMES -->
   <section id="work" class="marquee-section">
     <div class="section-header fade-in">
       <span class="section-num">01</span>
@@ -485,7 +482,6 @@
     </div>
   </section>
 
-  <!-- SKILLS -->
   <section id="skills">
     <div class="section-header fade-in">
       <span class="section-num">02</span>
@@ -525,7 +521,6 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
   <section id="contact">
     <div class="contact-box fade-in">
       <div class="contact-left">
@@ -618,19 +613,19 @@
 
     buildRows();
 
-    async function getUniverseId(placeId) {
-      const res = await fetch(`https://apis.roproxy.com/universes/v1/places/${placeId}/universe`);
-      if (!res.ok) throw new Error('failed ' + placeId);
-      return String((await res.json()).universeId);
-    }
-
     async function fetchData() {
       try {
+        const placeIds = games.map(g => g.id).join(',');
+
+        /* 1 batch request zamiast 16 osobnych */
+        const univRes = await fetch(`https://apis.roproxy.com/universes/v1/places?placeIds=${placeIds}`);
+        if (!univRes.ok) throw new Error('universe batch failed');
+        const univData = await univRes.json();
+
         const universeMap = {};
-        await Promise.all(games.map(async g => {
-          const uid = await getUniverseId(g.id);
-          universeMap[uid] = g.id;
-        }));
+        univData.data.forEach(item => {
+          universeMap[String(item.universeId)] = String(item.placeId);
+        });
 
         const res = await fetch(`https://games.roproxy.com/v1/games?universeIds=${Object.keys(universeMap).join(',')}`);
         if (!res.ok) throw new Error('games fetch failed');
