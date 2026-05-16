@@ -81,7 +81,6 @@
 
     .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
 
-    /* ── HERO ── */
     .hero {
       height: 100vh;
       position: relative;
@@ -94,7 +93,6 @@
       padding: 0 48px;
     }
 
-    /* filmik w tle */
     .hero-video {
       position: absolute;
       inset: 0;
@@ -102,25 +100,23 @@
       height: 100%;
       object-fit: cover;
       filter: blur(2px) brightness(1.05);
-      transform: scale(1.06); /* ukrywa rozmyte krawędzie */
+      transform: scale(1.06);
       z-index: 0;
     }
 
-    /* lekka warstwa żeby tekst był czytelny */
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: 
-    linear-gradient(to bottom, 
-      rgba(245,243,239,0.45) 0%, 
-      rgba(245,243,239,0.45) 60%, 
-      rgba(245,243,239,1) 100%
-    );
-  z-index: 1;
-}
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(to bottom, 
+          rgba(245,243,239,0.45) 0%, 
+          rgba(245,243,239,0.45) 60%, 
+          rgba(245,243,239,1) 100%
+        );
+      z-index: 1;
+    }
 
-    /* treść nad filmem */
     .hero h1,
     .hero-sub {
       position: relative;
@@ -139,12 +135,13 @@
       animation: fadeup 0.7s 0.15s cubic-bezier(.22,1,.36,1) forwards;
     }
 
-.hero h1 em {
-  color: var(--text);
-  font-style: italic;
-  font-weight: 300;
-  font-family: 'Instrument Sans', sans-serif;
-}
+    .hero h1 em {
+      color: var(--text);
+      font-style: italic;
+      font-weight: 300;
+      font-family: 'Instrument Sans', sans-serif;
+    }
+
     .hero-sub {
       font-size: 16px;
       color: var(--text-mid);
@@ -453,7 +450,6 @@
   </nav>
 
   <div class="hero">
-    <!-- filmik w tle, autoplay, bez dźwięku, w pętli -->
     <video class="hero-video" autoplay muted loop playsinline>
       <source src="background.mp4" type="video/mp4">
     </video>
@@ -483,7 +479,7 @@
         <div class="stat-big-label">Total CCU across all tested games</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">16</div>
+        <div class="stat-big-num">17</div>
         <div class="stat-big-label">Roblox games shipped with my QA</div>
       </div>
       <div class="stat-big-card">
@@ -602,6 +598,7 @@
       { id: '108843562394237', name: 'Monkey Bomb Tag',              img: 'monkey.png', peak: '29k'  },
       { id: '94273830020274',  name: '1 Jump Pogo Climb',            img: 'jump.png',   peak: '2k'   },
       { id: '91350524990442',  name: "Don't Get Caught For Hackers", img: 'hack.png',   peak: '10k'  },
+      { id: '110690600130381', name: 'Fight for Hackers',            img: 'fight.png',  peak: null   },
     ];
 
     function formatNum(n) {
