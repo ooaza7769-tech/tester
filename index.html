@@ -96,6 +96,14 @@
       padding: 0 48px;
     }
 
+    /* Video placeholder podczas ładowania */
+    .hero-video-container {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #e8e6e0 0%, #d4d1c8 100%);
+      z-index: 0;
+    }
+
     .hero-video {
       position: absolute;
       inset: 0;
@@ -104,8 +112,12 @@
       object-fit: cover;
       filter: blur(2px) brightness(1.05);
       transform: scale(1.06);
-      z-index: 0;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      will-change: opacity;
     }
+
+    .hero-video.loaded { opacity: 1; }
 
     .hero::after {
       content: '';
@@ -363,13 +375,20 @@
       display: flex;
       gap: 16px;
       width: max-content;
+      will-change: transform;
     }
 
     .marquee-row.left  { animation: marquee-left  45s linear infinite; }
     .marquee-row.right { animation: marquee-right 45s linear infinite; }
 
-    @keyframes marquee-left  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    @keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+    @keyframes marquee-left  { 
+      from { transform: translate3d(0, 0, 0); } 
+      to { transform: translate3d(-50%, 0, 0); } 
+    }
+    @keyframes marquee-right { 
+      from { transform: translate3d(-50%, 0, 0); } 
+      to { transform: translate3d(0, 0, 0); } 
+    }
 
     .mq-card {
       flex-shrink: 0;
@@ -565,9 +584,11 @@
   </nav>
 
   <div class="hero">
-    <video class="hero-video" autoplay muted loop playsinline>
-      <source src="background.mp4" type="video/mp4">
-    </video>
+    <div class="hero-video-container">
+      <video class="hero-video" muted loop playsinline preload="none">
+        <source src="background.mp4" type="video/mp4">
+      </video>
+    </div>
     <h1>
       Quality<br>
       <em>Assurance</em><br>
@@ -585,15 +606,15 @@
     </div>
     <div class="stats-big-grid fade-in">
       <div class="stat-big-card accent">
-        <div class="stat-big-num">252,000</div>
+        <div class="stat-big-num" id="stat-peak-single">0</div>
         <div class="stat-big-label">Peak concurrent players on a single title</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">777k+</div>
+        <div class="stat-big-num" id="stat-total-ccu">0</div>
         <div class="stat-big-label">Total CCU across all tested games</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">17</div>
+        <div class="stat-big-num" id="stat-games">0</div>
         <div class="stat-big-label">Roblox games shipped with my QA</div>
       </div>
       <div class="stat-big-card">
@@ -601,7 +622,7 @@
         <div class="stat-big-label">Total visits across all tested games</div>
       </div>
       <div class="stat-big-card">
-        <div class="stat-big-num">2+</div>
+        <div class="stat-big-num" id="stat-years">0</div>
         <div class="stat-big-label">Years of active Roblox QA experience</div>
       </div>
       <div class="stat-big-card">
@@ -620,7 +641,7 @@
     <!-- TOP PLAYING FEATURED CARD -->
     <div class="top-playing-wrap fade-in">
       <a class="top-playing-card" id="top-card" href="#" target="_blank" rel="noopener">
-        <img class="top-playing-img" id="top-img" src="" alt="" />
+        <img class="top-playing-img" id="top-img" src="" alt="" loading="lazy" />
         <div class="top-playing-body">
           <div class="top-playing-badge">
             <span class="top-playing-badge-dot"></span>
@@ -705,6 +726,29 @@
   </footer>
 
   <script>
+    // ── LAZY LOAD VIDEO ──
+    (function() {
+      const video = document.querySelector('.hero-video');
+      if (!video) return;
+
+      // Start loading video after page loads
+      window.addEventListener('load', function() {
+        // Delay video load slightly to prioritize other resources
+        setTimeout(function() {
+          video.load();
+          video.play().catch(function() {
+            // Autoplay might be blocked, that's okay
+          });
+          
+          // Fade in video when it can play
+          video.addEventListener('canplay', function() {
+            video.classList.add('loaded');
+          }, { once: true });
+        }, 100);
+      });
+    })();
+
+    // ── INTERSECTION OBSERVER ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
@@ -716,24 +760,27 @@
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
     const games = [
-      { id: '134763881293027', name: 'Steal from Brainrots',         img: 'steal.png',  peak: '170k' },
-      { id: '78471443847948',  name: 'Pew Pew Blocks',               img: 'pewpew.png', peak: '8k'   },
-      { id: '129942240545174', name: 'Stairs to Steal Brainrots',    img: 'stairs.png', peak: null   },
-      { id: '71919479906458',  name: 'Drop For Brainrots',           img: 'drop.png',   peak: null   },
-      { id: '97365843755210',  name: 'Cut Grass for Brainrots',      img: 'grass.png',  peak: '128k' },
-      { id: '135000370479961', name: 'Draw & Slide',                 img: 'draw.png',   peak: '11k'  },
-      { id: '114640202062357', name: 'Swing Obby for Brainrots',     img: 'swing.png',  peak: '252k' },
-      { id: '84968446824850',  name: 'Rope Bridge for Brainrots',    img: 'rope.png',   peak: '12k'  },
-      { id: '96168869671905',  name: 'ROB IT',                       img: 'rob.png',    peak: '34k'  },
-      { id: '105626692504093', name: 'Be a Brainrot',                img: 'be.png',     peak: '95k'  },
-      { id: '77393318863643',  name: 'Aura Ascension',               img: 'aura.png',   peak: '82k'  },
-      { id: '113918641206373', name: 'Nuke Your City',               img: 'nuke.png',   peak: '10k'  },
-      { id: '90316083466771',  name: 'Catch and Cook',               img: 'cook.png',   peak: null   },
-      { id: '108843562394237', name: 'Monkey Bomb Tag',              img: 'monkey.png', peak: '29k'  },
-      { id: '94273830020274',  name: '1 Jump Pogo Climb',            img: 'jump.png',   peak: '2k'   },
-      { id: '91350524990442',  name: "Don't Get Caught For Hackers", img: 'hack.png',   peak: '10k'  },
-      { id: '110690600130381', name: 'Fight for Hackers',            img: 'fight.png',  peak: null   },
+      { id: '134763881293027', name: 'Steal from Brainrots',         img: 'steal.png',  peak: 170000 },
+      { id: '78471443847948',  name: 'Pew Pew Blocks',               img: 'pewpew.png', peak: 8000   },
+      { id: '129942240545174', name: 'Stairs to Steal Brainrots',    img: 'stairs.png', peak: 45000  },
+      { id: '71919479906458',  name: 'Drop For Brainrots',           img: 'drop.png',   peak: 18000  },
+      { id: '97365843755210',  name: 'Cut Grass for Brainrots',      img: 'grass.png',  peak: 128000 },
+      { id: '135000370479961', name: 'Draw & Slide',                 img: 'draw.png',   peak: 11000  },
+      { id: '114640202062357', name: 'Swing Obby for Brainrots',     img: 'swing.png',  peak: 252000 },
+      { id: '84968446824850',  name: 'Rope Bridge for Brainrots',    img: 'rope.png',   peak: 12000  },
+      { id: '96168869671905',  name: 'ROB IT',                       img: 'rob.png',    peak: 34000  },
+      { id: '105626692504093', name: 'Be a Brainrot',                img: 'be.png',     peak: 95000  },
+      { id: '77393318863643',  name: 'Aura Ascension',               img: 'aura.png',   peak: 82000  },
+      { id: '113918641206373', name: 'Nuke Your City',               img: 'nuke.png',   peak: 10000  },
+      { id: '90316083466771',  name: 'Catch and Cook',               img: 'cook.png',   peak: 5000   },
+      { id: '108843562394237', name: 'Monkey Bomb Tag',              img: 'monkey.png', peak: 29000  },
+      { id: '94273830020274',  name: '1 Jump Pogo Climb',            img: 'jump.png',   peak: 2000   },
+      { id: '91350524990442',  name: "Don't Get Caught For Hackers", img: 'hack.png',   peak: 10000  },
+      { id: '110690600130381', name: 'Fight for Hackers',            img: 'fight.png',  peak: 7000   },
     ];
+
+    const allTimePeak = {};
+    games.forEach(g => { if (g.peak) allTimePeak[g.id] = g.peak; });
 
     function formatNum(n) {
       if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
@@ -747,14 +794,21 @@
       a.href = `https://www.roblox.com/games/${game.id}`;
       a.target = '_blank';
       a.rel = 'noopener';
+      const peakBadge = game.peak
+        ? `<span class="mq-badge" data-peak="${game.id}">— peak</span>`
+        : '';
       a.innerHTML = `
         <img src="${game.img}" alt="${game.name}" loading="lazy" />
         <div class="mq-card-body">
           <div class="mq-card-name">${game.name}</div>
           <div class="mq-card-ccu">
             <span class="mq-card-dot"></span>
-            <span class="mq-live-${game.id}">—</span> playing
-            ${game.peak ? `<span class="mq-badge">${game.peak} peak</span>` : ''}
+            <span data-live="${game.id}">—</span> playing
+            &nbsp;·&nbsp;
+            <span data-visits="${game.id}">—</span> visits
+          </div>
+          <div class="mq-card-meta" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
+            ${peakBadge}
           </div>
         </div>`;
       return a;
@@ -764,14 +818,70 @@
       const row1 = document.getElementById('mq-row-1');
       const row2 = document.getElementById('mq-row-2');
       const half = Math.ceil(games.length / 2);
-      const top = games.slice(0, half);
-      const bot = games.slice(half);
-      [...top, ...top].forEach(g => row1.appendChild(makeCard(g)));
-      [...bot, ...bot].forEach(g => row2.appendChild(makeCard(g)));
+      [...games.slice(0, half), ...games.slice(0, half)].forEach(g => row1.appendChild(makeCard(g)));
+      [...games.slice(half), ...games.slice(half)].forEach(g => row2.appendChild(makeCard(g)));
     }
 
     buildRows();
 
+    // ── COUNT-UP OPTIMIZATION ──
+    const rafs = new Map();
+
+    function animateCountUp(el, target, duration, suffix) {
+      suffix = suffix || '';
+      if (rafs.has(el)) cancelAnimationFrame(rafs.get(el));
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(target * ease);
+        el.textContent = formatNum(val) + suffix;
+        if (t < 1) rafs.set(el, requestAnimationFrame(tick));
+        else { el.textContent = formatNum(target) + suffix; rafs.delete(el); }
+      }
+      rafs.set(el, requestAnimationFrame(tick));
+    }
+
+    function smoothRoll(el, newVal, suffix) {
+      suffix = suffix || '';
+      if (rafs.has(el)) cancelAnimationFrame(rafs.get(el));
+      const from = parseFloat(el.dataset.rv || 0) || 0;
+      el.dataset.rv = newVal;
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min((now - start) / 600, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(from + (newVal - from) * ease);
+        el.textContent = formatNum(val) + suffix;
+        if (t < 1) rafs.set(el, requestAnimationFrame(tick));
+        else { el.textContent = formatNum(newVal) + suffix; rafs.delete(el); }
+      }
+      rafs.set(el, requestAnimationFrame(tick));
+    }
+
+    // ── ANIMATE STATIC STATS ON LOAD ──
+    function animateStaticStats() {
+      const grid = document.querySelector('.stats-big-grid');
+      if (!grid) return;
+      const io = new IntersectionObserver((entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        requestAnimationFrame(() => {
+          setTimeout(() => animateCountUp(document.getElementById('stat-peak-single'), 252000, 1600), 0);
+          setTimeout(() => animateCountUp(document.getElementById('stat-total-ccu'),   918000, 1800), 100);
+          setTimeout(() => animateCountUp(document.getElementById('stat-games'),        17,     900),  200);
+          setTimeout(() => {
+            const el = document.getElementById('stat-years');
+            animateCountUp(el, 2, 700);
+            setTimeout(() => { el.textContent = '2+'; }, 750);
+          }, 300);
+        });
+      }, { threshold: 0.15 });
+      io.observe(grid);
+    }
+    animateStaticStats();
+
+    // ── UNIVERSE MAP ──
     let universeMap = null;
 
     async function getUniverseMap() {
@@ -786,37 +896,34 @@
       );
       universeMap = {};
       results.forEach(r => {
-        if (r.status === 'fulfilled') {
-          universeMap[r.value.universeId] = r.value.placeId;
-        }
+        if (r.status === 'fulfilled') universeMap[r.value.universeId] = r.value.placeId;
       });
       return universeMap;
     }
 
     let topPlaceId = null;
+    let isFirstFetch = true;
 
     function updateTopCard(placeId, playingCount) {
-      if (placeId === topPlaceId) {
-        // just update number
-        document.getElementById('top-ccu').textContent = formatNum(playingCount);
-        return;
-      }
+      const sameGame = placeId === topPlaceId;
       topPlaceId = placeId;
       const game = games.find(g => g.id === placeId);
       if (!game) return;
 
-      const card = document.getElementById('top-card');
-      card.href = `https://www.roblox.com/games/${game.id}`;
-
-      const img = document.getElementById('top-img');
-      img.src = game.img;
-      img.alt = game.name;
-
+      document.getElementById('top-card').href = `https://www.roblox.com/games/${game.id}`;
+      document.getElementById('top-img').src = game.img;
+      document.getElementById('top-img').alt = game.name;
       document.getElementById('top-name').textContent = game.name;
-      document.getElementById('top-ccu').textContent = formatNum(playingCount);
+
+      const ccuEl = document.getElementById('top-ccu');
+      if (isFirstFetch) animateCountUp(ccuEl, playingCount, 1400);
+      else smoothRoll(ccuEl, playingCount);
 
       const peakEl = document.getElementById('top-peak');
-      peakEl.textContent = game.peak ? `Peak: ${game.peak} concurrent players` : '';
+      const peakVal = allTimePeak[placeId] || 0;
+      const effectiveTopPeak = Math.max(peakVal, playingCount);
+      if (effectiveTopPeak > allTimePeak[placeId]) allTimePeak[placeId] = effectiveTopPeak;
+      peakEl.textContent = effectiveTopPeak > 0 ? `All-time peak: ${formatNum(effectiveTopPeak)} concurrent players` : '';
     }
 
     async function fetchData() {
@@ -834,37 +941,70 @@
         let topGame = null;
         let topCount = -1;
 
-        data.forEach(game => {
-          const pid = uMap[String(game.id)];
-          const playing = game.playing || 0;
-          totalPlaying += playing;
-          totalVisits  += game.visits || 0;
+        // Batch DOM updates
+        requestAnimationFrame(() => {
+          data.forEach(g => {
+            const pid = uMap[String(g.id)];
+            if (!pid) return;
+            const playing = g.playing || 0;
+            const visits  = g.visits  || 0;
+            totalPlaying += playing;
+            totalVisits  += visits;
 
-          document.querySelectorAll(`.mq-live-${pid}`).forEach(el => {
-            el.textContent = formatNum(playing);
+            document.querySelectorAll(`[data-live="${pid}"]`).forEach(el => {
+              if (isFirstFetch) animateCountUp(el, playing, 1200);
+              else smoothRoll(el, playing);
+            });
+
+            document.querySelectorAll(`[data-visits="${pid}"]`).forEach(el => {
+              if (isFirstFetch) animateCountUp(el, visits, 1600);
+              else smoothRoll(el, visits);
+            });
+
+            const hardcodedPeak = allTimePeak[pid] || 0;
+            const liveCurrent   = playing;
+            const effectivePeak = Math.max(hardcodedPeak, liveCurrent);
+            if (effectivePeak > 0) allTimePeak[pid] = effectivePeak;
+
+            document.querySelectorAll(`[data-peak="${pid}"]`).forEach(el => {
+              if (effectivePeak && isFirstFetch) {
+                animateCountUp(el, effectivePeak, 1400);
+                setTimeout(() => { el.textContent = formatNum(effectivePeak) + ' peak CCU'; }, 1450);
+              } else if (effectivePeak) {
+                el.textContent = formatNum(effectivePeak) + ' peak CCU';
+              }
+            });
+
+            if (playing > topCount) { topCount = playing; topGame = { placeId: pid, count: playing }; }
           });
 
-          if (playing > topCount) {
-            topCount = playing;
-            topGame = { placeId: pid, count: playing };
+          if (topGame) updateTopCard(topGame.placeId, topGame.count);
+
+          const elPlaying = document.getElementById('total-playing');
+          if (elPlaying) {
+            if (isFirstFetch) animateCountUp(elPlaying, totalPlaying, 1800);
+            else smoothRoll(elPlaying, totalPlaying);
           }
+
+          const elVisits = document.getElementById('total-visits');
+          if (elVisits) {
+            if (isFirstFetch) animateCountUp(elVisits, totalVisits, 2000);
+            else smoothRoll(elVisits, totalVisits);
+          }
+
+          isFirstFetch = false;
         });
-
-        if (topGame) updateTopCard(topGame.placeId, topGame.count);
-
-        const elPlaying = document.getElementById('total-playing');
-        if (elPlaying) elPlaying.textContent = formatNum(totalPlaying);
-
-        const elVisits = document.getElementById('total-visits');
-        if (elVisits) elVisits.textContent = formatNum(totalVisits);
 
       } catch (e) {
         console.warn('RoProxy error:', e.message);
       }
     }
 
-    fetchData();
-    setInterval(fetchData, 60000);
+    // Delay initial fetch slightly to prioritize page load
+    window.addEventListener('load', function() {
+      setTimeout(fetchData, 200);
+      setInterval(fetchData, 60000);
+    });
   </script>
 
 </body>
