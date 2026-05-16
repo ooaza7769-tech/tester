@@ -19,6 +19,9 @@
       --text-muted: #999793;
       --accent: #c8f04d;
       --accent-dark: #9bbf2a;
+      --gold: #f5c842;
+      --gold-dark: #b8931a;
+      --gold-glow: rgba(245,200,66,0.18);
       --border: rgba(0,0,0,0.08);
       --border-strong: rgba(0,0,0,0.14);
       --radius: 18px;
@@ -108,20 +111,14 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: 
-        linear-gradient(to bottom, 
-          rgba(245,243,239,0.45) 0%, 
-          rgba(245,243,239,0.45) 60%, 
-          rgba(245,243,239,1) 100%
-        );
+      background: linear-gradient(to bottom,
+        rgba(245,243,239,0.45) 0%,
+        rgba(245,243,239,0.45) 60%,
+        rgba(245,243,239,1) 100%);
       z-index: 1;
     }
 
-    .hero h1,
-    .hero-sub {
-      position: relative;
-      z-index: 2;
-    }
+    .hero h1, .hero-sub { position: relative; z-index: 2; }
 
     .hero h1 {
       font-family: 'Syne', sans-serif;
@@ -226,6 +223,7 @@
 
     .stat-big-card.accent .stat-big-label { color: rgba(255,255,255,0.45); }
 
+    /* ── WORK SECTION ── */
     .marquee-section {
       padding: 72px 0;
       overflow: hidden;
@@ -234,10 +232,124 @@
 
     .marquee-section .section-header {
       max-width: 1100px;
+      margin: 0 auto 32px;
+      padding: 0 48px;
+    }
+
+    /* ── TOP PLAYING FEATURED CARD ── */
+    .top-playing-wrap {
+      max-width: 1100px;
       margin: 0 auto 40px;
       padding: 0 48px;
     }
 
+    .top-playing-card {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-radius: var(--radius);
+      border: 2px solid var(--gold);
+      background: var(--bg-card);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.25s;
+      position: relative;
+      box-shadow: 0 0 0 4px var(--gold-glow);
+    }
+
+    .top-playing-card:hover {
+      box-shadow: 0 0 0 6px var(--gold-glow), 0 12px 32px rgba(0,0,0,0.08);
+    }
+
+    .top-playing-img {
+      width: 260px;
+      flex-shrink: 0;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--bg-muted);
+      display: block;
+    }
+
+    .top-playing-body {
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .top-playing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gold);
+      color: #5a3c00;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      width: fit-content;
+    }
+
+    .top-playing-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #5a3c00;
+      opacity: 0.6;
+      animation: livepulse 1.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .top-playing-name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(20px, 2.5vw, 28px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .top-playing-ccu {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .top-playing-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--gold-dark);
+      line-height: 1;
+    }
+
+    .top-playing-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .top-playing-peak {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* gold accent bar on left */
+    .top-playing-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--gold);
+    }
+
+    /* ── MARQUEE ── */
     .marquee-track {
       display: flex;
       flex-direction: column;
@@ -432,8 +544,11 @@
       .skills-grid { grid-template-columns: 1fr 1fr; }
       footer { padding: 24px 20px; }
       .marquee-section .section-header { padding: 0 20px; }
+      .top-playing-wrap { padding: 0 20px; }
       .mq-card { width: 230px; }
       .contact-box { padding: 36px 28px; }
+      .top-playing-img { width: 140px; }
+      .top-playing-num { font-size: 26px; }
     }
   </style>
 </head>
@@ -453,7 +568,6 @@
     <video class="hero-video" autoplay muted loop playsinline>
       <source src="background.mp4" type="video/mp4">
     </video>
-
     <h1>
       Quality<br>
       <em>Assurance</em><br>
@@ -502,6 +616,26 @@
       <span class="section-num">01</span>
       <h2 class="section-title">Games I've tested</h2>
     </div>
+
+    <!-- TOP PLAYING FEATURED CARD -->
+    <div class="top-playing-wrap fade-in">
+      <a class="top-playing-card" id="top-card" href="#" target="_blank" rel="noopener">
+        <img class="top-playing-img" id="top-img" src="" alt="" />
+        <div class="top-playing-body">
+          <div class="top-playing-badge">
+            <span class="top-playing-badge-dot"></span>
+            Top playing now
+          </div>
+          <div class="top-playing-name" id="top-name">—</div>
+          <div class="top-playing-ccu">
+            <span class="top-playing-num" id="top-ccu">—</span>
+            <span class="top-playing-label">players online right now</span>
+          </div>
+          <div class="top-playing-peak" id="top-peak"></div>
+        </div>
+      </a>
+    </div>
+
     <div class="marquee-track">
       <div class="marquee-row left"  id="mq-row-1"></div>
       <div class="marquee-row right" id="mq-row-2"></div>
@@ -642,7 +776,6 @@
 
     async function getUniverseMap() {
       if (universeMap) return universeMap;
-
       const results = await Promise.allSettled(
         games.map(async g => {
           const res = await fetch(`https://apis.roproxy.com/universes/v1/places/${g.id}/universe`);
@@ -651,15 +784,39 @@
           return { universeId: String(universeId), placeId: g.id };
         })
       );
-
       universeMap = {};
       results.forEach(r => {
         if (r.status === 'fulfilled') {
           universeMap[r.value.universeId] = r.value.placeId;
         }
       });
-
       return universeMap;
+    }
+
+    let topPlaceId = null;
+
+    function updateTopCard(placeId, playingCount) {
+      if (placeId === topPlaceId) {
+        // just update number
+        document.getElementById('top-ccu').textContent = formatNum(playingCount);
+        return;
+      }
+      topPlaceId = placeId;
+      const game = games.find(g => g.id === placeId);
+      if (!game) return;
+
+      const card = document.getElementById('top-card');
+      card.href = `https://www.roblox.com/games/${game.id}`;
+
+      const img = document.getElementById('top-img');
+      img.src = game.img;
+      img.alt = game.name;
+
+      document.getElementById('top-name').textContent = game.name;
+      document.getElementById('top-ccu').textContent = formatNum(playingCount);
+
+      const peakEl = document.getElementById('top-peak');
+      peakEl.textContent = game.peak ? `Peak: ${game.peak} concurrent players` : '';
     }
 
     async function fetchData() {
@@ -674,15 +831,26 @@
 
         let totalPlaying = 0;
         let totalVisits  = 0;
+        let topGame = null;
+        let topCount = -1;
 
         data.forEach(game => {
           const pid = uMap[String(game.id)];
-          totalPlaying += game.playing || 0;
-          totalVisits  += game.visits  || 0;
+          const playing = game.playing || 0;
+          totalPlaying += playing;
+          totalVisits  += game.visits || 0;
+
           document.querySelectorAll(`.mq-live-${pid}`).forEach(el => {
-            el.textContent = formatNum(game.playing);
+            el.textContent = formatNum(playing);
           });
+
+          if (playing > topCount) {
+            topCount = playing;
+            topGame = { placeId: pid, count: playing };
+          }
         });
+
+        if (topGame) updateTopCard(topGame.placeId, topGame.count);
 
         const elPlaying = document.getElementById('total-playing');
         if (elPlaying) elPlaying.textContent = formatNum(totalPlaying);
