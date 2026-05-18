@@ -37,9 +37,6 @@
       overflow-x: hidden;
     }
 
-    /* ── PARTICLE LAYER ──
-       absolute so it scrolls WITH the page.
-       Sized and positioned via JS to cover only the area below the hero. */
     #particle-wrap {
       position: absolute;
       left: 0;
@@ -55,7 +52,6 @@
       height: 100%;
     }
 
-    /* Content wrapper keeps sections above the canvas */
     #below-hero {
       position: relative;
       z-index: 1;
@@ -572,7 +568,6 @@
     </ul>
   </nav>
 
-  <!-- HERO — video untouched -->
   <div class="hero">
     <div class="hero-video-container">
       <video class="hero-video" muted loop playsinline preload="none">
@@ -589,12 +584,10 @@
     </p>
   </div>
 
-  <!-- PARTICLE CANVAS — absolute, sized by JS to match #below-hero height -->
   <div id="particle-wrap">
     <canvas id="particle-bg"></canvas>
   </div>
 
-  <!-- ALL SECTIONS BELOW HERO -->
   <div id="below-hero">
 
     <section id="stats">
@@ -722,12 +715,9 @@
       <span class="footer-note"></span>
     </footer>
 
-  </div><!-- /below-hero -->
+  </div>
 
   <script>
-    // ── PARTICLE BACKGROUND ──
-    // Canvas is absolute — it scrolls WITH the page so dots stay fixed in their spot.
-    // Dots are large, clearly visible, connected with lines.
     (function () {
       var wrap    = document.getElementById('particle-wrap');
       var canvas  = document.getElementById('particle-bg');
@@ -735,14 +725,13 @@
       var content = document.getElementById('below-hero');
       var animId, W, H, dots;
 
-      // ── Tweak these to taste ──
-      var DOT_MIN   = 3;      // min dot radius px
-      var DOT_MAX   = 6;      // max dot radius px
-      var DOT_ALPHA = 0.5;    // dot fill opacity
-      var LINE_DIST = 180;    // px — max distance to draw a line between two dots
-      var LINE_ALPHA= 0.25;   // line opacity at closest
-      var SPEED     = 0.3;    // movement speed (px per frame)
-      var DENSITY   = 9000;   // px² per dot — lower = more dots
+      var DOT_MIN   = 3;
+      var DOT_MAX   = 6;
+      var DOT_ALPHA = 0.5;
+      var LINE_DIST = 180;
+      var LINE_ALPHA= 0.25;
+      var SPEED     = 0.3;
+      var DENSITY   = 9000;
 
       function measure() {
         var top = content.offsetTop;
@@ -752,7 +741,6 @@
         wrap.style.top    = top + 'px';
         wrap.style.height = h  + 'px';
         wrap.style.width  = '100%';
-        // Resize canvas at device pixel ratio for crisp rendering
         var dpr = window.devicePixelRatio || 1;
         canvas.width  = W * dpr;
         canvas.height = H * dpr;
@@ -778,7 +766,6 @@
       function draw() {
         ctx.clearRect(0, 0, W, H);
 
-        // Move
         for (var i = 0; i < dots.length; i++) {
           var d = dots[i];
           d.x += d.vx;
@@ -789,7 +776,6 @@
           if (d.y > H + 10) d.y = -10;
         }
 
-        // Lines (drawn first, underneath dots)
         ctx.lineWidth = 1;
         for (var i = 0; i < dots.length; i++) {
           for (var j = i + 1; j < dots.length; j++) {
@@ -807,7 +793,6 @@
           }
         }
 
-        // Dots
         ctx.fillStyle = 'rgba(17,16,16,' + DOT_ALPHA + ')';
         for (var i = 0; i < dots.length; i++) {
           ctx.beginPath();
@@ -831,16 +816,13 @@
         resizeTimer = setTimeout(init, 150);
       }, { passive: true });
 
-      // Wait for full layout before measuring heights
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
       } else {
-        // Small rAF delay so browser finishes first paint layout
         requestAnimationFrame(function () { requestAnimationFrame(init); });
       }
     })();
 
-    // ── LAZY LOAD VIDEO ──
     (function () {
       var video = document.querySelector('.hero-video');
       if (!video) return;
@@ -855,7 +837,6 @@
       });
     })();
 
-    // ── INTERSECTION OBSERVER (fade-in) ──
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (e, i) {
         if (e.isIntersecting) {
@@ -868,23 +849,24 @@
 
     // ── GAMES DATA ──
     var games = [
-      { id: '134763881293027', name: 'Steal from Brainrots',         img: 'steal.png',  peak: 170000 },
-      { id: '78471443847948',  name: 'Pew Pew Blocks',               img: 'pewpew.png', peak: 8000   },
-      { id: '129942240545174', name: 'Stairs to Steal Brainrots',    img: 'stairs.png', peak: 45000  },
-      { id: '71919479906458',  name: 'Drop For Brainrots',           img: 'drop.png',   peak: 18000  },
-      { id: '97365843755210',  name: 'Cut Grass for Brainrots',      img: 'grass.png',  peak: 128000 },
-      { id: '135000370479961', name: 'Draw & Slide',                 img: 'draw.png',   peak: 11000  },
-      { id: '114640202062357', name: 'Swing Obby for Brainrots',     img: 'swing.png',  peak: 252000 },
-      { id: '84968446824850',  name: 'Rope Bridge for Brainrots',    img: 'rope.png',   peak: 12000  },
-      { id: '96168869671905',  name: 'ROB IT',                       img: 'rob.png',    peak: 34000  },
-      { id: '105626692504093', name: 'Be a Brainrot',                img: 'be.png',     peak: 95000  },
-      { id: '77393318863643',  name: 'Aura Ascension',               img: 'aura.png',   peak: 82000  },
-      { id: '113918641206373', name: 'Nuke Your City',               img: 'nuke.png',   peak: 10000  },
-      { id: '90316083466771',  name: 'Catch and Cook',               img: 'cook.png',   peak: 5000   },
-      { id: '108843562394237', name: 'Monkey Bomb Tag',              img: 'monkey.png', peak: 29000  },
-      { id: '94273830020274',  name: '1 Jump Pogo Climb',            img: 'jump.png',   peak: 2000   },
-      { id: '91350524990442',  name: "Don't Get Caught For Hackers", img: 'hack.png',   peak: 10000  },
-      { id: '110690600130381', name: 'Fight for Hackers',            img: 'fight.png',  peak: 7000   },
+      { id: '134763881293027', name: 'Steal from Brainrots',               img: 'steal.png',  peak: 170000 },
+      { id: '78471443847948',  name: 'Pew Pew Blocks',                     img: 'pewpew.png', peak: 8000   },
+      { id: '129942240545174', name: 'Stairs to Steal Brainrots',          img: 'stairs.png', peak: 45000  },
+      { id: '71919479906458',  name: 'Drop For Brainrots',                 img: 'drop.png',   peak: 18000  },
+      { id: '97365843755210',  name: 'Cut Grass for Brainrots',            img: 'grass.png',  peak: 128000 },
+      { id: '135000370479961', name: 'Draw & Slide',                       img: 'draw.png',   peak: 11000  },
+      { id: '114640202062357', name: 'Swing Obby for Brainrots',           img: 'swing.png',  peak: 252000 },
+      { id: '84968446824850',  name: 'Rope Bridge for Brainrots',          img: 'rope.png',   peak: 12000  },
+      { id: '96168869671905',  name: 'ROB IT',                             img: 'rob.png',    peak: 34000  },
+      { id: '105626692504093', name: 'Be a Brainrot',                      img: 'be.png',     peak: 95000  },
+      { id: '77393318863643',  name: 'Aura Ascension',                     img: 'aura.png',   peak: 82000  },
+      { id: '113918641206373', name: 'Nuke Your City',                     img: 'nuke.png',   peak: 10000  },
+      { id: '90316083466771',  name: 'Catch and Cook',                     img: 'cook.png',   peak: 5000   },
+      { id: '108843562394237', name: 'Monkey Bomb Tag',                    img: 'monkey.png', peak: 29000  },
+      { id: '94273830020274',  name: '1 Jump Pogo Climb',                  img: 'jump.png',   peak: 2000   },
+      { id: '91350524990442',  name: "Don't Get Caught For Hackers",       img: 'hack.png',   peak: 10000  },
+      { id: '110690600130381', name: 'Fight for Hackers',                  img: 'fight.png',  peak: 7000   },
+      { id: '124083111510656', name: "Survive Anton Chigurh's Tractor",    img: 'truck.png',  peak: 0      },
     ];
 
     var allTimePeak = {};
@@ -928,7 +910,6 @@
     }
     buildRows();
 
-    // ── COUNT-UP ──
     var rafs = {};
 
     function animateCountUp(el, target, duration, suffix) {
@@ -973,7 +954,7 @@
         requestAnimationFrame(function () {
           setTimeout(function () { animateCountUp(document.getElementById('stat-peak-single'), 252000, 1600); }, 0);
           setTimeout(function () { animateCountUp(document.getElementById('stat-total-ccu'),   918000, 1800); }, 100);
-          setTimeout(function () { animateCountUp(document.getElementById('stat-games'),        17,     900); }, 200);
+          setTimeout(function () { animateCountUp(document.getElementById('stat-games'),        18,     900); }, 200);
           setTimeout(function () {
             var el = document.getElementById('stat-years');
             animateCountUp(el, 2, 700);
@@ -985,7 +966,6 @@
     }
     animateStaticStats();
 
-    // ── ROBLOX LIVE DATA ──
     var universeMap   = null;
     var topPlaceId    = null;
     var isFirstFetch  = true;
