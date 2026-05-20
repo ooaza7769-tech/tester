@@ -4,9 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio</title>
+
+  <!-- Preconnect + preload fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/></noscript>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -31,37 +36,13 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Instrument Sans', sans-serif;
+      font-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
     }
 
-    #particle-wrap {
-      position: absolute;
-      left: 0;
-      right: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    #particle-bg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    #below-hero {
-      position: relative;
-      z-index: 1;
-    }
-
-    footer {
-      position: relative;
-      z-index: 1;
-    }
-
+    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -94,7 +75,6 @@
       text-decoration: none;
       transition: color 0.2s;
     }
-
     .nav-links a:hover { color: var(--text); }
 
     .nav-cta {
@@ -104,11 +84,10 @@
       border-radius: 99px;
       font-weight: 500 !important;
       font-size: 13px !important;
-      transition: opacity 0.2s !important;
     }
+    .nav-cta:hover { opacity: 0.75 !important; }
 
-    .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
-
+    /* ── HERO ── */
     .hero {
       height: 100vh;
       position: relative;
@@ -119,13 +98,8 @@
       justify-content: center;
       text-align: center;
       padding: 0 48px;
-    }
-
-    .hero-video-container {
-      position: absolute;
-      inset: 0;
+      /* Placeholder bg so hero is instantly visible before video */
       background: linear-gradient(135deg, #e8e6e0 0%, #d4d1c8 100%);
-      z-index: 0;
     }
 
     .hero-video {
@@ -139,8 +113,8 @@
       opacity: 0;
       transition: opacity 0.6s ease-in-out;
       will-change: opacity;
+      z-index: 0;
     }
-
     .hero-video.loaded { opacity: 1; }
 
     .hero::after {
@@ -165,7 +139,7 @@
       color: var(--text);
       margin-bottom: 28px;
       opacity: 0;
-      animation: fadeup 0.7s 0.15s cubic-bezier(.22,1,.36,1) forwards;
+      animation: fadeup 0.7s 0.1s cubic-bezier(.22,1,.36,1) forwards;
     }
 
     .hero h1 em {
@@ -182,7 +156,7 @@
       max-width: 400px;
       font-weight: 300;
       opacity: 0;
-      animation: fadeup 0.7s 0.35s cubic-bezier(.22,1,.36,1) forwards;
+      animation: fadeup 0.7s 0.28s cubic-bezier(.22,1,.36,1) forwards;
     }
 
     @keyframes fadeup {
@@ -190,6 +164,20 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* ── PARTICLES ── */
+    #particle-wrap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    #particle-bg { display: block; width: 100%; height: 100%; }
+    #below-hero { position: relative; z-index: 1; }
+    footer { position: relative; z-index: 1; }
+
+    /* ── SECTIONS ── */
     section {
       max-width: 1100px;
       margin: 0 auto;
@@ -220,6 +208,7 @@
       color: var(--text);
     }
 
+    /* ── STATS ── */
     .stats-big-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -259,6 +248,7 @@
 
     .stat-big-card.accent .stat-big-label { color: rgba(255,255,255,0.45); }
 
+    /* ── MARQUEE ── */
     .marquee-section {
       padding: 72px 0;
       overflow: hidden;
@@ -280,7 +270,6 @@
     .top-playing-card {
       display: flex;
       align-items: center;
-      gap: 0;
       border-radius: var(--radius);
       border: 2px solid var(--gold);
       background: var(--bg-card);
@@ -292,9 +281,7 @@
       box-shadow: 0 0 0 4px var(--gold-glow);
     }
 
-    .top-playing-card:hover {
-      box-shadow: 0 0 0 6px var(--gold-glow), 0 12px 32px rgba(0,0,0,0.08);
-    }
+    .top-playing-card:hover { box-shadow: 0 0 0 6px var(--gold-glow), 0 12px 32px rgba(0,0,0,0.08); }
 
     .top-playing-img {
       width: 260px;
@@ -329,8 +316,7 @@
     }
 
     .top-playing-badge-dot {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: #5a3c00;
       opacity: 0.6;
@@ -459,6 +445,7 @@
       border-radius: 99px;
     }
 
+    /* ── SKILLS ── */
     .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 
     .skill-card {
@@ -472,10 +459,10 @@
     }
 
     .skill-icon { font-size: 22px; line-height: 1; margin-bottom: 2px; }
-
     .skill-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); }
     .skill-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; font-weight: 300; }
 
+    /* ── CONTACT ── */
     .contact-box {
       background: var(--text);
       border-radius: var(--radius);
@@ -498,7 +485,6 @@
     }
 
     .contact-left p { font-size: 15px; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.6; }
-
     .contact-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
     .btn {
@@ -519,6 +505,7 @@
     .btn-light { background: var(--accent); color: #2a3800; }
     .btn-ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.15); }
 
+    /* ── FOOTER ── */
     footer {
       max-width: 1100px;
       margin: 0 auto;
@@ -533,13 +520,15 @@
 
     .footer-note { font-size: 12px; color: var(--text-muted); }
 
+    /* ── FADE-IN ── */
     .fade-in {
       opacity: 0;
       transform: translateY(22px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.55s ease, transform 0.55s ease;
     }
     .fade-in.visible { opacity: 1; transform: none; }
 
+    /* ── MOBILE ── */
     @media (max-width: 700px) {
       nav { padding: 16px 20px; }
       section { padding-left: 20px; padding-right: 20px; }
@@ -568,12 +557,9 @@
     </ul>
   </nav>
 
+  <!-- VIDEO — preload=auto, bez JS opóźnień -->
   <div class="hero">
-    <div class="hero-video-container">
-      <video class="hero-video" muted loop playsinline preload="none">
-        <source src="background.mp4" type="video/mp4">
-      </video>
-    </div>
+    <video class="hero-video" id="hero-video" muted loop playsinline preload="auto" src="background.mp4"></video>
     <h1>
       Quality<br>
       <em>Assurance</em><br>
@@ -718,354 +704,378 @@
   </div>
 
   <script>
-    (function () {
-      var wrap    = document.getElementById('particle-wrap');
-      var canvas  = document.getElementById('particle-bg');
-      var ctx     = canvas.getContext('2d');
-      var content = document.getElementById('below-hero');
-      var animId, W, H, dots;
+  // ─────────────────────────────────────────────
+  // 1. HERO VIDEO — startujemy od razu
+  // ─────────────────────────────────────────────
+  (function () {
+    var v = document.getElementById('hero-video');
+    if (!v) return;
+    // Natychmiastowe play bez czekania na load
+    var p = v.play();
+    if (p && p.catch) p.catch(function(){});
+    v.addEventListener('canplay', function () {
+      v.classList.add('loaded');
+    }, { once: true });
+    // Fallback jeśli canplay nie odpali
+    if (v.readyState >= 3) v.classList.add('loaded');
+  })();
 
-      var DOT_MIN   = 3;
-      var DOT_MAX   = 6;
-      var DOT_ALPHA = 0.5;
-      var LINE_DIST = 180;
-      var LINE_ALPHA= 0.25;
-      var SPEED     = 0.3;
-      var DENSITY   = 9000;
+  // ─────────────────────────────────────────────
+  // 2. PARTICLE CANVAS — lżejszy, off-main-thread trick
+  // ─────────────────────────────────────────────
+  (function () {
+    var wrap   = document.getElementById('particle-wrap');
+    var canvas = document.getElementById('particle-bg');
+    var ctx    = canvas.getContext('2d');
+    var content= document.getElementById('below-hero');
+    var animId, W, H, dots;
 
-      function measure() {
-        var top = content.offsetTop;
-        var h   = content.offsetHeight;
-        W = window.innerWidth;
-        H = h;
-        wrap.style.top    = top + 'px';
-        wrap.style.height = h  + 'px';
-        wrap.style.width  = '100%';
-        var dpr = window.devicePixelRatio || 1;
-        canvas.width  = W * dpr;
-        canvas.height = H * dpr;
-        canvas.style.width  = W + 'px';
-        canvas.style.height = H + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // Zmniejszone parametry = mniej obliczen
+    var DOT_MIN   = 2.5;
+    var DOT_MAX   = 5;
+    var DOT_ALPHA = 0.45;
+    var LINE_DIST = 150;      // z 180 -> 150 (n^2 pairs!)
+    var LINE_ALPHA= 0.22;
+    var SPEED     = 0.28;
+    var DENSITY   = 11000;    // z 9000 -> 11000 (mniej kropek)
+
+    function measure() {
+      var top = content.offsetTop;
+      H = content.offsetHeight;
+      W = window.innerWidth;
+      wrap.style.top    = top + 'px';
+      wrap.style.height = H   + 'px';
+      wrap.style.width  = '100%';
+      var dpr = Math.min(window.devicePixelRatio || 1, 2); // max 2x, nie 3x
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function makeDots() {
+      var count = Math.max(30, Math.min(120, Math.round((W * H) / DENSITY)));
+      dots = Array.from({ length: count }, function () {
+        return {
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * SPEED,
+          vy: (Math.random() - 0.5) * SPEED,
+          r:  DOT_MIN + Math.random() * (DOT_MAX - DOT_MIN),
+        };
+      });
+    }
+
+    // Precompute squared distance threshold
+    var LINE_DIST_SQ = LINE_DIST * LINE_DIST;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      var i, j, d, dx, dy, distSq, a;
+      var n = dots.length;
+
+      // Update positions
+      for (i = 0; i < n; i++) {
+        d = dots[i];
+        d.x += d.vx;
+        d.y += d.vy;
+        if (d.x < -10)    d.x = W + 10;
+        if (d.x > W + 10) d.x = -10;
+        if (d.y < -10)    d.y = H + 10;
+        if (d.y > H + 10) d.y = -10;
       }
 
-      function makeDots() {
-        var count = Math.max(40, Math.round((W * H) / DENSITY));
-        dots = [];
-        for (var i = 0; i < count; i++) {
-          dots.push({
-            x:  Math.random() * W,
-            y:  Math.random() * H,
-            vx: (Math.random() - 0.5) * SPEED,
-            vy: (Math.random() - 0.5) * SPEED,
-            r:  DOT_MIN + Math.random() * (DOT_MAX - DOT_MIN),
-          });
-        }
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-
-        for (var i = 0; i < dots.length; i++) {
-          var d = dots[i];
-          d.x += d.vx;
-          d.y += d.vy;
-          if (d.x < -10)    d.x = W + 10;
-          if (d.x > W + 10) d.x = -10;
-          if (d.y < -10)    d.y = H + 10;
-          if (d.y > H + 10) d.y = -10;
-        }
-
-        ctx.lineWidth = 1;
-        for (var i = 0; i < dots.length; i++) {
-          for (var j = i + 1; j < dots.length; j++) {
-            var dx   = dots[i].x - dots[j].x;
-            var dy   = dots[i].y - dots[j].y;
-            var dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < LINE_DIST) {
-              var a = LINE_ALPHA * (1 - dist / LINE_DIST);
-              ctx.strokeStyle = 'rgba(17,16,16,' + a + ')';
-              ctx.beginPath();
-              ctx.moveTo(dots[i].x, dots[i].y);
-              ctx.lineTo(dots[j].x, dots[j].y);
-              ctx.stroke();
-            }
+      // Lines — sqrt avoided: compare squared
+      ctx.lineWidth = 0.8;
+      for (i = 0; i < n; i++) {
+        for (j = i + 1; j < n; j++) {
+          dx = dots[i].x - dots[j].x;
+          dy = dots[i].y - dots[j].y;
+          distSq = dx * dx + dy * dy;
+          if (distSq < LINE_DIST_SQ) {
+            a = LINE_ALPHA * (1 - Math.sqrt(distSq) / LINE_DIST);
+            ctx.strokeStyle = 'rgba(17,16,16,' + a + ')';
+            ctx.beginPath();
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
           }
         }
-
-        ctx.fillStyle = 'rgba(17,16,16,' + DOT_ALPHA + ')';
-        for (var i = 0; i < dots.length; i++) {
-          ctx.beginPath();
-          ctx.arc(dots[i].x, dots[i].y, dots[i].r, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        animId = requestAnimationFrame(draw);
       }
 
-      function init() {
-        if (animId) cancelAnimationFrame(animId);
-        measure();
-        makeDots();
-        draw();
+      // Dots — single fill call
+      ctx.fillStyle = 'rgba(17,16,16,' + DOT_ALPHA + ')';
+      for (i = 0; i < n; i++) {
+        ctx.beginPath();
+        ctx.arc(dots[i].x, dots[i].y, dots[i].r, 0, 6.2832);
+        ctx.fill();
       }
 
-      var resizeTimer;
-      window.addEventListener('resize', function () {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(init, 150);
-      }, { passive: true });
+      animId = requestAnimationFrame(draw);
+    }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        requestAnimationFrame(function () { requestAnimationFrame(init); });
+    function init() {
+      if (animId) cancelAnimationFrame(animId);
+      measure();
+      makeDots();
+      draw();
+    }
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(init, 200);
+    }, { passive: true });
+
+    // Odpalamy po DOMContentLoaded, nie load (szybciej)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      requestAnimationFrame(init);
+    }
+  })();
+
+  // ─────────────────────────────────────────────
+  // 3. INTERSECTION OBSERVER — fade-in
+  // ─────────────────────────────────────────────
+  var fadeObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e, i) {
+      if (e.isIntersecting) {
+        setTimeout(function () { e.target.classList.add('visible'); }, i * 55);
+        fadeObserver.unobserve(e.target);
       }
-    })();
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(function (el) { fadeObserver.observe(el); });
 
-    (function () {
-      var video = document.querySelector('.hero-video');
-      if (!video) return;
-      window.addEventListener('load', function () {
-        setTimeout(function () {
-          video.load();
-          video.play().catch(function () {});
-          video.addEventListener('canplay', function () {
-            video.classList.add('loaded');
-          }, { once: true });
-        }, 100);
-      });
-    })();
+  // ─────────────────────────────────────────────
+  // 4. GAMES DATA
+  // ─────────────────────────────────────────────
+  var games = [
+    { id: '134763881293027', name: 'Steal from Brainrots',            img: 'steal.png',  peak: 170000 },
+    { id: '78471443847948',  name: 'Pew Pew Blocks',                  img: 'pewpew.png', peak: 8000   },
+    { id: '129942240545174', name: 'Stairs to Steal Brainrots',       img: 'stairs.png', peak: 45000  },
+    { id: '71919479906458',  name: 'Drop For Brainrots',              img: 'drop.png',   peak: 18000  },
+    { id: '97365843755210',  name: 'Cut Grass for Brainrots',         img: 'grass.png',  peak: 128000 },
+    { id: '135000370479961', name: 'Draw & Slide',                    img: 'draw.png',   peak: 11000  },
+    { id: '114640202062357', name: 'Swing Obby for Brainrots',        img: 'swing.png',  peak: 252000 },
+    { id: '84968446824850',  name: 'Rope Bridge for Brainrots',       img: 'rope.png',   peak: 12000  },
+    { id: '96168869671905',  name: 'ROB IT',                          img: 'rob.png',    peak: 34000  },
+    { id: '105626692504093', name: 'Be a Brainrot',                   img: 'be.png',     peak: 95000  },
+    { id: '77393318863643',  name: 'Aura Ascension',                  img: 'aura.png',   peak: 82000  },
+    { id: '113918641206373', name: 'Nuke Your City',                  img: 'nuke.png',   peak: 10000  },
+    { id: '90316083466771',  name: 'Catch and Cook',                  img: 'cook.png',   peak: 5000   },
+    { id: '108843562394237', name: 'Monkey Bomb Tag',                 img: 'monkey.png', peak: 29000  },
+    { id: '94273830020274',  name: '1 Jump Pogo Climb',               img: 'jump.png',   peak: 2000   },
+    { id: '91350524990442',  name: "Don't Get Caught For Hackers",    img: 'hack.png',   peak: 10000  },
+    { id: '110690600130381', name: 'Fight for Hackers',               img: 'fight.png',  peak: 7000   },
+    { id: '124083111510656', name: "Survive Anton Chigurh's Tractor", img: 'truck.png',  peak: 0      },
+    { id: '114204398207377', name: 'Survive Zombie Arena',            img: 'zombie.png', peak: 154000 },
+  ];
 
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e, i) {
-        if (e.isIntersecting) {
-          setTimeout(function () { e.target.classList.add('visible'); }, i * 60);
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(function (el) { observer.observe(el); });
+  var allTimePeak = {};
+  games.forEach(function (g) { if (g.peak) allTimePeak[g.id] = g.peak; });
 
-    // ── GAMES DATA ──
-    var games = [
-      { id: '134763881293027', name: 'Steal from Brainrots',               img: 'steal.png',  peak: 170000 },
-      { id: '78471443847948',  name: 'Pew Pew Blocks',                     img: 'pewpew.png', peak: 8000   },
-      { id: '129942240545174', name: 'Stairs to Steal Brainrots',          img: 'stairs.png', peak: 45000  },
-      { id: '71919479906458',  name: 'Drop For Brainrots',                 img: 'drop.png',   peak: 18000  },
-      { id: '97365843755210',  name: 'Cut Grass for Brainrots',            img: 'grass.png',  peak: 128000 },
-      { id: '135000370479961', name: 'Draw & Slide',                       img: 'draw.png',   peak: 11000  },
-      { id: '114640202062357', name: 'Swing Obby for Brainrots',           img: 'swing.png',  peak: 252000 },
-      { id: '84968446824850',  name: 'Rope Bridge for Brainrots',          img: 'rope.png',   peak: 12000  },
-      { id: '96168869671905',  name: 'ROB IT',                             img: 'rob.png',    peak: 34000  },
-      { id: '105626692504093', name: 'Be a Brainrot',                      img: 'be.png',     peak: 95000  },
-      { id: '77393318863643',  name: 'Aura Ascension',                     img: 'aura.png',   peak: 82000  },
-      { id: '113918641206373', name: 'Nuke Your City',                     img: 'nuke.png',   peak: 10000  },
-      { id: '90316083466771',  name: 'Catch and Cook',                     img: 'cook.png',   peak: 5000   },
-      { id: '108843562394237', name: 'Monkey Bomb Tag',                    img: 'monkey.png', peak: 29000  },
-      { id: '94273830020274',  name: '1 Jump Pogo Climb',                  img: 'jump.png',   peak: 2000   },
-      { id: '91350524990442',  name: "Don't Get Caught For Hackers",       img: 'hack.png',   peak: 10000  },
-      { id: '110690600130381', name: 'Fight for Hackers',                  img: 'fight.png',  peak: 7000   },
-      { id: '124083111510656', name: "Survive Anton Chigurh's Tractor",    img: 'truck.png',  peak: 0      },
-      { id: '114204398207377', name: 'Survive Zombie Arena',               img: 'zombie.png', peak: 154000 },
-    ];
+  // ─────────────────────────────────────────────
+  // 5. MARQUEE — budujemy od razu (DOM jest gotowy)
+  // ─────────────────────────────────────────────
+  function formatNum(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1000)    return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return n.toLocaleString();
+  }
 
-    var allTimePeak = {};
-    games.forEach(function (g) { if (g.peak) allTimePeak[g.id] = g.peak; });
+  function makeCard(game) {
+    var a = document.createElement('a');
+    a.className = 'mq-card';
+    a.href = 'https://www.roblox.com/games/' + game.id;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    var peakBadge = game.peak ? '<span class="mq-badge" data-peak="' + game.id + '">— peak</span>' : '';
+    a.innerHTML =
+      '<img src="' + game.img + '" alt="' + game.name + '" loading="lazy" decoding="async" />' +
+      '<div class="mq-card-body">' +
+        '<div class="mq-card-name">' + game.name + '</div>' +
+        '<div class="mq-card-ccu">' +
+          '<span class="mq-card-dot"></span>' +
+          '<span data-live="' + game.id + '">—</span> playing &nbsp;·&nbsp; ' +
+          '<span data-visits="' + game.id + '">—</span> visits' +
+        '</div>' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">' + peakBadge + '</div>' +
+      '</div>';
+    return a;
+  }
 
-    function formatNum(n) {
-      if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-      if (n >= 1000)    return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-      return n.toLocaleString();
+  (function buildRows() {
+    var row1 = document.getElementById('mq-row-1');
+    var row2 = document.getElementById('mq-row-2');
+    var half = Math.ceil(games.length / 2);
+    var top  = games.slice(0, half);
+    var bot  = games.slice(half);
+    // DocumentFragment — jeden reflow zamiast wielu
+    var frag1 = document.createDocumentFragment();
+    var frag2 = document.createDocumentFragment();
+    top.concat(top).forEach(function (g) { frag1.appendChild(makeCard(g)); });
+    bot.concat(bot).forEach(function (g) { frag2.appendChild(makeCard(g)); });
+    row1.appendChild(frag1);
+    row2.appendChild(frag2);
+  })();
+
+  // ─────────────────────────────────────────────
+  // 6. ANIMACJE LICZB
+  // ─────────────────────────────────────────────
+  var rafs = {};
+
+  function animateCountUp(el, target, duration) {
+    var id = el.dataset.rafId || (el.dataset.rafId = Math.random().toString(36));
+    if (rafs[id]) cancelAnimationFrame(rafs[id]);
+    var start = performance.now();
+    function tick(now) {
+      var t = Math.min((now - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = formatNum(Math.round(target * ease));
+      if (t < 1) rafs[id] = requestAnimationFrame(tick);
+      else { el.textContent = formatNum(target); }
     }
+    rafs[id] = requestAnimationFrame(tick);
+  }
 
-    function makeCard(game) {
-      var a = document.createElement('a');
-      a.className = 'mq-card';
-      a.href = 'https://www.roblox.com/games/' + game.id;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      var peakBadge = game.peak ? '<span class="mq-badge" data-peak="' + game.id + '">— peak</span>' : '';
-      a.innerHTML =
-        '<img src="' + game.img + '" alt="' + game.name + '" loading="lazy" />' +
-        '<div class="mq-card-body">' +
-          '<div class="mq-card-name">' + game.name + '</div>' +
-          '<div class="mq-card-ccu">' +
-            '<span class="mq-card-dot"></span>' +
-            '<span data-live="' + game.id + '">—</span> playing &nbsp;·&nbsp; ' +
-            '<span data-visits="' + game.id + '">—</span> visits' +
-          '</div>' +
-          '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">' + peakBadge + '</div>' +
-        '</div>';
-      return a;
+  function smoothRoll(el, newVal) {
+    var id = el.dataset.rafId || (el.dataset.rafId = Math.random().toString(36));
+    if (rafs[id]) cancelAnimationFrame(rafs[id]);
+    var from = parseFloat(el.dataset.rv || 0) || 0;
+    el.dataset.rv = newVal;
+    var start = performance.now();
+    function tick(now) {
+      var t = Math.min((now - start) / 600, 1);
+      var ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = formatNum(Math.round(from + (newVal - from) * ease));
+      if (t < 1) rafs[id] = requestAnimationFrame(tick);
+      else el.textContent = formatNum(newVal);
     }
+    rafs[id] = requestAnimationFrame(tick);
+  }
 
-    function buildRows() {
-      var row1 = document.getElementById('mq-row-1');
-      var row2 = document.getElementById('mq-row-2');
-      var half = Math.ceil(games.length / 2);
-      var top  = games.slice(0, half);
-      var bot  = games.slice(half);
-      top.concat(top).forEach(function (g) { row1.appendChild(makeCard(g)); });
-      bot.concat(bot).forEach(function (g) { row2.appendChild(makeCard(g)); });
-    }
-    buildRows();
+  // Static stats animate on scroll-into-view
+  (function () {
+    var grid = document.querySelector('.stats-big-grid');
+    if (!grid) return;
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      animateCountUp(document.getElementById('stat-peak-single'), 252000, 1500);
+      animateCountUp(document.getElementById('stat-total-ccu'),   1072000, 1700);
+      animateCountUp(document.getElementById('stat-games'),        19,     850);
+      var el = document.getElementById('stat-years');
+      animateCountUp(el, 2, 650);
+      setTimeout(function () { el.textContent = '2+'; }, 700);
+    }, { threshold: 0.12 });
+    io.observe(grid);
+  })();
 
-    var rafs = {};
+  // ─────────────────────────────────────────────
+  // 7. API FETCH — roproxy
+  // ─────────────────────────────────────────────
+  var universeMap  = null;
+  var isFirstFetch = true;
 
-    function animateCountUp(el, target, duration, suffix) {
-      suffix = suffix || '';
-      var id = el.dataset.rafId || Math.random();
-      el.dataset.rafId = id;
-      if (rafs[id]) cancelAnimationFrame(rafs[id]);
-      var start = performance.now();
-      function tick(now) {
-        var t    = Math.min((now - start) / duration, 1);
-        var ease = 1 - Math.pow(1 - t, 3);
-        el.textContent = formatNum(Math.round(target * ease)) + suffix;
-        if (t < 1) rafs[id] = requestAnimationFrame(tick);
-        else { el.textContent = formatNum(target) + suffix; delete rafs[id]; }
-      }
-      rafs[id] = requestAnimationFrame(tick);
-    }
-
-    function smoothRoll(el, newVal) {
-      var id   = el.dataset.rafId || Math.random();
-      el.dataset.rafId = id;
-      if (rafs[id]) cancelAnimationFrame(rafs[id]);
-      var from  = parseFloat(el.dataset.rv || 0) || 0;
-      el.dataset.rv = newVal;
-      var start = performance.now();
-      function tick(now) {
-        var t    = Math.min((now - start) / 600, 1);
-        var ease = 1 - Math.pow(1 - t, 3);
-        el.textContent = formatNum(Math.round(from + (newVal - from) * ease));
-        if (t < 1) rafs[id] = requestAnimationFrame(tick);
-        else { el.textContent = formatNum(newVal); delete rafs[id]; }
-      }
-      rafs[id] = requestAnimationFrame(tick);
-    }
-
-    function animateStaticStats() {
-      var grid = document.querySelector('.stats-big-grid');
-      if (!grid) return;
-      var io = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        io.disconnect();
-        requestAnimationFrame(function () {
-          setTimeout(function () { animateCountUp(document.getElementById('stat-peak-single'), 252000, 1600); }, 0);
-          setTimeout(function () { animateCountUp(document.getElementById('stat-total-ccu'),   1072000, 1800); }, 100);
-          setTimeout(function () { animateCountUp(document.getElementById('stat-games'),        19,     900); }, 200);
-          setTimeout(function () {
-            var el = document.getElementById('stat-years');
-            animateCountUp(el, 2, 700);
-            setTimeout(function () { el.textContent = '2+'; }, 750);
-          }, 300);
-        });
-      }, { threshold: 0.15 });
-      io.observe(grid);
-    }
-    animateStaticStats();
-
-    var universeMap   = null;
-    var topPlaceId    = null;
-    var isFirstFetch  = true;
-
-    async function getUniverseMap() {
-      if (universeMap) return universeMap;
-      var results = await Promise.allSettled(
-        games.map(async function (g) {
-          var res = await fetch('https://apis.roproxy.com/universes/v1/places/' + g.id + '/universe');
-          if (!res.ok) throw new Error('failed ' + g.id);
-          var json = await res.json();
-          return { universeId: String(json.universeId), placeId: g.id };
-        })
-      );
-      universeMap = {};
-      results.forEach(function (r) {
-        if (r.status === 'fulfilled') universeMap[r.value.universeId] = r.value.placeId;
-      });
-      return universeMap;
-    }
-
-    function updateTopCard(placeId, playingCount) {
-      topPlaceId = placeId;
-      var game = games.find(function (g) { return g.id === placeId; });
-      if (!game) return;
-      document.getElementById('top-card').href = 'https://www.roblox.com/games/' + game.id;
-      document.getElementById('top-img').src   = game.img;
-      document.getElementById('top-img').alt   = game.name;
-      document.getElementById('top-name').textContent = game.name;
-      var ccuEl = document.getElementById('top-ccu');
-      if (isFirstFetch) animateCountUp(ccuEl, playingCount, 1400);
-      else smoothRoll(ccuEl, playingCount);
-      var peakEl       = document.getElementById('top-peak');
-      var effectivePeak = Math.max(allTimePeak[placeId] || 0, playingCount);
-      if (effectivePeak > (allTimePeak[placeId] || 0)) allTimePeak[placeId] = effectivePeak;
-      peakEl.textContent = effectivePeak > 0
-        ? 'All-time peak: ' + formatNum(effectivePeak) + ' concurrent players' : '';
-    }
-
-    async function fetchData() {
-      try {
-        var uMap = await getUniverseMap();
-        var universeIds = Object.keys(uMap);
-        if (!universeIds.length) return;
-        var res = await fetch('https://games.roproxy.com/v1/games?universeIds=' + universeIds.join(','));
-        if (!res.ok) throw new Error('games fetch failed');
+  // Prefetch universeMap od razu przy starcie strony (równolegle z resztą)
+  async function prefetchUniverseMap() {
+    var results = await Promise.allSettled(
+      games.map(async function (g) {
+        var res = await fetch('https://apis.roproxy.com/universes/v1/places/' + g.id + '/universe');
+        if (!res.ok) throw new Error('failed');
         var json = await res.json();
-        var data = json.data;
-        var totalPlaying = 0, totalVisits = 0, topGame = null, topCount = -1;
+        return { universeId: String(json.universeId), placeId: g.id };
+      })
+    );
+    universeMap = {};
+    results.forEach(function (r) {
+      if (r.status === 'fulfilled') universeMap[r.value.universeId] = r.value.placeId;
+    });
+    return universeMap;
+  }
 
-        requestAnimationFrame(function () {
-          data.forEach(function (g) {
-            var pid     = uMap[String(g.id)];
-            if (!pid) return;
-            var playing = g.playing || 0;
-            var visits  = g.visits  || 0;
-            totalPlaying += playing;
-            totalVisits  += visits;
+  // Start prefetch natychmiast
+  var universeMapPromise = prefetchUniverseMap();
 
-            document.querySelectorAll('[data-live="'   + pid + '"]').forEach(function (el) {
-              isFirstFetch ? animateCountUp(el, playing, 1200) : smoothRoll(el, playing);
-            });
-            document.querySelectorAll('[data-visits="' + pid + '"]').forEach(function (el) {
-              isFirstFetch ? animateCountUp(el, visits, 1600) : smoothRoll(el, visits);
-            });
+  function updateTopCard(placeId, playingCount) {
+    var game = games.find(function (g) { return g.id === placeId; });
+    if (!game) return;
+    document.getElementById('top-card').href = 'https://www.roblox.com/games/' + game.id;
+    document.getElementById('top-img').src   = game.img;
+    document.getElementById('top-img').alt   = game.name;
+    document.getElementById('top-name').textContent = game.name;
+    var ccuEl = document.getElementById('top-ccu');
+    isFirstFetch ? animateCountUp(ccuEl, playingCount, 1300) : smoothRoll(ccuEl, playingCount);
+    var effectivePeak = Math.max(allTimePeak[placeId] || 0, playingCount);
+    allTimePeak[placeId] = effectivePeak;
+    var peakEl = document.getElementById('top-peak');
+    peakEl.textContent = effectivePeak > 0
+      ? 'All-time peak: ' + formatNum(effectivePeak) + ' concurrent players' : '';
+  }
 
-            var effectivePeak = Math.max(allTimePeak[pid] || 0, playing);
-            if (effectivePeak > 0) allTimePeak[pid] = effectivePeak;
-            document.querySelectorAll('[data-peak="' + pid + '"]').forEach(function (el) {
-              if (effectivePeak && isFirstFetch) {
-                animateCountUp(el, effectivePeak, 1400);
-                setTimeout(function () { el.textContent = formatNum(effectivePeak) + ' peak CCU'; }, 1450);
-              } else if (effectivePeak) {
-                el.textContent = formatNum(effectivePeak) + ' peak CCU';
-              }
-            });
+  async function fetchData() {
+    try {
+      var uMap = await universeMapPromise; // już czeka, nie blokuje ponownie
+      var universeIds = Object.keys(uMap);
+      if (!universeIds.length) return;
 
-            if (playing > topCount) { topCount = playing; topGame = { placeId: pid, count: playing }; }
+      var res = await fetch('https://games.roproxy.com/v1/games?universeIds=' + universeIds.join(','));
+      if (!res.ok) throw new Error('games fetch failed');
+      var json = await res.json();
+
+      var totalPlaying = 0, totalVisits = 0, topGame = null, topCount = -1;
+
+      requestAnimationFrame(function () {
+        json.data.forEach(function (g) {
+          var pid     = uMap[String(g.id)];
+          if (!pid) return;
+          var playing = g.playing || 0;
+          var visits  = g.visits  || 0;
+          totalPlaying += playing;
+          totalVisits  += visits;
+
+          document.querySelectorAll('[data-live="' + pid + '"]').forEach(function (el) {
+            isFirstFetch ? animateCountUp(el, playing, 1100) : smoothRoll(el, playing);
+          });
+          document.querySelectorAll('[data-visits="' + pid + '"]').forEach(function (el) {
+            isFirstFetch ? animateCountUp(el, visits, 1500) : smoothRoll(el, visits);
           });
 
-          if (topGame) updateTopCard(topGame.placeId, topGame.count);
+          var ep = Math.max(allTimePeak[pid] || 0, playing);
+          allTimePeak[pid] = ep;
+          document.querySelectorAll('[data-peak="' + pid + '"]').forEach(function (el) {
+            if (ep && isFirstFetch) {
+              animateCountUp(el, ep, 1300);
+              setTimeout(function () { el.textContent = formatNum(ep) + ' peak CCU'; }, 1350);
+            } else if (ep) {
+              el.textContent = formatNum(ep) + ' peak CCU';
+            }
+          });
 
-          var elPlaying = document.getElementById('total-playing');
-          if (elPlaying) isFirstFetch ? animateCountUp(elPlaying, totalPlaying, 1800) : smoothRoll(elPlaying, totalPlaying);
-
-          var elVisits = document.getElementById('total-visits');
-          if (elVisits) isFirstFetch ? animateCountUp(elVisits, totalVisits, 2000) : smoothRoll(elVisits, totalVisits);
-
-          isFirstFetch = false;
+          if (playing > topCount) { topCount = playing; topGame = { placeId: pid, count: playing }; }
         });
-      } catch (e) {
-        console.warn('RoProxy error:', e.message);
-      }
-    }
 
-    window.addEventListener('load', function () {
-      setTimeout(fetchData, 200);
-      setInterval(fetchData, 60000);
-    });
+        if (topGame) updateTopCard(topGame.placeId, topGame.count);
+
+        var elPlaying = document.getElementById('total-playing');
+        if (elPlaying) isFirstFetch ? animateCountUp(elPlaying, totalPlaying, 1700) : smoothRoll(elPlaying, totalPlaying);
+
+        var elVisits = document.getElementById('total-visits');
+        if (elVisits) isFirstFetch ? animateCountUp(elVisits, totalVisits, 1900) : smoothRoll(elVisits, totalVisits);
+
+        isFirstFetch = false;
+      });
+    } catch (e) {
+      console.warn('RoProxy error:', e.message);
+    }
+  }
+
+  // Fetch danych od razu, nie czekamy na load
+  fetchData();
+  setInterval(fetchData, 60000);
   </script>
 
 </body>
