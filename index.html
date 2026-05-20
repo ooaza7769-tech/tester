@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>debugify.tech — Roblox QA</title>
+  <title>Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
@@ -37,43 +37,55 @@
       overflow-x: hidden;
     }
 
-    /* ── NAV ── */
+    #particle-wrap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    #particle-bg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    #below-hero {
+      position: relative;
+      z-index: 1;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+    }
+
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      padding: 16px 48px;
+      padding: 18px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(245,243,239,0.88);
+      background: rgba(245,243,239,0.82);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
-      gap: 12px;
     }
 
     .nav-logo {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 16px;
-      letter-spacing: -0.03em;
+      font-size: 17px;
+      letter-spacing: -0.02em;
       color: var(--text);
       text-decoration: none;
-      white-space: nowrap;
-      flex-shrink: 0;
     }
 
-    .nav-logo span {
-      color: var(--accent-dark);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-      align-items: center;
-    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
 
     .nav-links a {
       font-size: 13px;
@@ -81,7 +93,6 @@
       color: var(--text-mid);
       text-decoration: none;
       transition: color 0.2s;
-      white-space: nowrap;
     }
 
     .nav-links a:hover { color: var(--text); }
@@ -89,7 +100,7 @@
     .nav-cta {
       background: var(--text) !important;
       color: var(--bg) !important;
-      padding: 8px 18px;
+      padding: 8px 20px;
       border-radius: 99px;
       font-weight: 500 !important;
       font-size: 13px !important;
@@ -98,76 +109,8 @@
 
     .nav-cta:hover { opacity: 0.75 !important; color: var(--bg) !important; }
 
-    /* hamburger — hidden on desktop */
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      flex-shrink: 0;
-    }
-
-    .nav-hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: transform 0.3s, opacity 0.3s;
-    }
-
-    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* mobile menu drawer */
-    .nav-drawer {
-      display: none;
-      position: fixed;
-      top: 57px; left: 0; right: 0;
-      background: rgba(245,243,239,0.97);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-      padding: 20px 20px 24px;
-      z-index: 99;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .nav-drawer.open { display: flex; }
-
-    .nav-drawer a {
-      font-size: 15px;
-      font-weight: 400;
-      color: var(--text-mid);
-      text-decoration: none;
-      padding: 10px 4px;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.2s;
-    }
-
-    .nav-drawer a:last-child { border-bottom: none; }
-    .nav-drawer a:hover { color: var(--text); }
-
-    .nav-drawer .drawer-cta {
-      margin-top: 8px;
-      background: var(--text);
-      color: var(--bg) !important;
-      padding: 12px 20px;
-      border-radius: 99px;
-      font-weight: 500;
-      text-align: center;
-      border-bottom: none !important;
-    }
-
-    /* ── HERO ── */
     .hero {
-      height: 100svh;
-      min-height: 500px;
+      height: 100vh;
       position: relative;
       overflow: hidden;
       display: flex;
@@ -175,7 +118,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 0 24px;
+      padding: 0 48px;
     }
 
     .hero-video-container {
@@ -215,7 +158,7 @@
 
     .hero h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(48px, 9vw, 112px);
+      font-size: clamp(56px, 9vw, 112px);
       font-weight: 800;
       line-height: 0.9;
       letter-spacing: -0.04em;
@@ -233,10 +176,10 @@
     }
 
     .hero-sub {
-      font-size: 15px;
+      font-size: 16px;
       color: var(--text-mid);
       line-height: 1.7;
-      max-width: 380px;
+      max-width: 400px;
       font-weight: 300;
       opacity: 0;
       animation: fadeup 0.7s 0.35s cubic-bezier(.22,1,.36,1) forwards;
@@ -247,33 +190,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── PARTICLE CANVAS ── */
-    #particle-wrap {
-      position: absolute;
-      left: 0;
-      right: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    #particle-bg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    #below-hero {
-      position: relative;
-      z-index: 1;
-    }
-
-    footer {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── SECTIONS ── */
     section {
       max-width: 1100px;
       margin: 0 auto;
@@ -285,7 +201,6 @@
       align-items: baseline;
       gap: 16px;
       margin-bottom: 40px;
-      flex-wrap: wrap;
     }
 
     .section-num {
@@ -295,59 +210,55 @@
       padding: 4px 10px;
       border: 1px solid var(--border-strong);
       border-radius: 99px;
-      white-space: nowrap;
     }
 
     .section-title {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(22px, 4vw, 32px);
+      font-size: 32px;
       font-weight: 700;
       letter-spacing: -0.03em;
       color: var(--text);
     }
 
-    /* ── STATS ── */
     .stats-big-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      gap: 16px;
     }
 
     .stat-big-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 24px 24px 20px;
+      padding: 28px 28px 24px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      min-width: 0;
     }
 
     .stat-big-card.accent { background: var(--text); border-color: var(--text); }
 
     .stat-big-num {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(24px, 3vw, 44px);
+      font-size: clamp(28px, 3.5vw, 44px);
       font-weight: 800;
       letter-spacing: -0.04em;
       color: var(--text);
       line-height: 1;
-      word-break: break-all;
     }
 
     .stat-big-card.accent .stat-big-num { color: var(--accent); }
 
     .stat-big-label {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
       font-weight: 300;
+      max-width: 200px;
     }
 
     .stat-big-card.accent .stat-big-label { color: rgba(255,255,255,0.45); }
 
-    /* ── MARQUEE / WORK ── */
     .marquee-section {
       padding: 72px 0;
       overflow: hidden;
@@ -368,7 +279,7 @@
 
     .top-playing-card {
       display: flex;
-      align-items: stretch;
+      align-items: center;
       gap: 0;
       border-radius: var(--radius);
       border: 2px solid var(--gold);
@@ -386,7 +297,7 @@
     }
 
     .top-playing-img {
-      width: 240px;
+      width: 260px;
       flex-shrink: 0;
       aspect-ratio: 16/9;
       object-fit: cover;
@@ -395,12 +306,11 @@
     }
 
     .top-playing-body {
-      padding: 20px 24px;
+      padding: 24px 28px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       flex: 1;
-      min-width: 0;
     }
 
     .top-playing-badge {
@@ -430,26 +340,25 @@
 
     .top-playing-name {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(16px, 2.5vw, 26px);
+      font-size: clamp(20px, 2.5vw, 28px);
       font-weight: 800;
       letter-spacing: -0.03em;
       color: var(--text);
       line-height: 1.1;
-      word-break: break-word;
     }
 
-    .top-playing-ccu { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    .top-playing-ccu { display: flex; align-items: baseline; gap: 6px; }
 
     .top-playing-num {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(24px, 4vw, 36px);
+      font-size: 36px;
       font-weight: 800;
       letter-spacing: -0.04em;
       color: var(--gold-dark);
       line-height: 1;
     }
 
-    .top-playing-label { font-size: 13px; color: var(--text-muted); font-weight: 300; }
+    .top-playing-label { font-size: 14px; color: var(--text-muted); font-weight: 300; }
     .top-playing-peak  { font-size: 12px; color: var(--text-muted); font-weight: 300; }
 
     .top-playing-card::before {
@@ -460,11 +369,10 @@
       background: var(--gold);
     }
 
-    /* ── MARQUEE TRACK ── */
     .marquee-track {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
       overflow: hidden;
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
       mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
@@ -472,7 +380,7 @@
 
     .marquee-row {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       width: max-content;
       will-change: transform;
     }
@@ -485,7 +393,7 @@
 
     .mq-card {
       flex-shrink: 0;
-      width: 280px;
+      width: 300px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -551,7 +459,6 @@
       border-radius: 99px;
     }
 
-    /* ── SKILLS ── */
     .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 
     .skill-card {
@@ -569,11 +476,10 @@
     .skill-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); }
     .skill-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; font-weight: 300; }
 
-    /* ── CONTACT ── */
     .contact-box {
       background: var(--text);
       border-radius: var(--radius);
-      padding: 52px;
+      padding: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -583,7 +489,7 @@
 
     .contact-left h2 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(24px, 4vw, 36px);
+      font-size: 36px;
       font-weight: 800;
       color: #fff;
       letter-spacing: -0.03em;
@@ -591,7 +497,7 @@
       margin-bottom: 10px;
     }
 
-    .contact-left p { font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.6; }
+    .contact-left p { font-size: 15px; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.6; }
 
     .contact-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
@@ -599,7 +505,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 13px 24px;
+      padding: 13px 26px;
       border-radius: 99px;
       font-size: 14px;
       font-weight: 500;
@@ -607,18 +513,16 @@
       text-decoration: none;
       transition: opacity 0.2s, transform 0.15s;
       font-family: 'Instrument Sans', sans-serif;
-      white-space: nowrap;
     }
 
     .btn:hover { opacity: 0.82; transform: scale(0.98); }
     .btn-light { background: var(--accent); color: #2a3800; }
     .btn-ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.15); }
 
-    /* ── FOOTER ── */
     footer {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 28px 48px;
+      padding: 32px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -627,20 +531,8 @@
       border-top: 1px solid var(--border);
     }
 
-    .footer-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .footer-logo span { color: var(--accent-dark); }
-
     .footer-note { font-size: 12px; color: var(--text-muted); }
 
-    /* ── FADE IN ── */
     .fade-in {
       opacity: 0;
       transform: translateY(22px);
@@ -648,113 +540,33 @@
     }
     .fade-in.visible { opacity: 1; transform: none; }
 
-    /* ════════════════════════════
-       RESPONSIVE BREAKPOINTS
-    ════════════════════════════ */
-
-    /* Tablet */
-    @media (max-width: 900px) {
-      nav { padding: 14px 24px; }
-
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-
-      section { padding: 56px 24px; }
-
+    @media (max-width: 700px) {
+      nav { padding: 16px 20px; }
+      section { padding-left: 20px; padding-right: 20px; }
+      .hero { padding: 0 24px; }
       .stats-big-grid { grid-template-columns: 1fr 1fr; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
-
-      .marquee-section .section-header { padding: 0 24px; }
-      .top-playing-wrap { padding: 0 24px; }
-
-      footer { padding: 24px 24px; }
-    }
-
-    /* Mobile */
-    @media (max-width: 600px) {
-      nav { padding: 13px 16px; }
-
-      .hero h1 { line-height: 0.92; }
-
-      section { padding: 48px 16px; }
-
-      .stats-big-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-
-      .stat-big-card { padding: 16px 14px; }
-
-      .skills-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-
-      .skill-card { padding: 16px; }
-
-      /* top card stacks vertically on small screens */
-      .top-playing-card {
-        flex-direction: column;
-      }
-
-      .top-playing-img {
-        width: 100%;
-        aspect-ratio: 16/7;
-      }
-
-      .top-playing-card::before {
-        left: 0; top: 0; right: 0; bottom: auto;
-        width: auto;
-        height: 4px;
-      }
-
-      .top-playing-body { padding: 16px 16px 18px; }
-
-      .marquee-section .section-header { padding: 0 16px; }
-      .top-playing-wrap { padding: 0 16px; }
-      .mq-card { width: 220px; }
-
-      .contact-box { padding: 28px 20px; gap: 24px; }
-      .contact-btns { flex-direction: column; }
-      .btn { justify-content: center; }
-
-      footer {
-        padding: 20px 16px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-    }
-
-    /* Very small */
-    @media (max-width: 380px) {
-      .stats-big-grid { grid-template-columns: 1fr; }
-      .skills-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px 20px; }
+      .marquee-section .section-header { padding: 0 20px; }
+      .top-playing-wrap { padding: 0 20px; }
+      .mq-card { width: 230px; }
+      .contact-box { padding: 36px 28px; }
+      .top-playing-img { width: 140px; }
+      .top-playing-num { font-size: 26px; }
     }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="#" class="nav-logo">debugify<span>.tech</span></a>
+    <a href="#" class="nav-logo">Portfolio</a>
     <ul class="nav-links">
       <li><a href="#stats">Stats</a></li>
       <li><a href="#work">Work</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact" class="nav-cta">Contact</a></li>
     </ul>
-    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
-
-  <!-- Mobile drawer -->
-  <div class="nav-drawer" id="nav-drawer">
-    <a href="#stats"   onclick="closeDrawer()">Stats</a>
-    <a href="#work"    onclick="closeDrawer()">Work</a>
-    <a href="#skills"  onclick="closeDrawer()">Skills</a>
-    <a href="#contact" onclick="closeDrawer()" class="drawer-cta">Contact</a>
-  </div>
 
   <div class="hero">
     <div class="hero-video-container">
@@ -899,31 +711,13 @@
     </section>
 
     <footer>
-      <a href="#" class="footer-logo">debugify<span>.tech</span></a>
-      <span class="footer-note">© 2026 debugify.tech — All rights reserved.</span>
+      <span class="footer-note">© 2026 Oasis Testing. All rights not reserved.</span>
+      <span class="footer-note"></span>
     </footer>
 
   </div>
 
   <script>
-    /* ── HAMBURGER ── */
-    (function () {
-      var btn    = document.getElementById('hamburger');
-      var drawer = document.getElementById('nav-drawer');
-      btn.addEventListener('click', function () {
-        var open = drawer.classList.toggle('open');
-        btn.classList.toggle('open', open);
-        document.body.style.overflow = open ? 'hidden' : '';
-      });
-    })();
-
-    function closeDrawer() {
-      document.getElementById('nav-drawer').classList.remove('open');
-      document.getElementById('hamburger').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    /* ── PARTICLE BG ── */
     (function () {
       var wrap    = document.getElementById('particle-wrap');
       var canvas  = document.getElementById('particle-bg');
@@ -956,7 +750,7 @@
       }
 
       function makeDots() {
-        var count = Math.max(30, Math.round((W * H) / DENSITY));
+        var count = Math.max(40, Math.round((W * H) / DENSITY));
         dots = [];
         for (var i = 0; i < count; i++) {
           dots.push({
@@ -971,14 +765,17 @@
 
       function draw() {
         ctx.clearRect(0, 0, W, H);
+
         for (var i = 0; i < dots.length; i++) {
           var d = dots[i];
-          d.x += d.vx; d.y += d.vy;
+          d.x += d.vx;
+          d.y += d.vy;
           if (d.x < -10)    d.x = W + 10;
           if (d.x > W + 10) d.x = -10;
           if (d.y < -10)    d.y = H + 10;
           if (d.y > H + 10) d.y = -10;
         }
+
         ctx.lineWidth = 1;
         for (var i = 0; i < dots.length; i++) {
           for (var j = i + 1; j < dots.length; j++) {
@@ -995,18 +792,22 @@
             }
           }
         }
+
         ctx.fillStyle = 'rgba(17,16,16,' + DOT_ALPHA + ')';
         for (var i = 0; i < dots.length; i++) {
           ctx.beginPath();
           ctx.arc(dots[i].x, dots[i].y, dots[i].r, 0, Math.PI * 2);
           ctx.fill();
         }
+
         animId = requestAnimationFrame(draw);
       }
 
       function init() {
         if (animId) cancelAnimationFrame(animId);
-        measure(); makeDots(); draw();
+        measure();
+        makeDots();
+        draw();
       }
 
       var resizeTimer;
@@ -1022,7 +823,6 @@
       }
     })();
 
-    /* ── VIDEO ── */
     (function () {
       var video = document.querySelector('.hero-video');
       if (!video) return;
@@ -1037,7 +837,6 @@
       });
     })();
 
-    /* ── FADE IN ── */
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (e, i) {
         if (e.isIntersecting) {
@@ -1048,7 +847,7 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-in').forEach(function (el) { observer.observe(el); });
 
-    /* ── GAMES DATA ── */
+    // ── GAMES DATA ──
     var games = [
       { id: '134763881293027', name: 'Steal from Brainrots',               img: 'steal.png',  peak: 170000 },
       { id: '78471443847948',  name: 'Pew Pew Blocks',                     img: 'pewpew.png', peak: 8000   },
@@ -1068,6 +867,7 @@
       { id: '91350524990442',  name: "Don't Get Caught For Hackers",       img: 'hack.png',   peak: 10000  },
       { id: '110690600130381', name: 'Fight for Hackers',                  img: 'fight.png',  peak: 7000   },
       { id: '124083111510656', name: "Survive Anton Chigurh's Tractor",    img: 'truck.png',  peak: 0      },
+      { id: '114204398207377', name: 'Survive Zombie Arena',               img: 'zombie.png', peak: 154000 },
     ];
 
     var allTimePeak = {};
@@ -1083,7 +883,8 @@
       var a = document.createElement('a');
       a.className = 'mq-card';
       a.href = 'https://www.roblox.com/games/' + game.id;
-      a.target = '_blank'; a.rel = 'noopener';
+      a.target = '_blank';
+      a.rel = 'noopener';
       var peakBadge = game.peak ? '<span class="mq-badge" data-peak="' + game.id + '">— peak</span>' : '';
       a.innerHTML =
         '<img src="' + game.img + '" alt="' + game.name + '" loading="lazy" />' +
@@ -1129,7 +930,7 @@
     }
 
     function smoothRoll(el, newVal) {
-      var id = el.dataset.rafId || Math.random();
+      var id   = el.dataset.rafId || Math.random();
       el.dataset.rafId = id;
       if (rafs[id]) cancelAnimationFrame(rafs[id]);
       var from  = parseFloat(el.dataset.rv || 0) || 0;
@@ -1154,7 +955,7 @@
         requestAnimationFrame(function () {
           setTimeout(function () { animateCountUp(document.getElementById('stat-peak-single'), 252000, 1600); }, 0);
           setTimeout(function () { animateCountUp(document.getElementById('stat-total-ccu'),   918000, 1800); }, 100);
-          setTimeout(function () { animateCountUp(document.getElementById('stat-games'),        18,     900); }, 200);
+          setTimeout(function () { animateCountUp(document.getElementById('stat-games'),        19,     900); }, 200);
           setTimeout(function () {
             var el = document.getElementById('stat-years');
             animateCountUp(el, 2, 700);
@@ -1166,8 +967,9 @@
     }
     animateStaticStats();
 
-    var universeMap  = null;
-    var isFirstFetch = true;
+    var universeMap   = null;
+    var topPlaceId    = null;
+    var isFirstFetch  = true;
 
     async function getUniverseMap() {
       if (universeMap) return universeMap;
@@ -1187,6 +989,7 @@
     }
 
     function updateTopCard(placeId, playingCount) {
+      topPlaceId = placeId;
       var game = games.find(function (g) { return g.id === placeId; });
       if (!game) return;
       document.getElementById('top-card').href = 'https://www.roblox.com/games/' + game.id;
@@ -1196,7 +999,7 @@
       var ccuEl = document.getElementById('top-ccu');
       if (isFirstFetch) animateCountUp(ccuEl, playingCount, 1400);
       else smoothRoll(ccuEl, playingCount);
-      var peakEl        = document.getElementById('top-peak');
+      var peakEl       = document.getElementById('top-peak');
       var effectivePeak = Math.max(allTimePeak[placeId] || 0, playingCount);
       if (effectivePeak > (allTimePeak[placeId] || 0)) allTimePeak[placeId] = effectivePeak;
       peakEl.textContent = effectivePeak > 0
