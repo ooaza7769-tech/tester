@@ -1090,7 +1090,7 @@
   }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.fade-in').forEach(function (el) { fadeObserver.observe(el); });
 
-  // GAMES DATA
+  // ─── GAMES DATA ───────────────────────────────────────────────────────────
   var games = [
     { id: '134763881293027', name: 'Steal from Brainrots',            img: 'steal.png',     peak: 170000 },
     { id: '78471443847948',  name: 'Pew Pew Blocks',                  img: 'pewpew.png',    peak: 8000   },
@@ -1115,12 +1115,13 @@
     { id: '105007075895966', name: 'Survive the Backrooms',           img: 'backrooms.png', peak: 10000  },
     { id: '139054513518556', name: 'Be A Hair',                       img: 'hair.png',      peak: 5000   },
     { id: '93466613073564',  name: 'Scoped',                          img: 'scoped.png',    peak: 10000  },
+    { id: '122889506854558', name: 'Find and snipe Brainrot',         img: 'find.png',      peak: 20000  },
   ];
 
   var allTimePeak = {};
   games.forEach(function (g) { if (g.peak) allTimePeak[g.id] = g.peak; });
 
-  // MARQUEE
+  // ─── MARQUEE BUILD ────────────────────────────────────────────────────────
   function formatNum(n) {
     if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
     if (n >= 1000)    return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
@@ -1162,7 +1163,7 @@
     row2.appendChild(frag2);
   })();
 
-  // COUNT-UP ANIMATIONS
+  // ─── COUNT-UP ANIMATIONS ──────────────────────────────────────────────────
   var rafs = {};
 
   function animateCountUp(el, target, duration) {
@@ -1202,8 +1203,8 @@
       if (!entries[0].isIntersecting) return;
       io.disconnect();
       animateCountUp(document.getElementById('stat-peak-single'), 252000, 1500);
-      animateCountUp(document.getElementById('stat-total-ccu'),   1097000, 1700);
-      animateCountUp(document.getElementById('stat-games'),        23,     850);
+      animateCountUp(document.getElementById('stat-total-ccu'),   1117000, 1700);
+      animateCountUp(document.getElementById('stat-games'),        24,     850);
       var el = document.getElementById('stat-years');
       animateCountUp(el, 2, 650);
       setTimeout(function () { el.textContent = '2+'; }, 700);
@@ -1211,27 +1212,44 @@
     io.observe(grid);
   })();
 
-  // API FETCH
-  var universeMap  = null;
+  // ─── API FETCH — fast-load fix ────────────────────────────────────────────
+  // Universe map is fetched immediately (before DOM ready) with retry support.
+  // fetchData() is called as soon as the map is ready — no waiting for intervals.
+
   var isFirstFetch = true;
 
-  async function prefetchUniverseMap() {
+  // Fetch a single URL with up to `retries` retries on failure
+  async function fetchWithRetry(url, retries) {
+    retries = retries || 3;
+    var delay = 300;
+    for (var i = 0; i < retries; i++) {
+      try {
+        var res = await fetch(url);
+        if (res.ok) return res;
+      } catch (e) { /* network error, will retry */ }
+      if (i < retries - 1) await new Promise(function(r){ setTimeout(r, delay); });
+      delay *= 2;
+    }
+    throw new Error('fetch failed after retries: ' + url);
+  }
+
+  // Build placeId → universeId map in parallel with retries
+  async function buildUniverseMap() {
     var results = await Promise.allSettled(
       games.map(async function (g) {
-        var res = await fetch('https://apis.roproxy.com/universes/v1/places/' + g.id + '/universe');
-        if (!res.ok) throw new Error('failed');
+        var res = await fetchWithRetry(
+          'https://apis.roproxy.com/universes/v1/places/' + g.id + '/universe', 3
+        );
         var json = await res.json();
         return { universeId: String(json.universeId), placeId: g.id };
       })
     );
-    universeMap = {};
+    var map = {};
     results.forEach(function (r) {
-      if (r.status === 'fulfilled') universeMap[r.value.universeId] = r.value.placeId;
+      if (r.status === 'fulfilled') map[r.value.universeId] = r.value.placeId;
     });
-    return universeMap;
+    return map;
   }
-
-  var universeMapPromise = prefetchUniverseMap();
 
   function updateTopCard(placeId, playingCount) {
     var game = games.find(function (g) { return g.id === placeId; });
@@ -1249,14 +1267,14 @@
       ? 'All-time peak: ' + formatNum(effectivePeak) + ' concurrent players' : '';
   }
 
-  async function fetchData() {
+  async function fetchData(uMap) {
     try {
-      var uMap = await universeMapPromise;
       var universeIds = Object.keys(uMap);
       if (!universeIds.length) return;
 
-      var res = await fetch('https://games.roproxy.com/v1/games?universeIds=' + universeIds.join(','));
-      if (!res.ok) throw new Error('games fetch failed');
+      var res = await fetchWithRetry(
+        'https://games.roproxy.com/v1/games?universeIds=' + universeIds.join(','), 3
+      );
       var json = await res.json();
 
       var totalPlaying = 0, totalVisits = 0, topGame = null, topCount = -1;
@@ -1306,8 +1324,19 @@
     }
   }
 
-  fetchData();
-  setInterval(fetchData, 60000);
+  // Kick everything off immediately — don't wait for DOMContentLoaded
+  // The universe map fetch starts in parallel with page render.
+  var universeMapPromise = buildUniverseMap();
+
+  universeMapPromise.then(function (uMap) {
+    // First fetch fires as soon as the map is ready (typically < 1s)
+    fetchData(uMap);
+    // Then refresh every 60s
+    setInterval(function () { fetchData(uMap); }, 60000);
+  }).catch(function (e) {
+    console.warn('Universe map error:', e.message);
+  });
+
   </script>
 
 </body>
