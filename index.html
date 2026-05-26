@@ -218,9 +218,35 @@
       letter-spacing: -0.04em;
       color: var(--text);
       margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeup 0.7s 0.1s cubic-bezier(.22,1,.36,1) forwards;
       transition: color 0.3s;
+    }
+
+    .roller {
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      overflow: hidden;
+      padding: 10px 0;
+    }
+
+    .roller-item {
+      grid-area: 1 / 1;
+      opacity: 0;
+      transform: translateY(60px);
+      filter: blur(4px);
+      animation: rollText 9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+
+    .roller-item:nth-child(1) { animation-delay: 0s; }
+    .roller-item:nth-child(2) { animation-delay: 3s; }
+    .roller-item:nth-child(3) { animation-delay: 6s; }
+
+    @keyframes rollText {
+      0% { opacity: 0; transform: translateY(60px); filter: blur(4px); }
+      5% { opacity: 1; transform: translateY(0); filter: blur(0); }
+      28% { opacity: 1; transform: translateY(0); filter: blur(0); }
+      33% { opacity: 0; transform: translateY(-60px); filter: blur(4px); }
+      100% { opacity: 0; transform: translateY(-60px); filter: blur(4px); }
     }
 
     .hero h1 em {
@@ -230,12 +256,12 @@
       font-family: 'Instrument Sans', sans-serif;
     }
 
-    .hero-sub {
-      font-size: 16px;
-      color: var(--text-mid);
+   .hero-sub {
+      font-size: 18px; /* Zwiększone z 16px */
+      color: var(--text); /* Zmienione z szarego na główny jasny tekst */
       line-height: 1.7;
-      max-width: 400px;
-      font-weight: 300;
+      max-width: 480px;
+      font-weight: 400; /* Zwiększona grubość z 300 */
       opacity: 0;
       animation: fadeup 0.7s 0.28s cubic-bezier(.22,1,.36,1) forwards;
       transition: color 0.3s;
@@ -430,8 +456,8 @@
       line-height: 1;
     }
 
-    .top-playing-label { font-size: 13px; color: var(--text-mid); font-weight: 300; }
-    .top-playing-peak  { font-size: 12px; color: var(--text-mid); font-weight: 300; }
+    .top-playing-label { font-size: 14px; color: var(--text); font-weight: 400; opacity: 0.9; }
+    .top-playing-peak  { font-size: 13px; color: var(--text); font-weight: 400; opacity: 0.7; }eight: 300; }
 
     .top-playing-card::before {
       content: '';
@@ -500,12 +526,13 @@
       transition: color 0.3s;
     }
 
-    .mq-card-ccu {
+   .mq-card-ccu {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
-      color: var(--text-mid);
+      font-size: 12px; /* Powiększone z 11px */
+      color: var(--text); /* Zmienione na jasny kolor */
+      font-weight: 500; /* Pogrubione dla lepszej czytelności liczb */
       flex-wrap: wrap;
     }
 
@@ -682,7 +709,7 @@
       .nav-hamburger { display: flex; }
       .hero { padding: 0 20px; min-height: 100svh; }
       .hero h1 { font-size: clamp(44px, 13vw, 72px); margin-bottom: 20px; }
-      .hero-sub { font-size: 15px; max-width: 320px; }
+      .hero-sub { font-size: 16px; max-width: 360px; }
       section { padding: 48px 20px; }
       .section-title { font-size: 26px; }
       .stats-big-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -750,10 +777,12 @@
 
   <div class="hero">
     <video class="hero-video" id="hero-video" muted loop playsinline preload="auto" src="background.mp4"></video>
-    <h1>
-      Quality<br>
-      <em>Assurance</em><br>
-      Tester.
+  <h1>
+      <div class="roller">
+        <div class="roller-item">Roblox QA<br><em>Specialist.</em></div>
+        <div class="roller-item">Roblox Bug<br><em>Hunter.</em></div>
+        <div class="roller-item">Quality Assurance<br><em>Tester.</em></div>
+      </div>
     </h1>
     <p class="hero-sub">
       Hi, I'm 0aza. I test high-traffic Roblox titles and find bugs before players do.
@@ -1212,13 +1241,9 @@
     io.observe(grid);
   })();
 
-  // ─── API FETCH — fast-load fix ────────────────────────────────────────────
-  // Universe map is fetched immediately (before DOM ready) with retry support.
-  // fetchData() is called as soon as the map is ready — no waiting for intervals.
-
+  // ─── API FETCH — Błyskawiczne ładowanie i Cache ─────────────────────────
   var isFirstFetch = true;
 
-  // Fetch a single URL with up to `retries` retries on failure
   async function fetchWithRetry(url, retries) {
     retries = retries || 3;
     var delay = 300;
@@ -1226,28 +1251,38 @@
       try {
         var res = await fetch(url);
         if (res.ok) return res;
-      } catch (e) { /* network error, will retry */ }
+      } catch (e) { /* cicha próba ponowienia */ }
       if (i < retries - 1) await new Promise(function(r){ setTimeout(r, delay); });
       delay *= 2;
     }
-    throw new Error('fetch failed after retries: ' + url);
+    throw new Error('fetch failed after retries');
   }
 
-  // Build placeId → universeId map in parallel with retries
   async function buildUniverseMap() {
+    var cached = localStorage.getItem('universeMapCache');
+    var map = cached ? JSON.parse(cached) : {};
+
+    var missingGames = games.filter(function(g) {
+      return !Object.values(map).includes(String(g.id));
+    });
+
+    if (missingGames.length === 0) return map;
+
     var results = await Promise.allSettled(
-      games.map(async function (g) {
-        var res = await fetchWithRetry(
-          'https://apis.roproxy.com/universes/v1/places/' + g.id + '/universe', 3
-        );
+      missingGames.map(async function (g) {
+        var res = await fetchWithRetry('https://apis.roproxy.com/universes/v1/places/' + g.id + '/universe', 3);
         var json = await res.json();
-        return { universeId: String(json.universeId), placeId: g.id };
+        return { universeId: String(json.universeId), placeId: String(g.id) };
       })
     );
-    var map = {};
+
     results.forEach(function (r) {
-      if (r.status === 'fulfilled') map[r.value.universeId] = r.value.placeId;
+      if (r.status === 'fulfilled' && r.value.universeId) {
+        map[r.value.universeId] = r.value.placeId;
+      }
     });
+
+    localStorage.setItem('universeMapCache', JSON.stringify(map));
     return map;
   }
 
@@ -1267,74 +1302,80 @@
       ? 'All-time peak: ' + formatNum(effectivePeak) + ' concurrent players' : '';
   }
 
+  function renderData(json, uMap) {
+    var totalPlaying = 0, totalVisits = 0, topGame = null, topCount = -1;
+
+    requestAnimationFrame(function () {
+      json.data.forEach(function (g) {
+        var pid = uMap[String(g.id)];
+        if (!pid) return;
+        var playing = g.playing || 0;
+        var visits  = g.visits  || 0;
+        totalPlaying += playing;
+        totalVisits  += visits;
+
+        document.querySelectorAll('[data-live="' + pid + '"]').forEach(function (el) {
+          isFirstFetch ? animateCountUp(el, playing, 1100) : smoothRoll(el, playing);
+        });
+        document.querySelectorAll('[data-visits="' + pid + '"]').forEach(function (el) {
+          isFirstFetch ? animateCountUp(el, visits, 1500) : smoothRoll(el, visits);
+        });
+
+        var ep = Math.max(allTimePeak[pid] || 0, playing);
+        allTimePeak[pid] = ep;
+        document.querySelectorAll('[data-peak="' + pid + '"]').forEach(function (el) {
+          if (ep && isFirstFetch) {
+            animateCountUp(el, ep, 1300);
+            setTimeout(function () { el.textContent = formatNum(ep) + ' peak CCU'; }, 1350);
+          } else if (ep) {
+            el.textContent = formatNum(ep) + ' peak CCU';
+          }
+        });
+
+        if (playing > topCount) { topCount = playing; topGame = { placeId: pid, count: playing }; }
+      });
+
+      if (topGame) updateTopCard(topGame.placeId, topGame.count);
+
+      var elPlaying = document.getElementById('total-playing');
+      if (elPlaying) isFirstFetch ? animateCountUp(elPlaying, totalPlaying, 1700) : smoothRoll(elPlaying, totalPlaying);
+
+      var elVisits = document.getElementById('total-visits');
+      if (elVisits) isFirstFetch ? animateCountUp(elVisits, totalVisits, 1900) : smoothRoll(elVisits, totalVisits);
+
+      isFirstFetch = false;
+    });
+  }
+
   async function fetchData(uMap) {
     try {
       var universeIds = Object.keys(uMap);
       if (!universeIds.length) return;
 
-      var res = await fetchWithRetry(
-        'https://games.roproxy.com/v1/games?universeIds=' + universeIds.join(','), 3
-      );
+      var cachedStats = localStorage.getItem('robloxStatsCache');
+      if (cachedStats && isFirstFetch) {
+          renderData(JSON.parse(cachedStats), uMap);
+          isFirstFetch = false;
+      }
+
+      var res = await fetchWithRetry('https://games.roproxy.com/v1/games?universeIds=' + universeIds.join(','), 3);
       var json = await res.json();
 
-      var totalPlaying = 0, totalVisits = 0, topGame = null, topCount = -1;
+      localStorage.setItem('robloxStatsCache', JSON.stringify(json));
+      renderData(json, uMap);
 
-      requestAnimationFrame(function () {
-        json.data.forEach(function (g) {
-          var pid     = uMap[String(g.id)];
-          if (!pid) return;
-          var playing = g.playing || 0;
-          var visits  = g.visits  || 0;
-          totalPlaying += playing;
-          totalVisits  += visits;
-
-          document.querySelectorAll('[data-live="' + pid + '"]').forEach(function (el) {
-            isFirstFetch ? animateCountUp(el, playing, 1100) : smoothRoll(el, playing);
-          });
-          document.querySelectorAll('[data-visits="' + pid + '"]').forEach(function (el) {
-            isFirstFetch ? animateCountUp(el, visits, 1500) : smoothRoll(el, visits);
-          });
-
-          var ep = Math.max(allTimePeak[pid] || 0, playing);
-          allTimePeak[pid] = ep;
-          document.querySelectorAll('[data-peak="' + pid + '"]').forEach(function (el) {
-            if (ep && isFirstFetch) {
-              animateCountUp(el, ep, 1300);
-              setTimeout(function () { el.textContent = formatNum(ep) + ' peak CCU'; }, 1350);
-            } else if (ep) {
-              el.textContent = formatNum(ep) + ' peak CCU';
-            }
-          });
-
-          if (playing > topCount) { topCount = playing; topGame = { placeId: pid, count: playing }; }
-        });
-
-        if (topGame) updateTopCard(topGame.placeId, topGame.count);
-
-        var elPlaying = document.getElementById('total-playing');
-        if (elPlaying) isFirstFetch ? animateCountUp(elPlaying, totalPlaying, 1700) : smoothRoll(elPlaying, totalPlaying);
-
-        var elVisits = document.getElementById('total-visits');
-        if (elVisits) isFirstFetch ? animateCountUp(elVisits, totalVisits, 1900) : smoothRoll(elVisits, totalVisits);
-
-        isFirstFetch = false;
-      });
     } catch (e) {
-      console.warn('RoProxy error:', e.message);
+      console.warn('Błąd sieci/RoProxy:', e.message);
     }
   }
 
-  // Kick everything off immediately — don't wait for DOMContentLoaded
-  // The universe map fetch starts in parallel with page render.
   var universeMapPromise = buildUniverseMap();
 
   universeMapPromise.then(function (uMap) {
-    // First fetch fires as soon as the map is ready (typically < 1s)
     fetchData(uMap);
-    // Then refresh every 60s
     setInterval(function () { fetchData(uMap); }, 60000);
   }).catch(function (e) {
-    console.warn('Universe map error:', e.message);
+    console.warn('Wystąpił błąd przy budowaniu Universe Map:', e.message);
   });
 
   </script>
