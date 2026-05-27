@@ -378,19 +378,21 @@
       padding: 0 48px;
     }
 
-    .top-playing-card {
-      display: flex;
-      align-items: center;
-      border-radius: var(--radius);
-      border: 2px solid var(--gold);
-      background: var(--bg-card);
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-      transition: box-shadow 0.25s, background 0.3s;
-      position: relative;
-      box-shadow: 0 0 0 4px var(--gold-glow);
-    }
+.top-playing-card {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius);
+  border: 2px solid var(--gold);
+  background: var(--bg-card);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.25s, background 0.3s, transform 0.08s ease-out;
+  position: relative;
+  box-shadow: 0 0 0 4px var(--gold-glow);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
 
     .top-playing-card:hover { box-shadow: 0 0 0 6px var(--gold-glow), 0 12px 32px rgba(0,0,0,0.15); }
 
@@ -489,19 +491,21 @@
     @keyframes marquee-left  { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
     @keyframes marquee-right { from { transform: translate3d(-50%,0,0); } to { transform: translate3d(0,0,0); } }
 
-    .mq-card {
-      flex-shrink: 0;
-      width: 280px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-      color: inherit;
-      transition: box-shadow 0.25s, background 0.3s, border-color 0.3s;
-    }
+.mq-card {
+  flex-shrink: 0;
+  width: 280px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.25s, background 0.3s, border-color 0.3s, transform 0.08s ease-out;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
 
     .mq-card:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.15); }
 
@@ -708,7 +712,7 @@
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
       .hero { padding: 0 20px; min-height: 100svh; }
-      .hero h1 { font-size: clamp(44px, 13vw, 72px); margin-bottom: 20px; }
+      .hero h1 { font-size: clamp(32px, 10vw, 60px); margin-bottom: 20px; }
       .hero-sub { font-size: 16px; max-width: 360px; }
       section { padding: 48px 20px; }
       .section-title { font-size: 26px; }
@@ -735,7 +739,7 @@
     @media (max-width: 420px) {
       .stats-big-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: clamp(40px, 14vw, 60px); }
+      .hero h1 { font-size: clamp(28px, 9vw, 48px); }
     }
 
     @media (hover: none) {
@@ -797,7 +801,6 @@
 
     <section id="stats">
       <div class="section-header fade-in">
-        <span class="section-num">00</span>
         <h2 class="section-title">By the numbers</h2>
       </div>
       <div class="stats-big-grid fade-in">
@@ -830,7 +833,6 @@
 
     <section id="work" class="marquee-section">
       <div class="section-header fade-in">
-        <span class="section-num">01</span>
         <h2 class="section-title">Games I've tested</h2>
       </div>
 
@@ -860,7 +862,6 @@
 
     <section id="skills">
       <div class="section-header fade-in">
-        <span class="section-num">02</span>
         <h2 class="section-title">What I bring</h2>
       </div>
       <div class="skills-grid">
@@ -1376,7 +1377,55 @@
     setInterval(function () { fetchData(uMap); }, 60000);
   }).catch(function (e) {
     console.warn('Wystąpił błąd przy budowaniu Universe Map:', e.message);
-  });
+});
+
+// 3D TILT ON GAME CARDS + TOP CARD
+  (function () {
+    var MAX_TILT_SMALL = 22;
+    var MAX_TILT_BIG   = 14;
+    var SCALE_SMALL    = 1.07;
+    var SCALE_BIG      = 1.03;
+
+    function applyTilt(card, e, maxTilt, scale) {
+      var rect = card.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width  - 0.5;
+      var y = (e.clientY - rect.top)  / rect.height - 0.5;
+      var rotY =  x * maxTilt * 2;
+      var rotX = -y * maxTilt;
+      var shadow = 'rgba(0,0,0,0.35)';
+      var lift = Math.abs(x) + Math.abs(y);
+      card.style.transform = 'perspective(500px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(' + scale + ')';
+      card.style.boxShadow = '0 ' + (12 + lift * 30) + 'px ' + (30 + lift * 60) + 'px ' + shadow;
+    }
+
+    function resetTilt(card, isTop) {
+      card.style.transition = 'transform 0.5s cubic-bezier(.22,1,.36,1), box-shadow 0.4s';
+      card.style.transform  = 'perspective(500px) rotateX(0deg) rotateY(0deg) scale(1)';
+      card.style.boxShadow  = isTop ? '0 0 0 4px var(--gold-glow)' : '';
+      setTimeout(function () { card.style.transition = ''; }, 500);
+    }
+
+    document.addEventListener('mousemove', function (e) {
+      var small = e.target.closest('.mq-card');
+      var big   = e.target.closest('.top-playing-card');
+      if (small) {
+        small.style.transition = 'transform 0.06s ease-out';
+        applyTilt(small, e, MAX_TILT_SMALL, SCALE_SMALL);
+      }
+      if (big) {
+        big.style.transition = 'transform 0.06s ease-out';
+        applyTilt(big, e, MAX_TILT_BIG, SCALE_BIG);
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseout', function (e) {
+      var small = e.target.closest && e.target.closest('.mq-card');
+      var big   = e.target.closest && e.target.closest('.top-playing-card');
+      var to    = e.relatedTarget;
+      if (small && (!to || !small.contains(to))) resetTilt(small, false);
+      if (big   && (!to || !big.contains(to)))   resetTilt(big,   true);
+    }, { passive: true });
+  })();
 
   </script>
 
