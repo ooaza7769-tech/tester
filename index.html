@@ -257,11 +257,11 @@
     }
 
    .hero-sub {
-      font-size: 18px; /* Zwiększone z 16px */
-      color: var(--text); /* Zmienione z szarego na główny jasny tekst */
+      font-size: 18px;
+      color: var(--text);
       line-height: 1.7;
       max-width: 480px;
-      font-weight: 400; /* Zwiększona grubość z 300 */
+      font-weight: 400;
       opacity: 0;
       animation: fadeup 0.7s 0.28s cubic-bezier(.22,1,.36,1) forwards;
       transition: color 0.3s;
@@ -459,7 +459,7 @@
     }
 
     .top-playing-label { font-size: 14px; color: var(--text); font-weight: 400; opacity: 0.9; }
-    .top-playing-peak  { font-size: 13px; color: var(--text); font-weight: 400; opacity: 0.7; }eight: 300; }
+    .top-playing-peak  { font-size: 13px; color: var(--text); font-weight: 400; opacity: 0.7; }
 
     .top-playing-card::before {
       content: '';
@@ -534,9 +534,9 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px; /* Powiększone z 11px */
-      color: var(--text); /* Zmienione na jasny kolor */
-      font-weight: 500; /* Pogrubione dla lepszej czytelności liczb */
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 500;
       flex-wrap: wrap;
     }
 
@@ -1146,6 +1146,11 @@
     { id: '139054513518556', name: 'Be A Hair',                       img: 'hair.png',      peak: 5000   },
     { id: '93466613073564',  name: 'Scoped',                          img: 'scoped.png',    peak: 10000  },
     { id: '122889506854558', name: 'Find and snipe Brainrot',         img: 'find.png',      peak: 20000  },
+    { id: '91746497060666',  name: 'My Jail Cell',                    img: 'jail.png',      peak: 20000  },
+    { id: '109422846863419', name: 'Lasso a Brainrot',                img: 'lasso.png',     peak: 10000  },
+    { id: '105215477731035', name: 'Pole Obby for Brainrots',         img: 'pole.png',      peak: 10000  },
+    { id: '100034344773758', name: 'Generic Blood Sandbox Shooter',   img: 'generic.png',   peak: 20000  },
+    { id: '130361766615221', name: 'Get Fat to Splash',               img: 'fat.png',       peak: 9000   },
   ];
 
   var allTimePeak = {};
@@ -1233,8 +1238,8 @@
       if (!entries[0].isIntersecting) return;
       io.disconnect();
       animateCountUp(document.getElementById('stat-peak-single'), 252000, 1500);
-      animateCountUp(document.getElementById('stat-total-ccu'),   1117000, 1700);
-      animateCountUp(document.getElementById('stat-games'),        24,     850);
+      animateCountUp(document.getElementById('stat-total-ccu'),   1186000, 1700);
+      animateCountUp(document.getElementById('stat-games'),        29,     850);
       var el = document.getElementById('stat-years');
       animateCountUp(el, 2, 650);
       setTimeout(function () { el.textContent = '2+'; }, 700);
@@ -1242,7 +1247,7 @@
     io.observe(grid);
   })();
 
-  // ─── API FETCH — Błyskawiczne ładowanie i Cache ─────────────────────────
+  // ─── API FETCH ─────────────────────────────────────────────────────────────
   var isFirstFetch = true;
 
   async function fetchWithRetry(url, retries) {
@@ -1252,7 +1257,7 @@
       try {
         var res = await fetch(url);
         if (res.ok) return res;
-      } catch (e) { /* cicha próba ponowienia */ }
+      } catch (e) { /* silent retry */ }
       if (i < retries - 1) await new Promise(function(r){ setTimeout(r, delay); });
       delay *= 2;
     }
@@ -1366,7 +1371,7 @@
       renderData(json, uMap);
 
     } catch (e) {
-      console.warn('Błąd sieci/RoProxy:', e.message);
+      console.warn('Network/RoProxy error:', e.message);
     }
   }
 
@@ -1376,10 +1381,10 @@
     fetchData(uMap);
     setInterval(function () { fetchData(uMap); }, 60000);
   }).catch(function (e) {
-    console.warn('Wystąpił błąd przy budowaniu Universe Map:', e.message);
-});
+    console.warn('Error building Universe Map:', e.message);
+  });
 
-// 3D TILT ON GAME CARDS + TOP CARD
+  // 3D TILT ON GAME CARDS + TOP CARD
   (function () {
     var MAX_TILT_SMALL = 22;
     var MAX_TILT_BIG   = 14;
