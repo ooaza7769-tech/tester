@@ -1151,6 +1151,9 @@
     { id: '105215477731035', name: 'Pole Obby for Brainrots',         img: 'pole.png',      peak: 10000  },
     { id: '100034344773758', name: 'Generic Blood Sandbox Shooter',   img: 'generic.png',   peak: 20000  },
     { id: '130361766615221', name: 'Get Fat to Splash',               img: 'fat.png',       peak: 9000   },
+    { id: '74193805629461',  name: '1 Mine Per Click',                img: 'mine.png',      peak: 0      },
+    { id: '138078880987602', name: '1 Strength to Escape',            img: 'strength.png',  peak: 0      },
+    { id: '115681808123944', name: 'Throw a Coin',                    img: 'throw.png',     peak: 0      },
   ];
 
   var allTimePeak = {};
@@ -1239,7 +1242,7 @@
       io.disconnect();
       animateCountUp(document.getElementById('stat-peak-single'), 252000, 1500);
       animateCountUp(document.getElementById('stat-total-ccu'),   1186000, 1700);
-      animateCountUp(document.getElementById('stat-games'),        29,     850);
+      animateCountUp(document.getElementById('stat-games'),        32,     850);
       var el = document.getElementById('stat-years');
       animateCountUp(el, 2, 650);
       setTimeout(function () { el.textContent = '2+'; }, 700);
