@@ -1154,6 +1154,9 @@
     { id: '74193805629461',  name: '1 Mine Per Click',                img: 'mine.png',      peak: 0      },
     { id: '138078880987602', name: '1 Strength to Escape',            img: 'strength.png',  peak: 0      },
     { id: '115681808123944', name: 'Throw a Coin',                    img: 'throw.png',     peak: 0      },
+    { id: '109881277752094', name: 'Clean The Library',               img: 'clean.png',     peak: 10000  },
+    { id: '78515283254292',  name: 'Animal Hospital',                 img: 'animal.png',    peak: 30000  },
+    { id: '91704854174760',  name: 'Finish The Word',                 img: 'finish.png',    peak: 10000  },
   ];
 
   var allTimePeak = {};
@@ -1242,7 +1245,7 @@
       io.disconnect();
       animateCountUp(document.getElementById('stat-peak-single'), 252000, 1500);
       animateCountUp(document.getElementById('stat-total-ccu'),   1186000, 1700);
-      animateCountUp(document.getElementById('stat-games'),        32,     850);
+      animateCountUp(document.getElementById('stat-games'),        35,     850);
       var el = document.getElementById('stat-years');
       animateCountUp(el, 2, 650);
       setTimeout(function () { el.textContent = '2+'; }, 700);
