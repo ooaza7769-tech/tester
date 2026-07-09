@@ -180,7 +180,6 @@
       align-items: center; justify-content: center;
       text-align: center; padding: 0 24px;
       background: var(--bg);
-      perspective: 1000px; /* For 3D text effect */
       max-width: 100vw;
     }
 
@@ -201,8 +200,6 @@
 
     .hero-content {
       position: relative; z-index: 2;
-      transform-style: preserve-3d;
-      transition: transform 0.1s ease-out;
     }
 
     .hero h1 {
@@ -212,7 +209,6 @@
       letter-spacing: -0.04em; color: var(--text);
       margin-bottom: 24px;
       text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      transform: translateZ(30px); /* 3D pop */
     }
 
     .roller { display: grid; align-items: center; justify-items: center; overflow: hidden; padding: 10px 0; }
@@ -226,9 +222,9 @@
     .roller-item:nth-child(3) { animation-delay: 7.5s; }
 
     @keyframes rollText {
-      0% { opacity: 0; transform: translateY(60px) rotateX(-20deg); filter: blur(4px); }
-      5%, 28% { opacity: 1; transform: translateY(0) rotateX(0deg); filter: blur(0); }
-      33%, 100% { opacity: 0; transform: translateY(-60px) rotateX(20deg); filter: blur(4px); }
+      0% { opacity: 0; transform: translateY(60px); filter: blur(4px); }
+      5%, 28% { opacity: 1; transform: translateY(0); filter: blur(0); }
+      33%, 100% { opacity: 0; transform: translateY(-60px); filter: blur(4px); }
     }
 
     .hero h1 em {
@@ -243,12 +239,11 @@
       max-width: 500px; margin: 0 auto; font-weight: 400; opacity: 0;
       /* Delayed to sync with intro splash screen */
       animation: fadeup 1s 1.8s cubic-bezier(.22,1,.36,1) forwards;
-      transform: translateZ(10px);
     }
 
     @keyframes fadeup {
-      from { opacity: 0; transform: translateY(30px) translateZ(10px); }
-      to   { opacity: 1; transform: translateY(0) translateZ(10px); }
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     #particle-wrap { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
@@ -303,9 +298,7 @@
 
     .card-3d {
       position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
-      will-change: transform;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
       background: var(--bg-card);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -313,6 +306,13 @@
       border-radius: var(--radius);
       box-shadow: var(--card-shadow);
       overflow: hidden;
+    }
+
+    /* True 3D tilt is reserved for the top-playing card only */
+    .tilt-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+      will-change: transform;
     }
     
     .card-3d::after {
@@ -329,7 +329,6 @@
     .stats-big-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .stat-big-card {
       padding: 32px; display: flex; flex-direction: column; gap: 12px;
-      transform: translateZ(0);
     }
     .stat-big-card:hover { transform: translateY(-5px); border-color: var(--border-strong); }
     .stat-big-card.accent { background: var(--accent); border-color: var(--accent); }
@@ -337,13 +336,11 @@
     .stat-big-num {
       font-family: 'Syne', sans-serif; font-size: clamp(32px, 4vw, 52px);
       font-weight: 800; letter-spacing: -0.04em; color: var(--text); line-height: 1;
-      transform: translateZ(20px); /* Inner 3D pop */
     }
     .stat-big-card.accent .stat-big-num { color: #1a2600; }
     
     .stat-big-label {
       font-size: 14px; color: var(--text-mid); font-weight: 500;
-      transform: translateZ(10px);
     }
     .stat-big-card.accent .stat-big-label { color: rgba(26,38,0,0.8); }
 
@@ -395,9 +392,8 @@
       display: flex; flex-direction: column; gap: 24px; overflow: hidden;
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
       mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-      perspective: 800px;
     }
-    .marquee-row { display: flex; gap: 24px; width: max-content; will-change: transform; transform-style: preserve-3d; }
+    .marquee-row { display: flex; gap: 24px; width: max-content; will-change: transform; }
     .marquee-row.left  { animation: marquee-left  50s linear infinite; }
     .marquee-row.right { animation: marquee-right 50s linear infinite; }
     
@@ -410,9 +406,9 @@
     }
     .mq-card img {
       width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px;
-      transform: translateZ(15px); box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .mq-card-body { padding: 16px 8px 8px; display: flex; flex-direction: column; gap: 8px; transform: translateZ(25px); }
+    .mq-card-body { padding: 16px 8px 8px; display: flex; flex-direction: column; gap: 8px; }
     .mq-card-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .mq-card-ccu { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); font-weight: 600; }
     .mq-card-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; animation: livepulse 2s ease-in-out infinite; box-shadow: 0 0 8px #4ade80; }
@@ -425,21 +421,20 @@
     .skill-card {
       padding: 28px; display: flex; flex-direction: column; gap: 12px;
     }
-    .skill-card:hover { transform: translateY(-5px) scale(1.02); }
-    .skill-icon { font-size: 28px; margin-bottom: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); transform: translateZ(20px); }
-    .skill-name { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); transform: translateZ(15px); }
-    .skill-desc { font-size: 14px; color: var(--text-mid); line-height: 1.6; font-weight: 400; transform: translateZ(10px); }
+    .skill-card:hover { transform: translateY(-5px); }
+    .skill-icon { font-size: 28px; margin-bottom: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
+    .skill-name { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); }
+    .skill-desc { font-size: 14px; color: var(--text-mid); line-height: 1.6; font-weight: 400; }
 
     /* CONTACT */
     .contact-box {
       padding: 64px; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap;
       background: var(--contact-box-bg) url('data:image/svg+xml;utf8,<svg opacity="0.03" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="white"/></svg>');
     }
-    .contact-left { transform: translateZ(20px); }
     .contact-left h2 { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; color: var(--contact-h2); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
     .contact-left p { font-size: 16px; color: var(--contact-p); font-weight: 400; line-height: 1.6; max-width: 400px; }
     
-    .contact-btns { display: flex; gap: 16px; flex-wrap: wrap; transform: translateZ(30px); }
+    .contact-btns { display: flex; gap: 16px; flex-wrap: wrap; }
     .btn {
       display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; border-radius: 99px;
       font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none;
@@ -455,8 +450,8 @@
     .footer-note { font-size: 13px; color: var(--text-mid); font-weight: 500; }
 
     /* ANIMATIONS */
-    .fade-in { opacity: 0; transform: translateY(30px) translateZ(0); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform, opacity; }
-    .fade-in.visible { opacity: 1; transform: translateY(0) translateZ(0); }
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform, opacity; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     /* MOBILE MENU */
     .nav-hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; padding: 8px; background: none; border: none; z-index: 101; }
@@ -496,7 +491,7 @@
     }
     
     @media (hover: none) {
-      .card-3d { transform: none !important; box-shadow: var(--card-shadow) !important; }
+      .tilt-3d { transform: none !important; box-shadow: var(--card-shadow) !important; }
       .card-3d::after { display: none; }
     }
   </style>
@@ -597,7 +592,7 @@
       </div>
 
       <div class="top-playing-wrap fade-in">
-        <a class="top-playing-card card-3d" id="top-card" href="#" target="_blank" rel="noopener">
+        <a class="top-playing-card card-3d tilt-3d" id="top-card" href="#" target="_blank" rel="noopener">
           <img class="top-playing-img" id="top-img" src="" alt="" loading="lazy" />
           <div class="top-playing-body">
             <div class="top-playing-badge">
@@ -737,7 +732,7 @@
     });
   })();
 
-  // ─── HERO VIDEO & 3D PARALLAX ───
+  // ─── HERO VIDEO ───
   (function () {
     const v = document.getElementById('hero-video');
     if (v) {
@@ -746,35 +741,17 @@
       v.addEventListener('canplay', () => v.classList.add('loaded'), { once: true });
       if (v.readyState >= 3) v.classList.add('loaded');
     }
-
-    // 3D Mouse Move effect for Hero Text
-    const heroSection = document.getElementById('hero-section');
-    const heroContent = document.getElementById('hero-content');
-    
-    heroSection.addEventListener('mousemove', (e) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 20; // max 20deg tilt
-      const y = (e.clientY / innerHeight - 0.5) * -20;
-      heroContent.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
-    });
-    heroSection.addEventListener('mouseleave', () => {
-      heroContent.style.transform = `rotateX(0deg) rotateY(0deg)`;
-    });
   })();
 
-  // ─── 3D PARTICLES (PARALLAX) ───
+  // ─── PARTICLES (FLAT, 2D) ───
   (function () {
     const wrap = document.getElementById('particle-wrap');
     const canvas = document.getElementById('particle-bg');
     const ctx = canvas.getContext('2d');
     const content = document.getElementById('below-hero');
     let animId, W, H, dots;
-    
-    // Mouse coords for subtle particle interaction
-    let mx = -1000, my = -1000;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY + window.scrollY; }, {passive: true});
 
-    const DOT_MIN = 1.5, DOT_MAX = 4;
+    const DOT_MIN = 1.5, DOT_MAX = 3;
     const DENSITY = 14000;
 
     function getColor() {
@@ -798,65 +775,31 @@
 
     function makeDots() {
       const count = Math.max(40, Math.min(150, Math.round((W * H) / DENSITY)));
-      dots = Array.from({ length: count }, () => {
-        const z = Math.random() * 0.8 + 0.2; // depth 0.2 (far) to 1.0 (near)
-        return {
-          x: Math.random() * W,
-          y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.4 * z,
-          vy: (Math.random() - 0.5) * 0.4 * z,
-          r: (DOT_MIN + Math.random() * (DOT_MAX - DOT_MIN)) * z,
-          z: z
-        };
-      });
+      dots = Array.from({ length: count }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: DOT_MIN + Math.random() * (DOT_MAX - DOT_MIN)
+      }));
     }
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
       const col = getColor();
-      const n = dots.length;
 
-      for (let i = 0; i < n; i++) {
+      for (let i = 0; i < dots.length; i++) {
         let d = dots[i];
-        
-        // Mouse interaction based on Z-depth (parallax)
-        let dxMouse = mx - d.x;
-        let dyMouse = my - (d.y + content.offsetTop);
-        let distMouse = Math.sqrt(dxMouse*dxMouse + dyMouse*dyMouse);
-        
-        if (distMouse < 150) {
-           d.x -= (dxMouse / distMouse) * 0.5 * d.z;
-           d.y -= (dyMouse / distMouse) * 0.5 * d.z;
-        }
-
         d.x += d.vx;
         d.y += d.vy;
-        
+
         if (d.x < -20) d.x = W + 20; if (d.x > W + 20) d.x = -20;
         if (d.y < -20) d.y = H + 20; if (d.y > H + 20) d.y = -20;
 
-        ctx.fillStyle = `rgba(${col}, ${0.1 + (d.z * 0.3)})`;
+        ctx.fillStyle = `rgba(${col}, 0.25)`;
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
         ctx.fill();
-        
-        // Draw lines between near particles
-        if (d.z > 0.5) {
-            for(let j = i+1; j < n; j++) {
-                if(dots[j].z > 0.5) {
-                    let lx = d.x - dots[j].x, ly = d.y - dots[j].y;
-                    let ldist = lx*lx + ly*ly;
-                    if(ldist < 15000) {
-                        ctx.strokeStyle = `rgba(${col}, ${0.15 * (1 - ldist/15000)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(d.x, d.y);
-                        ctx.lineTo(dots[j].x, dots[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
       }
       animId = requestAnimationFrame(draw);
     }
@@ -887,20 +830,18 @@
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
   document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
 
-  // ─── 3D TILT EFFECT ON CARDS ───
+  // ─── 3D TILT EFFECT — TOP PLAYING CARD ONLY ───
   (function () {
     const applyTilt = (card, e, maxTilt) => {
       const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left; // x position within the element
-      const y = e.clientY - rect.top;  // y position within the element
-      
-      // Calculate tilt
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
       const tiltX = ((y - centerY) / centerY) * -maxTilt;
       const tiltY = ((x - centerX) / centerX) * maxTilt;
 
-      // Update CSS Variables for glare and transform
       card.style.setProperty('--mx', `${x}px`);
       card.style.setProperty('--my', `${y}px`);
       card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
@@ -912,12 +853,12 @@
     };
 
     document.addEventListener('mousemove', (e) => {
-      const card3d = e.target.closest('.card-3d');
-      if (card3d) applyTilt(card3d, e, 6); // 6 degrees max tilt
+      const card3d = e.target.closest('.tilt-3d');
+      if (card3d) applyTilt(card3d, e, 6);
     }, { passive: true });
 
     document.addEventListener('mouseout', (e) => {
-      const card3d = e.target.closest('.card-3d');
+      const card3d = e.target.closest('.tilt-3d');
       const to = e.relatedTarget;
       if (card3d && (!to || !card3d.contains(to))) resetTilt(card3d);
     }, { passive: true });
@@ -932,7 +873,7 @@
     { id: '71919479906458',  name: 'Drop For Brainrots',              img: 'drop.png',       peak: 18000  },
     { id: '97365843755210',  name: 'Cut Grass for Brainrots',         img: 'grass.png',      peak: 128000 },
     { id: '135000370479961', name: 'Draw & Slide',                    img: 'draw.png',       peak: 11000  },
-    { id: '114640202062357', name: 'Swing Obby for Brainrots',        img: 'swing.png',      peak: 252000 },
+    { id: '114640202062357', name: 'Swing Obby for Brainrots',        img: 'swing.png',      peak: 736000 },
     { id: '84968446824850',  name: 'Rope Bridge for Brainrots',       img: 'rope.png',       peak: 12000  },
     { id: '96168869671905',  name: 'ROB IT',                          img: 'rob.png',        peak: 34000  },
     { id: '105626692504093', name: 'Be a Brainrot',                   img: 'be.png',         peak: 95000  },
@@ -968,8 +909,9 @@
 
   // ─── MARQUEE BUILD ───
   function formatNum(n) {
-    if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-    if (n >= 1000)    return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    if (n >= 1000000000) return (n / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+    if (n >= 1000000)    return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1000)       return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
     return n.toLocaleString();
   }
 
@@ -1047,7 +989,7 @@
     var io = new IntersectionObserver(function (entries) {
       if (!entries[0].isIntersecting) return;
       io.disconnect();
-      animateCountUp(document.getElementById('stat-peak-single'), 252000, 1500);
+      animateCountUp(document.getElementById('stat-peak-single'), 736000, 1500);
       animateCountUp(document.getElementById('stat-total-ccu'),   1186000, 1700);
       animateCountUp(document.getElementById('stat-games'),        35,     850);
       var el = document.getElementById('stat-years');
